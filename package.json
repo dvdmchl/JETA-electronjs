@@ -1,0 +1,15 @@
+{
+  "name": "jeta_electronjs_app",
+  "version": "0.0.1",
+  "description": "Javascript Engine for Text Adventures",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "dvdmchl",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^33.2.1"
+  }
+}

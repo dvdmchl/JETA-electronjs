@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title id="title">New Game Definition</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { text-align: center; margin-top: 50px; }
+        input { width: 80%; padding: 10px; margin: 10px 0; }
+        button { padding: 10px 20px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <b id="header">New Game Definition</b>
+    <input type="text" id="gameName" placeholder="Enter game name">
+    <br>
+    <button onclick="submit()" id="okButton">OK</button>
+    <button onclick="cancel()" id="cancelButton">Cancel</button>
+</div>
+<script>
+    const { ipcRenderer } = require('electron');
+
+    function submit() {
+        const gameName = document.getElementById('gameName').value;
+        ipcRenderer.send('input-dialog-submit', gameName);
+    }
+
+    function cancel() {
+        ipcRenderer.send('input-dialog-cancel');
+    }
+
+    ipcRenderer.on('set-language', (event, translations, lang) => {
+        document.documentElement.lang = lang;
+        document.getElementById('title').innerText = translations.title;
+        document.getElementById('header').innerText = translations.header;
+        document.getElementById('gameName').placeholder = translations.placeholder;
+        document.getElementById('okButton').innerText = translations.okButton;
+        document.getElementById('cancelButton').innerText = translations.cancelButton;
+    });
+</script>
+</body>
+</html>

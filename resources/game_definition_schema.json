@@ -1,0 +1,89 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["metadata", "locations", "items", "quests", "characters"],
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "required": ["title", "author", "version", "description"],
+      "properties": {
+        "title": { "type": "string" },
+        "author": { "type": "string" },
+        "version": { "type": "string" },
+        "description": { "type": "string" }
+      }
+    },
+    "locations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "description", "connections"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "connections": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["direction", "target"],
+              "properties": {
+                "direction": { "type": "string" },
+                "target": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "description"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "location": { "type": "string" }
+        }
+      }
+    },
+    "quests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "steps", "reward"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "steps": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["step", "description", "condition"],
+              "properties": {
+                "step": { "type": "integer" },
+                "description": { "type": "string" },
+                "condition": { "type": "string" }
+              }
+            }
+          },
+          "reward": { "type": "object" }
+        }
+      }
+    },
+    "characters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "description"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "description": { "type": "string" }
+        }
+      }
+    }
+  }
+}

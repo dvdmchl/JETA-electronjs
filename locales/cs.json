@@ -1,0 +1,25 @@
+{
+  "index": {
+    "title": "JETA",
+    "header": "JETA",
+    "description": "Javascript Engine pro Textové Adventury."
+  },
+  "menu": {
+    "file": "Soubor",
+    "newGameDefinition": "Nová definice hry",
+    "newGameDefinitionMessage": "Zadejte název nové hry:",
+    "loadGameDefinition": "Načíst definici hry",
+    "editGameDefinition": "Upravit definici hry",
+    "quit": "Ukončit",
+    "tools": "Nástroje",
+    "openDevTools": "Otevřít Dev Tools",
+    "language": "Jazyk"
+  },
+  "inputDialog": {
+    "title": "Nová definice hry",
+    "header": "Nová definice hry",
+    "placeholder": "Zadejte název hry",
+    "okButton": "OK",
+    "cancelButton": "Zrušit"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "index": {
+    "title": "JETA",
+    "header": "JETA",
+    "description": "Javascript Engine for Text Adventures."
+  },
+  "menu": {
+    "file": "File",
+    "newGameDefinition": "New Game Definition",
+    "newGameDefinitionMessage": "Enter the name of the new game:",
+    "loadGameDefinition": "Load Game Definition",
+    "editGameDefinition": "Edit Game Definition",
+    "quit": "Quit",
+    "tools": "Tools",
+    "openDevTools": "Open Dev Tools",
+    "language": "Language"
+  },
+  "inputDialog": {
+    "title": "New Game Definition",
+    "header": "New Game Definition",
+    "placeholder": "Enter game name",
+    "okButton": "OK",
+    "cancelButton": "Cancel"
+  }
+}

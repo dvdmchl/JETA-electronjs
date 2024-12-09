@@ -1,0 +1,165 @@
+Název hry: „Stíny Azerothu“
+Setting:
+
+Příběh se odehrává v období po Třetí válce, kdy napětí mezi Hordou a Aliancí narůstá. Hráč začíná jako bezejmenný dobrodruh, který se ocitá ve středu prastarého konfliktu zahrnujícího tajemné artefakty, intriky a hrozbu v podobě temné entity z hlubin Twisting Nether.
+Klíčové prvky:
+
+    Prostředí:
+        Lokace z různých částí Azerothu, od Tirisfalského háje přes Stranglethorn až po Blackrock Mountain.
+        Dynamické počasí a střídání dne a noci, které ovlivňuje interakce s NPC a událostmi (např. noční přepady).
+
+    Postavy:
+        Hráč může být členem Hordy nebo Aliance, což ovlivňuje dialogy, přístup do lokací a další příběhové větve.
+        Výrazné NPC: Thrall, Jaina Proudmoore, Sylvanas Windrunner, tajemný démonický vládce.
+
+    Příběhové větve:
+        Aliance: Hráč se snaží zabránit Hordě v nalezení prastarého artefaktu.
+            Cíl: Zabránit Hordě získat artefakt a uchovat jeho sílu pro bezpečí Azerothu.
+            První akt: Jaina posílá hráče do Booty Bay, kde má najít goblina, jenž vlastní mapu ke klíčovým ruinám.
+            Střední akt: Boj s Hordou ve Stranglethornu, kde dochází k morální volbě – zabít nepřátele nebo je nechat žít.
+            Finální akt: Spojení s dračími strážci, aby zabránili aktivaci artefaktu.
+        Horda: Hráč hledá prastarý artefakt, aby ho zachránil před Aliancí a démonickými silami.
+            Cíl: Získat artefakt, aby nepadl do rukou Aliance a démonů.
+            První akt: Thrall pověřuje hráče cestou do Tirisfalského háje, kde má najít první fragment artefaktu.
+            Střední akt: Setkání s démonickým kultem a volba – získat sílu od démonů nebo zůstat loajální Hordě.
+            Finální akt: Souboj se Zar'thalisem na vrcholu Blackrock Mountain.
+        Neutrální: Možnost zradit frakci a sloužit vlastním cílům.
+            Cíl: Použít artefakt k vlastním cílům, ať už k dobru nebo k moci.
+            První akt: Získání důvěry jak Hordy, tak Aliance (hráč může obě strany zradit).
+            Střední akt: Rozhodnutí, zda spolupracovat s démony nebo se pokusit o vlastní plán.
+            Finální akt: Souboj s oběma frakcemi i démony.
+
+    Hlavní mechaniky:
+        Dialogy s možností ovlivnit chování NPC (přesvědčování, lhaní, diplomacie).
+        Správa inventáře (zbraně, artefakty, klíče, alchymistické lektvary).
+        Dynamické události (např. přepady, politická rozhodnutí, průběžné bitvy frakcí).
+        Hádanky spojené s runami, kouzly a starými texty.
+
+Lokace a klíčové události:
+1. Tirisfalský háj
+
+    Popis: Les plný mlhy a šeptajících hlasů, který skrývá staré runy a ruiny chrámu Nathrezimu.
+    Rozšíření: Chrám Nathrezimu by mohl obsahovat knihu prastarých rituálů, která odhaluje tajemství artefaktu, ale zároveň může hráče začít korumpovat.
+    Klíčové události:
+        Hádanka na otevření dveří do chrámu (kombinace run a lektvarů).
+        Boj s Forsaken patrolou.
+        Setkání s duchy padlých rytířů.
+    Mechaniky:
+        Hráč musí vyřešit runovou hádanku, aby odemkl chrám (příklady hádanek níže).
+        Setkání s duchy, kteří reagují podle hráčových činů (např. „Nezabil jsi mého vraha? Tak tě nepustím dál!“).
+    Výzvy: Boj s nemrtvými patrolami, navigace v temnotě.
+
+2. Kráčející molo (Booty Bay)
+
+    Popis: Rušné přístavní město, kde se střetávají pašeráci, piráti a obchodníci, kde je možné všechno koupit… za správnou cenu.
+    Rozšíření: Piráti mohou znát slabinu démonického lorda, což hráči nabídne alternativní strategii pro závěrečný boj.
+    Klíčové události:
+        Vyjednávání s goblinem, který vlastní mapu ke klíčové lokaci.
+        Noční přepadení piráty (hráč musí uprchnout nebo bojovat).
+        Možnost najmout žoldáky na další cestu.
+    Mechaniky:
+        Hráč může zvolit různé způsoby získání mapy:
+            Koupit mapu od goblina (nutnost vyjednat cenu).
+            Ukrást ji během oslavy pirátů.
+            Splnit goblinův úkol (např. doručit zásilku do Stranglethornu).
+        Možnost najmout posádku pro plavbu do Stranglethornu.
+
+3. Stranglethorn Vale
+
+    Popis: Hustá džungle plná trollů, divokých zvířat a ruin.
+    Klíčové události:
+        Boj s Gurubashi trolli, kteří chrání fragment artefaktu.
+        Past ukrytá v ruinách, která vyžaduje kombinaci řešení hádanek a bojových dovedností.
+        První střet s démonickým kultem.
+
+4. Blackrock Mountain
+
+    Popis: Sopečný komplex, který slouží jako útočiště dračích pokrevních linií a temných mágů, plný ohnivých elementálů, temných drakonidů a magických pastí.
+    Rozšíření: Přidat tajnou lokaci – dračí doupě – přístupnou pouze, pokud hráč splnil hádanku s dračí historií. Zde může získat unikátní artefakt nebo spojence.
+    Klíčové události:
+        Spolupráce nebo boj s drakonidními strážci.
+        Těžký bojový boss (např. ohnivý elementál spojený s artefaktem).
+        Získání posledního fragmentu a odhalení tajemství artefaktu.
+    Mechaniky:
+        Složité bojové výzvy (hráč musí kombinovat lektvary, magii a boj).
+        Hádanky spojené s dávnou dračí historií (např. „Odpověz na otázky našich otců, jinak budeš shořet.“).
+        Závěrečný souboj se Zar'thalisem, kde hráč využije získané dovednosti a rozhodnutí.
+
+3. Hádanky a interakce
+Runová hádanka v Tirisfalském háji
+    Cíl: Odemknout dveře do chrámu.
+    Mechanika: Hráč musí poskládat runy ve správném pořadí, podle nápověd nalezených v lese:
+        Runy symbolizují čtyři živly.
+        Správné pořadí je ukryto v básni: „Když voda hasí plameny a vítr žene zem.“
+        Řešení: Voda > Oheň > Vítr > Země.
+    Magické runy: Hráč může získat různé runy během hry a použít je ke kombinaci specifických kouzel.
+
+Diplomatická volba v Booty Bay
+    Goblin hráče podvádí, cena mapy je neuvěřitelně vysoká. Hráč může:
+        Zkusit přesvědčit goblina (diplomacie).
+        Získat mapu silou.
+        Najít jinou cestu (vyhledat jiného piráta, který zná trasu).
+
+Hádanka draků v Blackrock Mountain
+    Draci kladou otázky o historii Azerothu, například:
+        „Jaký artefakt byl použit k zničení Draenoru?“ (Odpověď: Scepter of Sargeras)
+        „Kdo sjednotil Hordu?“ (Odpověď: Thrall)
+    Doplnit otázky s více možnostmi odpovědí, kdy každá špatná odpověď spustí trest (např. poškození ohněm nebo ztráta drahocenného času).
+
+4. Dialogy a rozhodnutí
+Rozhovor se Sylvanas Windrunner
+    Sylvanas: „Co uděláš, když zjistíš, že i Aliance je zkažená stejně jako Horda?“
+        Odpověď 1: „Přidám se k tobě.“ (Sylvanas se stane dočasným spojencem.)
+        Odpověď 2: „Bojuju za svou čest, ne za frakce.“ (Sylvanas vás zradí později.)
+    Přidat třetí odpověď: „Systém je zkažený, ale já ho můžu změnit.“ (Sylvanas vás sleduje a později se snaží manipulovat s vaším vlivem.)
+
+Rozhodnutí ve Stranglethornu
+    Zajatci trollů: „Zabij nás a získáš artefakt, ale nech nás žít a ukážeme ti tajnou cestu.“
+        Zabijete: Snazší cesta, ale morální pokles.
+        Necháte je žít: Získáte přístup k jiné lokaci.
+    Přidat možnost kompromisu: „Získejte artefakt a osvoboďte trolly výměnou za jejich loajalitu.“
+
+5. Inventář a předměty
+Klíčové předměty:
+    Fragmenty artefaktu: Každý fragment má jinou vlastnost (např. léčení, posílení magie).
+    Lektvary: Hráč může sbírat ingredience pro výrobu lektvarů (např. zlepšení diplomacie, síly, nebo odolnosti vůči magii).
+    Runová kniha: Obsahuje nápovědy pro hádanky.
+    Dračí slza: Lektvar, který dočasně zvyšuje magické schopnosti, ale může hráče korumpovat.
+    Zar'thalisův prsten: Poskytuje velkou moc, ale omezuje volbu morálních rozhodnutí.
+
+Postavy:
+1. Thrall (Horda)
+
+    Mentor hráče, zadává úkoly a poskytuje podporu.
+    Možnost zradit jeho důvěru a spojit se s démony.
+
+2. Jaina Proudmoore (Aliance)
+
+    Spojenec Aliance, která zpochybňuje morální rozhodnutí hráče.
+
+3. Sylvanas Windrunner
+
+    Temný manipulátor, nabízí hráči sílu a moc, pokud bude ochoten obětovat své spojence.
+
+4. Démonický lord: Zar'thalis
+
+    Hlavní záporák, snaží se spojit artefakt, aby rozpoutal chaos.
+
+Další výrazné NPC:
+        Vol'jin (Horda): Poskytuje duchovní vedení a varuje před démony.
+        Anduin Wrynn (Aliance): Symbol morální čistoty a naděje, může být hráčovým spojencem nebo oponentem, pokud hráč udělá nečistá rozhodnutí.
+
+Vývoj postavy:
+
+    Staty: Síla, inteligence, obratnost.
+    Dovednosti: Alchymie, diplomacie, boj, magie.
+    Morální rozhodnutí: Hráč může měnit své zaměření – být hrdina, pragmatik, nebo zrádce.
+    Přidat možnost povolání: Hráč si na začátku zvolí, zda je bojovník, mág, nebo zloděj. To ovlivní, jaké úkoly a výhody má během hry (např. zloděj snadněji ukradne mapu, mág lépe rozluští runy).
+
+Možné konce:
+
+    Záchrana Azerothu: Hráč porazí Zar'thalise a předá artefakt své frakci.
+    Mocný vládce: Hráč použije artefakt pro sebe, čímž zničí obě frakce.
+    Katastrofa: Artefakt se dostane do rukou Zar'thalise, svět je zničen.
+    Neutralita: Hráč rozbije artefakt, aby jej nikdo nemohl zneužít, a stává se legendou jako ochránce Azerothu.
+    Alternativní katastrofa: Artefakt aktivuje hráčova špatná rozhodnutí a svět pohltí Twisting Nether.

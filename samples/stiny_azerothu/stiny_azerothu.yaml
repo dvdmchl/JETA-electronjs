@@ -1,0 +1,69 @@
+metadata:
+  title: "Stíny Azerothu"
+  author: "Tým vývojářů"
+  version: "1.0.1"
+  description: "Dobrodružství ve světě Warcraftu s hlubokými příběhovými větvemi a morálními rozhodnutími."
+
+locations:
+  - id: "tirisfal_grove"
+    name: "Tirisfalský háj"
+    description: "Les plný mlhy a šeptajících hlasů, který skrývá staré runy a ruiny chrámu Nathrezimu."
+    connections:
+      - direction: "jih"
+        target: "booty_bay"
+    events:
+      - id: "unlock_temple"
+        trigger: "solve_puzzle"
+        puzzle:
+          type: "runes"
+          hint: "Když voda hasí plameny a vítr žene zem."
+          solution: ["water", "fire", "wind", "earth"]
+        outcome:
+          text: "Chrám se otevřel a odhalil prastaré runy."
+          unlock_location: "nathrezim_temple"
+    npcs:
+      - id: "forsaken_patrol"
+        name: "Nemrtvá hlídka"
+        description: "Hlídka nemrtvých, která brání vstupu do chrámu."
+        dialogue:
+          - condition: "item_owned:amulet_of_peace"
+            text: "Máš amulet? Dobře, necháme tě projít."
+          - default: "Cizince, sem nesmíš!"
+        combat:
+          hp: 50
+          attack: 10
+          defense: 5
+
+items:
+  - id: "map_to_temple"
+    name: "Mapa k chrámu"
+    description: "Mapa, která ukazuje cestu do chrámu Nathrezimu."
+    location: "booty_bay"
+
+quests:
+  - id: "deliver_package"
+    name: "Doruč balík"
+    description: "Doruč balík z Booty Bay do Stranglethornu."
+    steps:
+      - step: 1
+        description: "Převzít balík od goblina."
+        condition: "item_obtained:package"
+      - step: 2
+        description: "Doručit balík do Stranglethornu."
+        condition: "location_visited:stranglethorn_vale"
+    reward:
+      item: "gold_coins"
+      amount: 50
+
+characters:
+  - id: "thrall"
+    name: "Thrall"
+    description: "Mentor hráče a vůdce Hordy."
+    faction: "Horda"
+    dialogue:
+      - text: "Musíme chránit chrám Nathrezimu před démony a Aliancí."
+        options:
+          - choice: "Pomohu ti, Thralli."
+            outcome: "start_quest:find_temple"
+          - choice: "Mám vlastní plány."
+            outcome: "relation_change:thrall:-10"

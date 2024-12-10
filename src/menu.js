@@ -5,6 +5,11 @@ const i18next = require('./i18n');
 const { exec } = require('child_process');
 const { loadGameFile } = require('./game_definition_loader');
 
+function updateMenu(currentLanguage, store, win) {
+    const menu = createMenu(currentLanguage, store, win);
+    Menu.setApplicationMenu(menu);
+}
+
 function createLanguageMenu(currentLanguage, store, win) {
     const localesPath = path.join(__dirname, '../locales');
     const languageFiles = fs.readdirSync(localesPath);
@@ -22,7 +27,9 @@ function createLanguageMenu(currentLanguage, store, win) {
                 store.set('language', lang);
                 i18next.changeLanguage(lang, (err, t) => {
                     if (err) return console.error('Error changing language:', err);
-                    win.webContents.send('set-language', t('index'), lang);
+                    win.webContents.send('set-language', t('index', {returnObjects: true}), lang);
+                    updateMenu(currentLanguage, store, win);
+                    console.log('Language changed to:', lang);
                 });
             }
         });

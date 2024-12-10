@@ -24,19 +24,22 @@ const createWindow = async () => {
         }
     });
 
-    i18next.changeLanguage(currentLanguage);
-    win.loadFile(`./resources/web/index.html`);
-    win.once('ready-to-show', () => {
-        win.show();
-        win.webContents.send('set-language', i18next.getDataByLanguage(currentLanguage).index, currentLanguage);
+    // Change language and update menu
+    i18next.changeLanguage(currentLanguage, (err, t) => {
+        if (err) return console.error('Error changing language:', err);
+        win.loadFile(`./resources/web/index.html`);
+        win.once('ready-to-show', () => {
+            win.show();
+            win.webContents.send('set-language', t('index', { returnObjects: true }), currentLanguage);
+        });
+
+        const menu = createMenu(currentLanguage, store, win);
+        Menu.setApplicationMenu(menu);
     });
 
     if (devMode) {
         win.webContents.openDevTools();
     }
-
-    const menu = createMenu(currentLanguage, store, win);
-    Menu.setApplicationMenu(menu);
 
     win.on('close', () => {
         const bounds = win.getBounds();

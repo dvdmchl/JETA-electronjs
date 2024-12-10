@@ -1,7 +1,7 @@
 TUX verze 1.01 (15.08.2005)
 
 Fixed bugs:
-- opraveno nìkolik gramatickıch pochybení resp. pøeklepù a nedoklepù
-- opravena deaktivace pøíkazù u Klokana a Motorového kola (thanx to klokyn)
-- oprava duplicity pøi zadání pøíkazu Prozkoumej Klakson (thanx to Oroborus)
+- opraveno nÄ›kolik gramatickÃ½ch pochybenÃ­ resp. pÅ™eklepÅ¯ a nedoklepÅ¯
+- opravena deaktivace pÅ™Ã­kazÅ¯ u Klokana a MotorovÃ©ho kola (thanx to klokyn)
+- oprava duplicity pÅ™i zadÃ¡nÃ­ pÅ™Ã­kazu Prozkoumej Klakson (thanx to Oroborus)
 

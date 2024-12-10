@@ -34,54 +34,54 @@ LANGMOD CZ
 
     SHOWIMAGE TUX.jpg
     CLS
-    OUT Tuèòák Tux nikdy nepoznal svobodu. Narodil se v ZOO v jednom menším mìstì.
-    OUT Celı svùj dosavadní ivot proil na jediném místì - v Zimním království,
-    OUT jak se jedna z tamních expozic nazıvá, pøi bezstarostnıch hrách s mladší
-    OUT sestøièkou Tuxie.
-    OUT Jene ty šastné dny jsou minulostí! Tuxie zmizela!
-    OUT Jednou ráno ji zøízenci strèili do pytle a odnesli ji neznámo kam. Nìkteøí
-    OUT øíkali, e si ji vybrala nìjaká firma, aby vystupovala v reklamách na cosi,
-    OUT co se snad jmenuje "operaèní systém". Lachtani zase na Tuxe pokøikovali,
-    OUT e jeho sestøièka skonèila v konzervì jako rádlo pro psy.
-    OUT Tux dospìl k tomu, e jediná monost, jak zjistit skuteènı osud Tuxie, je
-    OUT dostat se do kanceláøe øeditele ZOO. Tam pøece musí bıt nìjaké dokumenty!
-    OUT Tux rozjel akci. Nejprve ukradl jednomu dìcku vıkaèku a ucpal zámek, take
-    OUT zøízenec nemohl veèer pavilon uzamknout. Tux poèkal, a v ZOO zùstane jen
-    OUT hlídaè, neškodnı ochmelka, a vyrazil ven.
-    OUT Tux u u otevøel nezamèené dveøe, kdy tu se náhle ozval drsnı hlas:
+    OUT TuÄÅˆÃ¡k Tux nikdy nepoznal svobodu. Narodil se v ZOO v jednom menÅ¡Ã­m mÄ›stÄ›.
+    OUT CelÃ½ svÅ¯j dosavadnÃ­ Å¾ivot proÅ¾il na jedinÃ©m mÃ­stÄ› - v ZimnÃ­m krÃ¡lovstvÃ­,
+    OUT jak se jedna z tamnÃ­ch expozic nazÃ½vÃ¡, pÅ™i bezstarostnÃ½ch hrÃ¡ch s mladÅ¡Ã­
+    OUT sestÅ™iÄkou Tuxie.
+    OUT JenÅ¾e ty Å¡Å¥astnÃ© dny jsou minulostÃ­! Tuxie zmizela!
+    OUT Jednou rÃ¡no ji zÅ™Ã­zenci strÄili do pytle a odnesli ji neznÃ¡mo kam. NÄ›kteÅ™Ã­
+    OUT Å™Ã­kali, Å¾e si ji vybrala nÄ›jakÃ¡ firma, aby vystupovala v reklamÃ¡ch na cosi,
+    OUT co se snad jmenuje "operaÄnÃ­ systÃ©m". Lachtani zase na Tuxe pokÅ™ikovali,
+    OUT Å¾e jeho sestÅ™iÄka skonÄila v konzervÄ› jako Å¾rÃ¡dlo pro psy.
+    OUT Tux dospÄ›l k tomu, Å¾e jedinÃ¡ moÅ¾nost, jak zjistit skuteÄnÃ½ osud Tuxie, je
+    OUT dostat se do kancelÃ¡Å™e Å™editele ZOO. Tam pÅ™ece musÃ­ bÃ½t nÄ›jakÃ© dokumenty!
+    OUT Tux rozjel akci. Nejprve ukradl jednomu dÄ›cku Å¾vÃ½kaÄku a ucpal zÃ¡mek, takÅ¾e
+    OUT zÅ™Ã­zenec nemohl veÄer pavilon uzamknout. Tux poÄkal, aÅ¾ v ZOO zÅ¯stane jen
+    OUT hlÃ­daÄ, neÅ¡kodnÃ½ ochmelka, a vyrazil ven.
+    OUT Tux uÅ¾ uÅ¾ otevÅ™el nezamÄenÃ© dveÅ™e, kdyÅ¾ tu se nÃ¡hle ozval drsnÃ½ hlas:
     SETTEXTCOLOR 255 255 255
-    OUT >Pracky nahoru a ádnı vylomeniny, frajere!<
+    OUT >Pracky nahoru a Å¾Ã¡dnÃ½ vylomeniny, frajere!<
     SETTEXTCOLOR 0 255 255
-    OUT Souèasnì Tux ucítil na zádech hlaveò pistole. Jeho ploutve doslova vystøelily
-    OUT vzhùru. 
+    OUT SouÄasnÄ› Tux ucÃ­til na zÃ¡dech hlaveÅˆ pistole. Jeho ploutve doslova vystÅ™elily
+    OUT vzhÅ¯ru. 
     PRESSKEY
     CLS
-    OUT Ale poèkat, poèkat, tady nìco nehraje. Ten hlas, to je pøece...
+    OUT Ale poÄkat, poÄkat, tady nÄ›co nehraje. Ten hlas, to je pÅ™ece...
     SETTEXTCOLOR 125 255 0
-    OUT >Béïa!<
+    OUT >BÃ©Äa!<
     SETTEXTCOLOR 255 255 255
-    OUT >Jasnì, kámo. Méïa Béïa s.r.o. Kdo jsi myslel, e to je? Policie? Heh!<
+    OUT >JasnÄ›, kÃ¡mo. MÃ©Äa BÃ©Äa s.r.o. Kdo jsi myslel, Å¾e to je? Policie? Heh!<
     SETTEXTCOLOR 0 255 255
-    OUT Tux se otoèil a spatøil ledního medvìda, kterému všichni tuèòáci mají dovoleno
-    OUT øíkat Bedøich a jediní Tux a Tuxie dokonce Béïa. (Mimochodem, lachtani ho
-    OUT musejí oslovovat "pane" a stát pøi tom v pozoru.) Béïa má v ruce èernou
-    OUT plastikovou pistoli, kterou zøejmì uzmul nìjakému dìtskému návštìvníku.
+    OUT Tux se otoÄil a spatÅ™il lednÃ­ho medvÄ›da, kterÃ©mu vÅ¡ichni tuÄÅˆÃ¡ci majÃ­ dovoleno
+    OUT Å™Ã­kat BedÅ™ich a jedinÃ­ Tux a Tuxie dokonce BÃ©Äa. (Mimochodem, lachtani ho
+    OUT musejÃ­ oslovovat "pane" a stÃ¡t pÅ™i tom v pozoru.) BÃ©Äa mÃ¡ v ruce Äernou
+    OUT plastikovou pistoli, kterou zÅ™ejmÄ› uzmul nÄ›jakÃ©mu dÄ›tskÃ©mu nÃ¡vÅ¡tÄ›vnÃ­ku.
     SETTEXTCOLOR 125 255 0
-    OUT >To jsou ale slabomyslné vtipy!<
+    OUT >To jsou ale slabomyslnÃ© vtipy!<
     SETTEXTCOLOR 255 255 255
-    OUT >Heh. Ale fungujou! Kam se hrneš, kámo? U je ti to tu malı?<
+    OUT >Heh. Ale fungujou! Kam se hrneÅ¡, kÃ¡mo? UÅ¾ je ti to tu malÃ½?<
     SETTEXTCOLOR 0 255 255
-    OUT Tux svìøil Béïovi svùj zámìr, vloupat se do øeditelovy kanceláøe, najít
-    OUT dokumenty svìdèící o dalším osudu Tuxie a vydat se jí hledat. Béïa v úspìch
-    OUT tuèòákovy mise nevìøil ani v nejmenším, ale nechal si svou skepsi pro sebe.
+    OUT Tux svÄ›Å™il BÃ©Äovi svÅ¯j zÃ¡mÄ›r, vloupat se do Å™editelovy kancelÃ¡Å™e, najÃ­t
+    OUT dokumenty svÄ›dÄÃ­cÃ­ o dalÅ¡Ã­m osudu Tuxie a vydat se jÃ­ hledat. BÃ©Äa v ÃºspÄ›ch
+    OUT tuÄÅˆÃ¡kovy mise nevÄ›Å™il ani v nejmenÅ¡Ã­m, ale nechal si svou skepsi pro sebe.
     SETTEXTCOLOR 255 255 255
-    OUT >Tak hodnì štìstí, Tuxi.<
+    OUT >Tak hodnÄ› Å¡tÄ›stÃ­, Tuxi.<
     SETTEXTCOLOR 125 255 0
-    OUT >Díky.<
+    OUT >DÃ­ky.<
     SETTEXTCOLOR 0 255 255
-    OUT Béïa si v tu chvíli uvìdomil, e u dlouho nepøipomenul lachtanùm, jaké je
-    OUT jejich místo na spoleèenském ebøíèku a rozhodl se to napravit. Kdy Tux
-    OUT procházel dveømi, u je Béïa nahánìl...
+    OUT BÃ©Äa si v tu chvÃ­li uvÄ›domil, Å¾e uÅ¾ dlouho nepÅ™ipomenul lachtanÅ¯m, jakÃ© je
+    OUT jejich mÃ­sto na spoleÄenskÃ©m Å¾ebÅ™Ã­Äku a rozhodl se to napravit. KdyÅ¾ Tux
+    OUT prochÃ¡zel dveÅ™mi, uÅ¾ je BÃ©Äa nahÃ¡nÄ›l...
     PRESSKEY
     CLS
 
@@ -95,81 +95,81 @@ REM ----------------------------------------------------------------------------
 
     ZMEN :KdeJsem 1
 
-    OUT Tuèòák Tux se ocitl v kanceláøi øeditele ZOO. V rohu stojí tìkı ocelovı sejf.
-    OUT Uprostøed místnosti stojí mohutnı pracovní stùl z dubového døeva.
-    OUT U stropu visí klícka. Na zemi pod klíckou leí pár skoøápek od burskıch oøíškù.
-    (:papousek==0)OUT V kleci spí starı pestrobarevnı papoušek.
-    (:papousek==1)OUT V kleci vztekle poskakuje papoušek a plive na Tuxe vodu z pitítka.
+    OUT TuÄÅˆÃ¡k Tux se ocitl v kancelÃ¡Å™i Å™editele ZOO. V rohu stojÃ­ tÄ›Å¾kÃ½ ocelovÃ½ sejf.
+    OUT UprostÅ™ed mÃ­stnosti stojÃ­ mohutnÃ½ pracovnÃ­ stÅ¯l z dubovÃ©ho dÅ™eva.
+    OUT U stropu visÃ­ klÃ­cka. Na zemi pod klÃ­ckou leÅ¾Ã­ pÃ¡r skoÅ™Ã¡pek od burskÃ½ch oÅ™Ã­Å¡kÅ¯.
+    (:papousek==0)OUT V kleci spÃ­ starÃ½ pestrobarevnÃ½ papouÅ¡ek.
+    (:papousek==1)OUT V kleci vztekle poskakuje papouÅ¡ek a plive na Tuxe vodu z pitÃ­tka.
     OUT 
 
-    SETMAINMENU Jdi Prozkoumej Oslov Vezmi Pouij Dej 
+    SETMAINMENU Jdi Prozkoumej Oslov Vezmi PouÅ¾ij Dej 
 
-    ADDMENU Prozkoumej Papouška
+    ADDMENU Prozkoumej PapouÅ¡ka
     ADDMENU Prozkoumej Sejf
-    ADDMENU Prozkoumej Skoøápky
-    ADDMENU Prozkoumej Stùl
-    ADDMENU Vezmi Skoøápky
+    ADDMENU Prozkoumej SkoÅ™Ã¡pky
+    ADDMENU Prozkoumej StÅ¯l
+    ADDMENU Vezmi SkoÅ™Ã¡pky
     ADDMENU Vezmi Sejf
-    ADDMENU Oslov Papouška
-    ADDMENU Jdi ven_z_kanceláøe
+    ADDMENU Oslov PapouÅ¡ka
+    ADDMENU Jdi ven_z_kancelÃ¡Å™e
  
-    COMMAND Jdi ven_z_kanceláøe
+    COMMAND Jdi ven_z_kancelÃ¡Å™e
       SETMIESTO PredKancelari
     ENDCOMMAND
 
-    COMMAND Prozkoumej Papouška
-      OUT Na papouška je špatnì vidìt, ale Tux ho dobøe zná z vyprávìní.
+    COMMAND Prozkoumej PapouÅ¡ka
+      OUT Na papouÅ¡ka je Å¡patnÄ› vidÄ›t, ale Tux ho dobÅ™e znÃ¡ z vyprÃ¡vÄ›nÃ­.
       SETTEXTCOLOR 125 255 0
-      (:papousek==0)OUT >Spí v noci i ve dne. Probouzí se, jen aby se naral nebo...<
-      (:papousek==1)OUT >Je pìknì vzteklı. Naštìstí na mì nemùe...<
+      (:papousek==0)OUT >SpÃ­ v noci i ve dne. ProbouzÃ­ se, jen aby se naÅ¾ral nebo...<
+      (:papousek==1)OUT >Je pÄ›knÄ› vzteklÃ½. NaÅ¡tÄ›stÃ­ na mÄ› nemÅ¯Å¾e...<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
-    COMMAND Prozkoumej Stùl
-      OUT Tux vyskoèil na idli a prozkoumal stùl. ádné hledané dokumenty nenašel.
-      (:sipka==0)OUT V jednom šuplíku našel uspávací šipku. Ihned si ji pøisvojil.
+    COMMAND Prozkoumej StÅ¯l
+      OUT Tux vyskoÄil na Å¾idli a prozkoumal stÅ¯l. Å½Ã¡dnÃ© hledanÃ© dokumenty nenaÅ¡el.
+      (:sipka==0)OUT V jednom Å¡uplÃ­ku naÅ¡el uspÃ¡vacÃ­ Å¡ipku. Ihned si ji pÅ™isvojil.
       (:sipka==0)ZMEN :sipka 255
       OUT
     ENDCOMMAND
 
-    COMMAND Oslov Papouška
+    COMMAND Oslov PapouÅ¡ka
       SETTEXTCOLOR 125 255 0
-      (:papousek==0)OUT >Hej, vstávej! Slyšíš? VSTÁVEJ!<
-      (:papousek==1)OUT >Sorrry, kámo. U se nerrrozèiluj!<
+      (:papousek==0)OUT >Hej, vstÃ¡vej! SlyÅ¡Ã­Å¡? VSTÃVEJ!<
+      (:papousek==1)OUT >Sorrry, kÃ¡mo. UÅ¾ se nerrrozÄiluj!<
       SETTEXTCOLOR 252 219 66
-      (:papousek==1)OUT >Dìlej si srrrandu z nìkoho jiného, ty ...rrr...!<
+      (:papousek==1)OUT >DÄ›lej si srrrandu z nÄ›koho jinÃ©ho, ty ...rrr...!<
       SETTEXTCOLOR 0 255 255
-      (:papousek==0)OUT Kdepak, Tuxovo štìbetavé volání papouška sotva probudí...
+      (:papousek==0)OUT Kdepak, Tuxovo Å¡tÄ›betavÃ© volÃ¡nÃ­ papouÅ¡ka sotva probudÃ­...
       OUT
     ENDCOMMAND
 
     COMMAND Prozkoumej Sejf
-      OUT Tux prozkoumal sejf v rohu kanceláøe. Je opatøen otoènım èíselníkem.
+      OUT Tux prozkoumal sejf v rohu kancelÃ¡Å™e. Je opatÅ™en otoÄnÃ½m ÄÃ­selnÃ­kem.
       SETTEXTCOLOR 125 255 0
-      OUT >To neotevøu, ani kdybych se na hlavu postavil!<
+      OUT >To neotevÅ™u, ani kdybych se na hlavu postavil!<
       SETTEXTCOLOR 0 255 255
       OUT 
     ENDCOMMAND
 
-    COMMAND Prozkoumej Skoøápky
-      OUT Tux špièkou nohy rozhrnul poházené skoøápky od burskıch oøíškù.
+    COMMAND Prozkoumej SkoÅ™Ã¡pky
+      OUT Tux Å¡piÄkou nohy rozhrnul pohÃ¡zenÃ© skoÅ™Ã¡pky od burskÃ½ch oÅ™Ã­Å¡kÅ¯.
       SETTEXTCOLOR 125 255 0
-      OUT >Ten mizera papoušek si zase dával pìknì do zobáku!<
+      OUT >Ten mizera papouÅ¡ek si zase dÃ¡val pÄ›knÄ› do zobÃ¡ku!<
       SETTEXTCOLOR 0 255 255
       OUT 
     ENDCOMMAND
 
-    COMMAND Vezmi Skoøápky
+    COMMAND Vezmi SkoÅ™Ã¡pky
       SETTEXTCOLOR 125 255 0
-      OUT >FUJ! Uklízet bordel na podlaze není práce hodná tuèòáka Tuxe!<
+      OUT >FUJ! UklÃ­zet bordel na podlaze nenÃ­ prÃ¡ce hodnÃ¡ tuÄÅˆÃ¡ka Tuxe!<
       SETTEXTCOLOR 0 255 255
       OUT 
     ENDCOMMAND
 
     COMMAND Vezmi Sejf
       SETTEXTCOLOR 125 255 0
-      OUT >Jsem sice drsnı Tux, ale tohle fakt neunesu!<
+      OUT >Jsem sice drsnÃ½ Tux, ale tohle fakt neunesu!<
       SETTEXTCOLOR 0 255 255
       OUT 
     ENDCOMMAND
@@ -182,104 +182,104 @@ REM ----------------------------------------------------------------------------
 
     ZMEN :KdeJsem 2
 
-    OUT Tuèòák Tux je zpìt v Zimním království - v jediném místì, které a do dnešního
-    OUT dne poznal. Ve vodní nádri se dalo tak skvìle øádit. Akorát ti lachtani stále
+    OUT TuÄÅˆÃ¡k Tux je zpÄ›t v ZimnÃ­m krÃ¡lovstvÃ­ - v jedinÃ©m mÃ­stÄ›, kterÃ© aÅ¾ do dneÅ¡nÃ­ho
+    OUT dne poznal. Ve vodnÃ­ nÃ¡drÅ¾i se dalo tak skvÄ›le Å™Ã¡dit. AkorÃ¡t ti lachtani stÃ¡le
     OUT otravovali.
-    (:medved==0)OUT Lední medvìd Béïa si našel novou zábavu. Pohrozil ménì chápavım
-    (:medved==0)OUT lachtanùm falešnou pistolkou a donutil je, aby pro jeho potìchu
-    (:medved==0)OUT pøedvádìli rùzné nauèené kousky. Lachtani tak toèí míèky na èumácích,
-    (:medved==0)OUT hrají košíkovou, pøeskakují jeden druhého a podobnì.
+    (:medved==0)OUT LednÃ­ medvÄ›d BÃ©Äa si naÅ¡el novou zÃ¡bavu. Pohrozil mÃ©nÄ› chÃ¡pavÃ½m
+    (:medved==0)OUT lachtanÅ¯m faleÅ¡nou pistolkou a donutil je, aby pro jeho potÄ›chu
+    (:medved==0)OUT pÅ™edvÃ¡dÄ›li rÅ¯znÃ© nauÄenÃ© kousky. Lachtani tak toÄÃ­ mÃ­Äky na ÄumÃ¡cÃ­ch,
+    (:medved==0)OUT hrajÃ­ koÅ¡Ã­kovou, pÅ™eskakujÃ­ jeden druhÃ©ho a podobnÄ›.
     SETTEXTCOLOR 125 255 0
-    (:medved==0)OUT >Béïa je pìknej prevít. No ale tìm lachtanùm to ze srdce pøeju.<
+    (:medved==0)OUT >BÃ©Äa je pÄ›knej prevÃ­t. No ale tÄ›m lachtanÅ¯m to ze srdce pÅ™eju.<
     SETTEXTCOLOR 0 255 255
-    (:medved==1)OUT Zatímco medvìd Béïa sedí ve svém oblíbeném èerveném ušáku a spokojenì
-    (:medved==1)OUT popíjí horkou kávu, vyèerpaní lachtani polehávají na bøehu a snaí se
-    (:medved==1)OUT naèerpat nové síly, ne je ošklivı "ledvìd mední" znovu naene do vody.
+    (:medved==1)OUT ZatÃ­mco medvÄ›d BÃ©Äa sedÃ­ ve svÃ©m oblÃ­benÃ©m ÄervenÃ©m uÅ¡Ã¡ku a spokojenÄ›
+    (:medved==1)OUT popÃ­jÃ­ horkou kÃ¡vu, vyÄerpanÃ­ lachtani polehÃ¡vajÃ­ na bÅ™ehu a snaÅ¾Ã­ se
+    (:medved==1)OUT naÄerpat novÃ© sÃ­ly, neÅ¾ je oÅ¡klivÃ½ "ledvÄ›d mednÃ­" znovu naÅ¾ene do vody.
     OUT
 
-    SETMAINMENU Jdi Prozkoumej Oslov Vezmi Pouij Dej 
+    SETMAINMENU Jdi Prozkoumej Oslov Vezmi PouÅ¾ij Dej 
 
-    ADDMENU Prozkoumej Medvìda_Béïu
-    ADDMENU Oslov Medvìda_Béïu
+    ADDMENU Prozkoumej MedvÄ›da_BÃ©Äu
+    ADDMENU Oslov MedvÄ›da_BÃ©Äu
     ADDMENU Prozkoumej Lachtany
     ADDMENU Oslov Lachtany
     (:kafe==255 :dotaznamedveda==1)ADDMENU Dej Kafe
-    ADDMENU Jdi pøed_Zimní_království
+    ADDMENU Jdi pÅ™ed_ZimnÃ­_krÃ¡lovstvÃ­
 
 
-    COMMAND Jdi pøed_Zimní_království
+    COMMAND Jdi pÅ™ed_ZimnÃ­_krÃ¡lovstvÃ­
       SETMIESTO PredKralovstvim
     ENDCOMMAND
 
     COMMAND Dej Kafe
-      OUT Tux podal Béïovi plastikovı kelímek s kávou z automatu. Medvìd se zatváøil
-      OUT znaènì podezíravì. Pøièichl k nápoji a ušklíbl se.
+      OUT Tux podal BÃ©Äovi plastikovÃ½ kelÃ­mek s kÃ¡vou z automatu. MedvÄ›d se zatvÃ¡Å™il
+      OUT znaÄnÄ› podezÃ­ravÄ›. PÅ™iÄichl k nÃ¡poji a uÅ¡klÃ­bl se.
       SETTEXTCOLOR 255 255 255
-      OUT >Je to urèitì kafe? Voní to nìjak divnì.<
+      OUT >Je to urÄitÄ› kafe? VonÃ­ to nÄ›jak divnÄ›.<
       SETTEXTCOLOR 125 255 0
-      OUT >Mno, bylo to tam napsáno...<
+      OUT >Mno, bylo to tam napsÃ¡no...<
       SETTEXTCOLOR 255 255 255
-      OUT >No, dal bych pøednost poctivımu turku, ale co u nadìlám. Pujè si ten kvér.<
+      OUT >No, dal bych pÅ™ednost poctivÃ½mu turku, ale co uÅ¾ nadÄ›lÃ¡m. PujÄ si ten kvÃ©r.<
       SETTEXTCOLOR 0 255 255
-      OUT Tux zaøadil plastikovou pistolku do svého inventáøe.
+      OUT Tux zaÅ™adil plastikovou pistolku do svÃ©ho inventÃ¡Å™e.
       ZMEN :medved 1
       ZMEN :kafe 2
       ZMEN :pistole 255
       OUT
     ENDCOMMAND
 
-    COMMAND Oslov Medvìda_Béïu
+    COMMAND Oslov MedvÄ›da_BÃ©Äu
       SETTEXTCOLOR 125 255 0
-      (:sipka!=255)OUT >Nazdar, Béïo. Tak co? Pohoda?<
+      (:sipka!=255)OUT >Nazdar, BÃ©Äo. Tak co? Pohoda?<
       (:sipka!=255)SETTEXTCOLOR 255 255 255
-      (:sipka!=255)OUT >Jasnì, Tuxi. Pohoda.<
+      (:sipka!=255)OUT >JasnÄ›, Tuxi. Pohoda.<
       SETTEXTCOLOR 125 255 0
-      (:sipka!=255)OUT >Tak to je v pohodì, kámo.<
-      (:sipka==255 :pistole!=0)OUT >Nazdar, Béïo. Tak co? Pohoda?<
+      (:sipka!=255)OUT >Tak to je v pohodÄ›, kÃ¡mo.<
+      (:sipka==255 :pistole!=0)OUT >Nazdar, BÃ©Äo. Tak co? Pohoda?<
       (:sipka==255 :pistole!=0)SETTEXTCOLOR 255 255 255
-      (:sipka==255 :pistole!=0)OUT >Jasnì, Tuxi. Pohoda.<
+      (:sipka==255 :pistole!=0)OUT >JasnÄ›, Tuxi. Pohoda.<
       SETTEXTCOLOR 125 255 0
-      (:sipka==255 :pistole!=0)OUT >Tak to je v pohodì, kámo.<
-      (:sipka==255 :pistole==0)OUT >Hele, Béïo, myslíš, e bys mohl na chvíli postrádat tu pistolku?<
+      (:sipka==255 :pistole!=0)OUT >Tak to je v pohodÄ›, kÃ¡mo.<
+      (:sipka==255 :pistole==0)OUT >Hele, BÃ©Äo, myslÃ­Å¡, Å¾e bys mohl na chvÃ­li postrÃ¡dat tu pistolku?<
       (:sipka==255 :pistole==0)SETTEXTCOLOR 255 255 255
-      (:sipka==255 :pistole==0)OUT >Moná jo, moná ne. Co za to?<
+      (:sipka==255 :pistole==0)OUT >MoÅ¾nÃ¡ jo, moÅ¾nÃ¡ ne. Co za to?<
       SETTEXTCOLOR 125 255 0
-      (:sipka==255 :pistole==0)OUT >No to pøece musíš øíct ty, co za to chceš.<
+      (:sipka==255 :pistole==0)OUT >No to pÅ™ece musÃ­Å¡ Å™Ã­ct ty, co za to chceÅ¡.<
       (:sipka==255 :pistole==0)SETTEXTCOLOR 255 255 255
-      (:sipka==255 :pistole==0)OUT >Správnì. Co takhle hrnek horkıho kafe? Ten by mi udìlal dost dobøe.<
+      (:sipka==255 :pistole==0)OUT >SprÃ¡vnÄ›. Co takhle hrnek horkÃ½ho kafe? Ten by mi udÄ›lal dost dobÅ™e.<
       SETTEXTCOLOR 125 255 0
-      (:sipka==255 :pistole==0)OUT >Udìlám, co budu moci.<
+      (:sipka==255 :pistole==0)OUT >UdÄ›lÃ¡m, co budu moci.<
       (:sipka==255 :pistole==0) SETTEXTCOLOR 255 255 255
-      (:sipka==255 :pistole==0)OUT >To rozhodnì udìlej, kámo.<
+      (:sipka==255 :pistole==0)OUT >To rozhodnÄ› udÄ›lej, kÃ¡mo.<
       (:sipka==255 :pistole==0)ZMEN :dotaznamedveda 1
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
-    COMMAND Prozkoumej Medvìda_Béïu
-      OUT Medvìda Béïu zná Tux velmi dobøe. Je bílı, lehce zavalitı a velmi inteligentní.
+    COMMAND Prozkoumej MedvÄ›da_BÃ©Äu
+      OUT MedvÄ›da BÃ©Äu znÃ¡ Tux velmi dobÅ™e. Je bÃ­lÃ½, lehce zavalitÃ½ a velmi inteligentnÃ­.
       SETTEXTCOLOR 255 255 255
-      OUT >Co je, Tuxi, co tak koukáš? e bys zase dospìl k hlášce "TOTAL FAILURE!"?<
+      OUT >Co je, Tuxi, co tak koukÃ¡Å¡? Å½e bys zase dospÄ›l k hlÃ¡Å¡ce "TOTAL FAILURE!"?<
       SETTEXTCOLOR 125 255 0
-      OUT >Ale kuš! Vše probíhá podle plánu!<
+      OUT >Ale kuÅ¡! VÅ¡e probÃ­hÃ¡ podle plÃ¡nu!<
       SETTEXTCOLOR 255 255 255
-      OUT >To je fajn, pokud ovšem ten plán nestojí za starou baèkoru!<
+      OUT >To je fajn, pokud ovÅ¡em ten plÃ¡n nestojÃ­ za starou baÄkoru!<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
     COMMAND Prozkoumej Lachtany
-      OUT Tux pohlédl se zalíbením na nenávidìné lachtany.
+      OUT Tux pohlÃ©dl se zalÃ­benÃ­m na nenÃ¡vidÄ›nÃ© lachtany.
       SETTEXTCOLOR 125 255 0
-      (:medved==0)OUT >Heh, radost pohledìt, jak tu ti zbabìlci šaškují.<
-      (:medved==1)OUT >Heh, radost pohledìt, jak ti zbabìlci dostali do tìla.<
+      (:medved==0)OUT >Heh, radost pohledÄ›t, jak tu ti zbabÄ›lci Å¡aÅ¡kujÃ­.<
+      (:medved==1)OUT >Heh, radost pohledÄ›t, jak ti zbabÄ›lci dostali do tÄ›la.<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
     COMMAND Oslov Lachtany
       SETTEXTCOLOR 125 255 0
-      OUT >To tak! Tlachat s lachtany není hodno tuèòáka Tuxe!<
+      OUT >To tak! Tlachat s lachtany nenÃ­ hodno tuÄÅˆÃ¡ka Tuxe!<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
@@ -292,69 +292,69 @@ REM ----------------------------------------------------------------------------
 
     ZMEN :KdeJsem 3
 
-    OUT Poblí obèerstvení nechal øeditel ZOO vystavìt malé dìtské høištì. V podstatì
-    OUT se jedná o pøehnanì strmou skluzavku, vratkı kolotoè a ohrádku
-    OUT s pestrobarevnımi kostkami, co má bıt jakási vìtší dìtská stavebnice.
-    (:kolotoc==1)OUT Poté, co se Tux projel na kolotoèi, bude tøeba ho rekonstruovat.
-    (:kolotoc==1)OUT (Ten kolotoè, nikoliv Tuxe.)
-    (:trubka==1)OUT Na zemi se povaluje zahnutá ulomená trubka z kolotoèe.
+    OUT PoblÃ­Å¾ obÄerstvenÃ­ nechal Å™editel ZOO vystavÄ›t malÃ© dÄ›tskÃ© hÅ™iÅ¡tÄ›. V podstatÄ›
+    OUT se jednÃ¡ o pÅ™ehnanÄ› strmou skluzavku, vratkÃ½ kolotoÄ a ohrÃ¡dku
+    OUT s pestrobarevnÃ½mi kostkami, coÅ¾ mÃ¡ bÃ½t jakÃ¡si vÄ›tÅ¡Ã­ dÄ›tskÃ¡ stavebnice.
+    (:kolotoc==1)OUT PotÃ©, co se Tux projel na kolotoÄi, bude tÅ™eba ho rekonstruovat.
+    (:kolotoc==1)OUT (Ten kolotoÄ, nikoliv Tuxe.)
+    (:trubka==1)OUT Na zemi se povaluje zahnutÃ¡ ulomenÃ¡ trubka z kolotoÄe.
     OUT
 
-    SETMAINMENU Jdi Prozkoumej Oslov Vezmi Pouij Dej 
+    SETMAINMENU Jdi Prozkoumej Oslov Vezmi PouÅ¾ij Dej 
 
-    (:skluzavka==0)ADDMENU Pouij Skluzavku
+    (:skluzavka==0)ADDMENU PouÅ¾ij Skluzavku
     (:trubka==1)ADDMENU Vezmi Trubku
-    (:kolotoc==0)ADDMENU Pouij Kolotoè
+    (:kolotoc==0)ADDMENU PouÅ¾ij KolotoÄ
     (:kostky==0)ADDMENU Vezmi Kostky
-    ADDMENU Prozkoumej Kolotoè
+    ADDMENU Prozkoumej KolotoÄ
     ADDMENU Prozkoumej Skluzavku
-    ADDMENU Jdi k_obèerstvení
-    ADDMENU Jdi k_antilopám
+    ADDMENU Jdi k_obÄerstvenÃ­
+    ADDMENU Jdi k_antilopÃ¡m
 
-    COMMAND Jdi k_obèerstvení
+    COMMAND Jdi k_obÄerstvenÃ­
       SETMIESTO Obcerstveni
     ENDCOMMAND
 
-    COMMAND Jdi k_antilopám
+    COMMAND Jdi k_antilopÃ¡m
       SETMIESTO Strom
     ENDCOMMAND
 
     COMMAND Prozkoumej Skluzavku
-      OUT Tux si zblízka prohlédl skluzavku.
+      OUT Tux si zblÃ­zka prohlÃ©dl skluzavku.
       SETTEXTCOLOR 125 255 0
-      OUT >Ta je pekelnì strmá. To zase nìkdo nepøemıšlel!<
+      OUT >Ta je pekelnÄ› strmÃ¡. To zase nÄ›kdo nepÅ™emÃ½Å¡lel!<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
-    COMMAND Prozkoumej Kolotoè
-      OUT Tux zkoumavì obešel kolotoè po celém jeho obvodu.
+    COMMAND Prozkoumej KolotoÄ
+      OUT Tux zkoumavÄ› obeÅ¡el kolotoÄ po celÃ©m jeho obvodu.
       SETTEXTCOLOR 125 255 0
-      (:kolotoc==0)OUT >Vypadá velmi nedùvìryhodnì, a nebezpeènì!<
+      (:kolotoc==0)OUT >VypadÃ¡ velmi nedÅ¯vÄ›ryhodnÄ›, aÅ¾ nebezpeÄnÄ›!<
       (:kolotoc==1)OUT >Tak na tom se dlouho nikdo nesveze!<
       SETTEXTCOLOR 0 255 255
-      (:trubka==1)OUT Na zemi se povaluje zahnutá ulomená trubka z kolotoèe.
+      (:trubka==1)OUT Na zemi se povaluje zahnutÃ¡ ulomenÃ¡ trubka z kolotoÄe.
       OUT
     ENDCOMMAND
 
-    COMMAND Pouij Skluzavku
-      OUT Tux vyskákal po elezném ebøíku na vrchol skluzavky, posadil se a vzápìtí
-      OUT se vrhl dolù. Na ledovì kluzké a strmé ploše nabral znaènou rychlost, take
-      OUT si pøi dopadu natloukl.
+    COMMAND PouÅ¾ij Skluzavku
+      OUT Tux vyskÃ¡kal po Å¾eleznÃ©m Å¾ebÅ™Ã­ku na vrchol skluzavky, posadil se a vzÃ¡pÄ›tÃ­
+      OUT se vrhl dolÅ¯. Na ledovÄ› kluzkÃ© a strmÃ© ploÅ¡e nabral znaÄnou rychlost, takÅ¾e
+      OUT si pÅ™i dopadu natloukl.
       SETTEXTCOLOR 125 255 0
-      OUT >Málem jsem se zabil. Na to u nevlezu!<
+      OUT >MÃ¡lem jsem se zabil. Na to uÅ¾ nevlezu!<
       SETTEXTCOLOR 0 255 255
       ZMEN :skluzavka 1
       OUT
     ENDCOMMAND
 
-    COMMAND Pouij Kolotoè
-      OUT Tux roztoèil kolotoè a naskoèil na nìj. Bylo k tomu tøeba znaèné odvahy,
-      OUT nebo rotující elezná konstrukce vydávala pøíšerné zvuky. Nakonec nìco
-      OUT hlasitì zapraskalo, kolotoè se prudce zastavil a nešastník Tux od nìj odlétl
-      OUT a  natloukl si zobák.
+    COMMAND PouÅ¾ij KolotoÄ
+      OUT Tux roztoÄil kolotoÄ a naskoÄil na nÄ›j. Bylo k tomu tÅ™eba znaÄnÃ© odvahy,
+      OUT neboÅ¥ rotujÃ­cÃ­ Å¾eleznÃ¡ konstrukce vydÃ¡vala pÅ™Ã­Å¡ernÃ© zvuky. Nakonec nÄ›co
+      OUT hlasitÄ› zapraskalo, kolotoÄ se prudce zastavil a neÅ¡Å¥astnÃ­k Tux od nÄ›j odlÃ©tl
+      OUT a  natloukl si zobÃ¡k.
       SETTEXTCOLOR 125 255 0
-      OUT >To se mùe stát jenom mnì!<
+      OUT >To se mÅ¯Å¾e stÃ¡t jenom mnÄ›!<
       SETTEXTCOLOR 0 255 255
       ZMEN :kolotoc 1
       ZMEN :trubka 1
@@ -364,13 +364,13 @@ REM ----------------------------------------------------------------------------
     ENDCOMMAND
 
     COMMAND Vezmi Trubku
-      OUT Tux se sehnul a rozšíøil svùj inventáø o ulomenou trubku.
+      OUT Tux se sehnul a rozÅ¡Ã­Å™il svÅ¯j inventÃ¡Å™ o ulomenou trubku.
       ZMEN :trubka 255
       OUT    
     ENDCOMMAND
 
     COMMAND Vezmi Kostky
-      OUT Tux sesbíral poházené døevìné kostky. Jeho inventáø silnì nabobtnal.
+      OUT Tux sesbÃ­ral pohÃ¡zenÃ© dÅ™evÄ›nÃ© kostky. Jeho inventÃ¡Å™ silnÄ› nabobtnal.
       ZMEN :kostky 255
       OUT    
     ENDCOMMAND
@@ -382,59 +382,59 @@ REM ----------------------------------------------------------------------------
 
     ZMEN :KdeJsem 4
 
-    OUT Tux dorazil na hlavní rozcestí ZOO. Kdysi tu prı bıvala na podstavci socha,
-    OUT snad zakladatele zahrady. Jisté je, e teï je tu místo ní obrovskı automat
-    OUT na teplé nápoje - zejména na rùzné druhy kávy, proèe budeme od ostatních
-    OUT tekutin abstrahovat a oznaèíme si jej jako "automat na kávu".
-    (:kelimek==0)OUT U paty automatu se povaluje lehce pomaèkanı kelímek.
-    (:kostky==1)OUT Tìsnì u automatu se vrší hromada kostek, jakési provizorní schùdky
-    (:kostky==1)OUT vybudované Tuxem. Vrchol "schodištì" je umístìn u slotu na mince.
+    OUT Tux dorazil na hlavnÃ­ rozcestÃ­ ZOO. Kdysi tu prÃ½ bÃ½vala na podstavci socha,
+    OUT snad zakladatele zahrady. JistÃ© je, Å¾e teÄ je tu mÃ­sto nÃ­ obrovskÃ½ automat
+    OUT na teplÃ© nÃ¡poje - zejmÃ©na na rÅ¯znÃ© druhy kÃ¡vy, proÄeÅ¾ budeme od ostatnÃ­ch
+    OUT tekutin abstrahovat a oznaÄÃ­me si jej jako "automat na kÃ¡vu".
+    (:kelimek==0)OUT U paty automatu se povaluje lehce pomaÄkanÃ½ kelÃ­mek.
+    (:kostky==1)OUT TÄ›snÄ› u automatu se vrÅ¡Ã­ hromada kostek, jakÃ©si provizornÃ­ schÅ¯dky
+    (:kostky==1)OUT vybudovanÃ© Tuxem. Vrchol "schodiÅ¡tÄ›" je umÃ­stÄ›n u slotu na mince.
     OUT
 
-    SETMAINMENU Jdi Prozkoumej Oslov Vezmi Pouij Dej 
+    SETMAINMENU Jdi Prozkoumej Oslov Vezmi PouÅ¾ij Dej 
 
-    (:kelimek==0)ADDMENU Vezmi Kelímek
-    ADDMENU Pouij Automat
+    (:kelimek==0)ADDMENU Vezmi KelÃ­mek
+    ADDMENU PouÅ¾ij Automat
     ADDMENU Prozkoumej Automat
-    ADDMENU Jdi k_irafám
-    ADDMENU Jdi k_antilopám
-    ADDMENU Jdi k_opicím
-    ADDMENU Jdi k_voliérám_s_ptáky
+    ADDMENU Jdi k_Å¾irafÃ¡m
+    ADDMENU Jdi k_antilopÃ¡m
+    ADDMENU Jdi k_opicÃ­m
+    ADDMENU Jdi k_voliÃ©rÃ¡m_s_ptÃ¡ky
 
-    COMMAND Jdi k_opicím
+    COMMAND Jdi k_opicÃ­m
       SETMIESTO Opice
     ENDCOMMAND
 
-    COMMAND Jdi k_voliérám_s_ptáky
+    COMMAND Jdi k_voliÃ©rÃ¡m_s_ptÃ¡ky
       SETMIESTO Klokan
     ENDCOMMAND
 
-    COMMAND Jdi k_irafám
+    COMMAND Jdi k_Å¾irafÃ¡m
       SETMIESTO Zirafy
     ENDCOMMAND
 
-    COMMAND Jdi k_antilopám
+    COMMAND Jdi k_antilopÃ¡m
       SETMIESTO Strom
     ENDCOMMAND
 
-    COMMAND Pouij Automat
+    COMMAND PouÅ¾ij Automat
       SETTEXTCOLOR 125 255 0
-      OUT >Do automatu je tøeba vhodit minci, jinak nefunguje!<
+      OUT >Do automatu je tÅ™eba vhodit minci, jinak nefunguje!<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
     COMMAND Prozkoumej Automat
-      OUT Tux poodstoupil od automatu a dùkladnì si ho zmìøil.
+      OUT Tux poodstoupil od automatu a dÅ¯kladnÄ› si ho zmÄ›Å™il.
       SETTEXTCOLOR 125 255 0
-      (:kostky!=1)OUT >Panejo, to je ale almara! Na ten slot pro mince vùbec nedosáhnu.<
-      (:kostky==1)OUT >Díky "schùdkùm" se teï bez problému dostanu ke slotu pro mince.<
+      (:kostky!=1)OUT >Panejo, to je ale almara! Na ten slot pro mince vÅ¯bec nedosÃ¡hnu.<
+      (:kostky==1)OUT >DÃ­ky "schÅ¯dkÅ¯m" se teÄ bez problÃ©mu dostanu ke slotu pro mince.<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
-    COMMAND Vezmi Kelímek
-      OUT Tux se sehnul a zaøadil do svého inventáøe pomaèkanı kelímek.
+    COMMAND Vezmi KelÃ­mek
+      OUT Tux se sehnul a zaÅ™adil do svÃ©ho inventÃ¡Å™e pomaÄkanÃ½ kelÃ­mek.
       ZMEN :kelimek 255
       OUT    
     ENDCOMMAND
@@ -446,56 +446,56 @@ REM ----------------------------------------------------------------------------
 
     ZMEN :KdeJsem 5
 
-    OUT Tux se ocitl u prostorného vıbìhu. Lze tu spatøit napøíklad dlouhokrké irafy.
-    (:zirafa==0)OUT Mezi nimi je i irafa trpící neuvìøitelnou hypochondrií, které se kdoví proè
-    (:zirafa==0)OUT pøezdívá iletka. iletka si dokonce opatøila stetoskop, kterı nosí kolem
-    (:zirafa==0)OUT krku. V souèasné dobì "trpí" iletka záchvatem amoku. Poskakuje ve vıbìhu
-    (:zirafa==0)OUT sem a tam jako smyslù zbavená.
-    (:zirafa==1)OUT Na zemi leí irafa iletka a neobyèejnì tvrdì spí. Tux v tom má "prsty".
-    (:zirafa==1 :stetoskop==0)OUT iletka má kolem krku stetoskop.
+    OUT Tux se ocitl u prostornÃ©ho vÃ½bÄ›hu. Lze tu spatÅ™it napÅ™Ã­klad dlouhokrkÃ© Å¾irafy.
+    (:zirafa==0)OUT Mezi nimi je i Å¾irafa trpÃ­cÃ­ neuvÄ›Å™itelnou hypochondriÃ­, kterÃ© se kdovÃ­ proÄ
+    (:zirafa==0)OUT pÅ™ezdÃ­vÃ¡ Å½iletka. Å½iletka si dokonce opatÅ™ila stetoskop, kterÃ½ nosÃ­ kolem
+    (:zirafa==0)OUT krku. V souÄasnÃ© dobÄ› "trpÃ­" Å½iletka zÃ¡chvatem amoku. Poskakuje ve vÃ½bÄ›hu
+    (:zirafa==0)OUT sem a tam jako smyslÅ¯ zbavenÃ¡.
+    (:zirafa==1)OUT Na zemi leÅ¾Ã­ Å¾irafa Å½iletka a neobyÄejnÄ› tvrdÄ› spÃ­. Tux v tom mÃ¡ "prsty".
+    (:zirafa==1 :stetoskop==0)OUT Å½iletka mÃ¡ kolem krku stetoskop.
     OUT
 
-    SETMAINMENU Jdi Prozkoumej Oslov Vezmi Pouij Dej 
+    SETMAINMENU Jdi Prozkoumej Oslov Vezmi PouÅ¾ij Dej 
 
     (:zirafa==1 :stetoskop==0)ADDMENU Vezmi Stetoskop
-    (:zirafa==0)ADDMENU Oslov iletku
-    ADDMENU Prozkoumej iletku
-    ADDMENU Jdi k_obèerstvení
-    ADDMENU Jdi na_hlavní_rozcestí
+    (:zirafa==0)ADDMENU Oslov Å½iletku
+    ADDMENU Prozkoumej Å½iletku
+    ADDMENU Jdi k_obÄerstvenÃ­
+    ADDMENU Jdi na_hlavnÃ­_rozcestÃ­
 
-    COMMAND Jdi k_obèerstvení
+    COMMAND Jdi k_obÄerstvenÃ­
       SETMIESTO Obcerstveni
     ENDCOMMAND
 
-    COMMAND Jdi na_hlavní_rozcestí
+    COMMAND Jdi na_hlavnÃ­_rozcestÃ­
       SETMIESTO Automat
     ENDCOMMAND
 
-    COMMAND Oslov iletku
+    COMMAND Oslov Å½iletku
       SETTEXTCOLOR 125 255 0
-      OUT >iletko! Hej, iletko! No tak pøestaò hloupnout!<
+      OUT >Å½iletko! Hej, Å½iletko! No tak pÅ™estaÅˆ hloupnout!<
       SETTEXTCOLOR 255 125 0
       OUT >Befeleme peseveze.<
       SETTEXTCOLOR 125 255 0
-      OUT >Co to blábolíš? iletko?!<
+      OUT >Co to blÃ¡bolÃ­Å¡? Å½iletko?!<
       SETTEXTCOLOR 255 125 0
       OUT >Hychykyrydytyny.<
       SETTEXTCOLOR 125 255 0
-      OUT >To je marné, ta je úplnì mimo.<
+      OUT >To je marnÃ©, ta je ÃºplnÄ› mimo.<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
-    COMMAND Prozkoumej iletku
-      OUT Tux prozkoumal irafu iletku.
+    COMMAND Prozkoumej Å½iletku
+      OUT Tux prozkoumal Å¾irafu Å½iletku.
       SETTEXTCOLOR 125 255 0
-      OUT >Vypadá jako obyèejná irafa. Ve skuteènosti je ale naprosto šílená...<
+      OUT >VypadÃ¡ jako obyÄejnÃ¡ Å¾irafa. Ve skuteÄnosti je ale naprosto Å¡Ã­lenÃ¡...<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
     COMMAND Vezmi Stetoskop
-      OUT Tux pøistoupil k iletce a opatrnì jí sundal stetoskop z krku.
+      OUT Tux pÅ™istoupil k Å½iletce a opatrnÄ› jÃ­ sundal stetoskop z krku.
       ZMEN :stetoskop 255
       SETTEXTCOLOR 0 255 255
       OUT
@@ -509,41 +509,41 @@ REM ----------------------------------------------------------------------------
 
     ZMEN :KdeJsem 6
 
-    OUT Tuèòák Tux se ocitl mezi klecemi s opicemi. Vìtšina primátù dovádí ve vìtvích.
-    OUT V jedné z klecí pobıvá nechvalnì známı opièák Šimpi, jen s oblibou okrádá
-    OUT neopatrné návštìvníky ZOO. Známou se stala zejména jeho sbírka kreditních
-    OUT karet a mobilních telefonù.
-    (:penezenka==0)OUT Tìsnì za møíí leí aktuálnì uloupená penìenka.
+    OUT TuÄÅˆÃ¡k Tux se ocitl mezi klecemi s opicemi. VÄ›tÅ¡ina primÃ¡tÅ¯ dovÃ¡dÃ­ ve vÄ›tvÃ­ch.
+    OUT V jednÃ© z klecÃ­ pobÃ½vÃ¡ nechvalnÄ› znÃ¡mÃ½ opiÄÃ¡k Å impi, jenÅ¾ s oblibou okrÃ¡dÃ¡
+    OUT neopatrnÃ© nÃ¡vÅ¡tÄ›vnÃ­ky ZOO. ZnÃ¡mou se stala zejmÃ©na jeho sbÃ­rka kreditnÃ­ch
+    OUT karet a mobilnÃ­ch telefonÅ¯.
+    (:penezenka==0)OUT TÄ›snÄ› za mÅ™Ã­Å¾Ã­ leÅ¾Ã­ aktuÃ¡lnÄ› uloupenÃ¡ penÄ›Å¾enka.
     OUT
 
-    SETMAINMENU Jdi Prozkoumej Oslov Vezmi Pouij Dej 
+    SETMAINMENU Jdi Prozkoumej Oslov Vezmi PouÅ¾ij Dej 
 
-    (:penezenka==0)ADDMENU Vezmi Penìenku
-    (:penezenka==0)ADDMENU Prozkoumej Penìenku
-    ADDMENU Prozkoumej Šimpiho
-    ADDMENU Oslov Šimpiho
-    (:penezenka==1 :buraky==255)ADDMENU Dej Buráky
-    ADDMENU Jdi na_hlavní_rozcestí
-    ADDMENU Jdi pøed_Zimní_království
+    (:penezenka==0)ADDMENU Vezmi PenÄ›Å¾enku
+    (:penezenka==0)ADDMENU Prozkoumej PenÄ›Å¾enku
+    ADDMENU Prozkoumej Å impiho
+    ADDMENU Oslov Å impiho
+    (:penezenka==1 :buraky==255)ADDMENU Dej BurÃ¡ky
+    ADDMENU Jdi na_hlavnÃ­_rozcestÃ­
+    ADDMENU Jdi pÅ™ed_ZimnÃ­_krÃ¡lovstvÃ­
 
-    COMMAND Jdi na_hlavní_rozcestí
+    COMMAND Jdi na_hlavnÃ­_rozcestÃ­
       SETMIESTO Automat
     ENDCOMMAND
 
-    COMMAND Jdi pøed_Zimní_království
+    COMMAND Jdi pÅ™ed_ZimnÃ­_krÃ¡lovstvÃ­
       SETMIESTO PredKralovstvim
     ENDCOMMAND
 
-    COMMAND Dej Buráky
-      OUT Mezi Tuxem a Šimpim probìhla vımìna pìknì z ruky do ploutve jako mezi
-      OUT gangstery. Šimpi tak získal hrst plnou burákù a Tux ... prázdnou penìenku!
+    COMMAND Dej BurÃ¡ky
+      OUT Mezi Tuxem a Å impim probÄ›hla vÃ½mÄ›na pÄ›knÄ› z ruky do ploutve jako mezi
+      OUT gangstery. Å impi tak zÃ­skal hrst plnou burÃ¡kÅ¯ a Tux ... prÃ¡zdnou penÄ›Å¾enku!
       SETTEXTCOLOR 252 219 66
-      OUT >Hehe. Máš, co jsi chtìl, pingle.<
+      OUT >Hehe. MÃ¡Å¡, co jsi chtÄ›l, pingle.<
       SETTEXTCOLOR 0 255 255
-      OUT Tux vztekle obrátil penìenku naruby a nakonec z ní pøeci jen vypadla
-      OUT  ušmudlaná mince. Minci si ponechal, penìenku mrštil po Šimpim.
+      OUT Tux vztekle obrÃ¡til penÄ›Å¾enku naruby a nakonec z nÃ­ pÅ™eci jen vypadla
+      OUT  uÅ¡mudlanÃ¡ mince. Minci si ponechal, penÄ›Å¾enku mrÅ¡til po Å impim.
       SETTEXTCOLOR 125 255 0
-      OUT >Máš pravdu, šimpáne. Co jsem chtìl, to mám!<
+      OUT >MÃ¡Å¡ pravdu, Å¡impÃ¡ne. Co jsem chtÄ›l, to mÃ¡m!<
       SETTEXTCOLOR 0 255 255
       ZMEN :buraky 2
       ZMEN :penezenka 2
@@ -551,44 +551,44 @@ REM ----------------------------------------------------------------------------
       OUT
     ENDCOMMAND
 
-    COMMAND Vezmi Penìenku
+    COMMAND Vezmi PenÄ›Å¾enku
       ZMEN :penezenka 1
-      OUT Tux pøistoupil k møíi, ale døíve, ne se dotkl penìenky, Šimpi se prudce zhoupl
-      OUT dolù a zmocnil se jí. Pak se posadil na vìtev a pobavenì si tuèòáka prohlíel.
+      OUT Tux pÅ™istoupil k mÅ™Ã­Å¾i, ale dÅ™Ã­ve, neÅ¾ se dotkl penÄ›Å¾enky, Å impi se prudce zhoupl
+      OUT dolÅ¯ a zmocnil se jÃ­. Pak se posadil na vÄ›tev a pobavenÄ› si tuÄÅˆÃ¡ka prohlÃ­Å¾el.
       SETTEXTCOLOR 252 219 66
-      OUT >Chceš penìenku, pikolíku? Chceš? Dones buráky, bude tvoje!<
+      OUT >ChceÅ¡ penÄ›Å¾enku, pikolÃ­ku? ChceÅ¡? Dones burÃ¡ky, bude tvoje!<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
-    COMMAND Prozkoumej Penìenku
+    COMMAND Prozkoumej PenÄ›Å¾enku
       SETTEXTCOLOR 125 255 0
-      OUT >Nejprve se musím penìenky zmocnit, abych ji mohl poøádnì prozkoumat!<
+      OUT >Nejprve se musÃ­m penÄ›Å¾enky zmocnit, abych ji mohl poÅ™Ã¡dnÄ› prozkoumat!<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
-    COMMAND Prozkoumej Šimpiho
-      OUT Tux si dùkladnì prohlédl drzého zlodìjského opièáka Šimpiho.
+    COMMAND Prozkoumej Å impiho
+      OUT Tux si dÅ¯kladnÄ› prohlÃ©dl drzÃ©ho zlodÄ›jskÃ©ho opiÄÃ¡ka Å impiho.
       SETTEXTCOLOR 125 255 0
-      OUT >Na oèích má frajerské sluneèní brıle a na hlavì obrácenou kšiltovku.<
+      OUT >Na oÄÃ­ch mÃ¡ frajerskÃ© sluneÄnÃ­ brÃ½le a na hlavÄ› obrÃ¡cenou kÅ¡iltovku.<
       SETTEXTCOLOR 252 219 66
-      OUT >Co tak èuèíš, ty zakrslá jeptiško?<
+      OUT >Co tak ÄuÄÃ­Å¡, ty zakrslÃ¡ jeptiÅ¡ko?<
       SETTEXTCOLOR 125 255 0
-      OUT >Zalez, šimpáne!<      
+      OUT >Zalez, Å¡impÃ¡ne!<      
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
-    COMMAND Oslov Šimpiho
+    COMMAND Oslov Å impiho
       SETTEXTCOLOR 125 255 0
-      OUT >Hej, Šimpi, potøebuju s tebou mluvit.<
+      OUT >Hej, Å impi, potÅ™ebuju s tebou mluvit.<
       SETTEXTCOLOR 252 219 66
-      OUT >Tak to máš smùlu, pingle, protoe já s tebou mluvit nepotøebuju!<
+      OUT >Tak to mÃ¡Å¡ smÅ¯lu, pingle, protoÅ¾e jÃ¡ s tebou mluvit nepotÅ™ebuju!<
       SETTEXTCOLOR 125 255 0
-      OUT >Dávej si pozor na jazyk!<
+      OUT >DÃ¡vej si pozor na jazyk!<
       SETTEXTCOLOR 252 219 66
-      OUT >A ty si dávej pozor, a ti nìkdo nešlápne na frak, ty hastroši!<
+      OUT >A ty si dÃ¡vej pozor, aÅ¥ ti nÄ›kdo neÅ¡lÃ¡pne na frak, ty hastroÅ¡i!<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
@@ -601,55 +601,55 @@ REM ----------------------------------------------------------------------------
     
     ZMEN :KdeJsem 7
 
-    OUT Tuxe pøivítal tìkı zápach pøepáleného tuku. To je základní atribut zdejšího
-    OUT obèerstvení. Pøestoe je teï primitivní stánek uzavøen, zápach tu v dokonalém
-    OUT bezvìtøí visí jako starı kabát v šatníku.
-    OUT Vedle stánku stojí plechová káï po okraj naplnìná nahnìdlım olejem.
+    OUT Tuxe pÅ™ivÃ­tal tÄ›Å¾kÃ½ zÃ¡pach pÅ™epÃ¡lenÃ©ho tuku. To je zÃ¡kladnÃ­ atribut zdejÅ¡Ã­ho
+    OUT obÄerstvenÃ­. PÅ™estoÅ¾e je teÄ primitivnÃ­ stÃ¡nek uzavÅ™en, zÃ¡pach tu v dokonalÃ©m
+    OUT bezvÄ›tÅ™Ã­ visÃ­ jako starÃ½ kabÃ¡t v Å¡atnÃ­ku.
+    OUT Vedle stÃ¡nku stojÃ­ plechovÃ¡ kÃ¡Ä po okraj naplnÄ›nÃ¡ nahnÄ›dlÃ½m olejem.
     OUT
 
-    SETMAINMENU Jdi Prozkoumej Oslov Vezmi Pouij Dej 
+    SETMAINMENU Jdi Prozkoumej Oslov Vezmi PouÅ¾ij Dej 
 
-    ADDMENU Prozkoumej Káï_s_olejem
-    ADDMENU Vezmi Káï_s_olejem
-    ADDMENU Pouij Káï_s_olejem
-    ADDMENU Prozkoumej Stánek
-    ADDMENU Jdi na_høištì
-    ADDMENU Jdi k_irafám
+    ADDMENU Prozkoumej KÃ¡Ä_s_olejem
+    ADDMENU Vezmi KÃ¡Ä_s_olejem
+    ADDMENU PouÅ¾ij KÃ¡Ä_s_olejem
+    ADDMENU Prozkoumej StÃ¡nek
+    ADDMENU Jdi na_hÅ™iÅ¡tÄ›
+    ADDMENU Jdi k_Å¾irafÃ¡m
  
-    COMMAND Jdi na_høištì
+    COMMAND Jdi na_hÅ™iÅ¡tÄ›
       SETMIESTO Hriste
     ENDCOMMAND
 
-    COMMAND Jdi k_irafám
+    COMMAND Jdi k_Å¾irafÃ¡m
       SETMIESTO Zirafy
     ENDCOMMAND
 
-    COMMAND Prozkoumej Káï_s_olejem
-      OUT Tux se naklonil pøes okraj kádì a zahledìl se na hustou èpící kapalinu:
+    COMMAND Prozkoumej KÃ¡Ä_s_olejem
+      OUT Tux se naklonil pÅ™es okraj kÃ¡dÄ› a zahledÄ›l se na hustou ÄpÃ­cÃ­ kapalinu:
       SETTEXTCOLOR 125 255 0
-      OUT >Fuj! U nikdy nesním by jedinou smaenou hranolku!<
+      OUT >Fuj! UÅ¾ nikdy nesnÃ­m byÅ¥ jedinou smaÅ¾enou hranolku!<
       SETTEXTCOLOR 0 255 255
       OUT 
     ENDCOMMAND
 
-    COMMAND Vezmi Káï_s_olejem
+    COMMAND Vezmi KÃ¡Ä_s_olejem
       SETTEXTCOLOR 125 255 0
-      OUT >Jsem sice drsnı Tux, ale tohle fakt neunesu!<
+      OUT >Jsem sice drsnÃ½ Tux, ale tohle fakt neunesu!<
       SETTEXTCOLOR 0 255 255
       OUT 
     ENDCOMMAND
 
-    COMMAND Pouij Káï_s_olejem
+    COMMAND PouÅ¾ij KÃ¡Ä_s_olejem
       SETTEXTCOLOR 125 255 0
-      OUT >To se v tom mám vykoupat, nebo co?!<
+      OUT >To se v tom mÃ¡m vykoupat, nebo co?!<
       SETTEXTCOLOR 0 255 255
       OUT 
     ENDCOMMAND
 
-    COMMAND Prozkoumej Stánek
-      OUT Tux pohlédl na ubohı stánek.
+    COMMAND Prozkoumej StÃ¡nek
+      OUT Tux pohlÃ©dl na ubohÃ½ stÃ¡nek.
       SETTEXTCOLOR 125 255 0
-      OUT >Stánek na laciné, hygienicky problematické jídlo.<
+      OUT >StÃ¡nek na lacinÃ©, hygienicky problematickÃ© jÃ­dlo.<
       SETTEXTCOLOR 0 255 255
       OUT 
     ENDCOMMAND
@@ -662,33 +662,33 @@ REM ----------------------------------------------------------------------------
 
     ZMEN :KdeJsem 8
        
-    OUT Tux spoèinul mezi prostornımi voliérami. Je mono tu posedìt na lavièkách
-    OUT a pozorovat obrovské sovy a jiné dravé ptáky nebo tøeba brazilské papoušky.
-    (:klokan==0)OUT O lavièku je opøeno toho èasu nepojízdné motorové kolo klokana Tondy.
-    (:klokan==0)OUT Jmenovanı vaènatec peèlivì zkoumá mrtvı mechanismus a hledá, kde je
-    (:klokan==0)OUT zakopán povìstnı pes. Obyvatelé ZOO si tak mohou koneènì vydechnout,
-    (:klokan==0)OUT nebo pøedtím se tu po celı den projídìl a všechny rušil hlasitım
-    (:klokan==0)OUT klaksonem pøipevnìnım na øídítka motokola.
-    (:klokan==0)OUT Nutno poznamenat, e Tonda je protìovanım oblíbencem øeditele ZOO,
-    (:klokan==0)OUT kterı poívá mimoøádnıch vıhod. I dotèené motorové kolo dostal darem
-    (:klokan==0)OUT ke dnešním narozeninám.
+    OUT Tux spoÄinul mezi prostornÃ½mi voliÃ©rami. Je moÅ¾no tu posedÄ›t na laviÄkÃ¡ch
+    OUT a pozorovat obrovskÃ© sovy a jinÃ© dravÃ© ptÃ¡ky nebo tÅ™eba brazilskÃ© papouÅ¡ky.
+    (:klokan==0)OUT O laviÄku je opÅ™eno toho Äasu nepojÃ­zdnÃ© motorovÃ© kolo klokana Tondy.
+    (:klokan==0)OUT JmenovanÃ½ vaÄnatec peÄlivÄ› zkoumÃ¡ mrtvÃ½ mechanismus a hledÃ¡, kde je
+    (:klokan==0)OUT zakopÃ¡n povÄ›stnÃ½ pes. ObyvatelÃ© ZOO si tak mohou koneÄnÄ› vydechnout,
+    (:klokan==0)OUT neboÅ¥ pÅ™edtÃ­m se tu po celÃ½ den projÃ­Å¾dÄ›l a vÅ¡echny ruÅ¡il hlasitÃ½m
+    (:klokan==0)OUT klaksonem pÅ™ipevnÄ›nÃ½m na Å™Ã­dÃ­tka motokola.
+    (:klokan==0)OUT Nutno poznamenat, Å¾e Tonda je protÄ›Å¾ovanÃ½m oblÃ­bencem Å™editele ZOO,
+    (:klokan==0)OUT kterÃ½ poÅ¾Ã­vÃ¡ mimoÅ™Ã¡dnÃ½ch vÃ½hod. I dotÄenÃ© motorovÃ© kolo dostal darem
+    (:klokan==0)OUT ke dneÅ¡nÃ­m narozeninÃ¡m.
     OUT
 
-    SETMAINMENU Jdi Prozkoumej Oslov Vezmi Pouij Dej 
+    SETMAINMENU Jdi Prozkoumej Oslov Vezmi PouÅ¾ij Dej 
 
     (:klokan==0)ADDMENU Oslov Klokana
     (:klokan==0)ADDMENU Prozkoumej Klokana
-    (:klokan==0)ADDMENU Prozkoumej Motorové_kolo
-    (:klokan==0)ADDMENU Vezmi Motorové_kolo
-    (:klokan==0)ADDMENU Pouij Motorové_kolo
-    ADDMENU Jdi na_hlavní_rozcestí
-    ADDMENU Jdi pøed_Zimní_království
+    (:klokan==0)ADDMENU Prozkoumej MotorovÃ©_kolo
+    (:klokan==0)ADDMENU Vezmi MotorovÃ©_kolo
+    (:klokan==0)ADDMENU PouÅ¾ij MotorovÃ©_kolo
+    ADDMENU Jdi na_hlavnÃ­_rozcestÃ­
+    ADDMENU Jdi pÅ™ed_ZimnÃ­_krÃ¡lovstvÃ­
 
-    COMMAND Jdi na_hlavní_rozcestí
+    COMMAND Jdi na_hlavnÃ­_rozcestÃ­
       SETMIESTO Automat
     ENDCOMMAND
 
-    COMMAND Jdi pøed_Zimní_království
+    COMMAND Jdi pÅ™ed_ZimnÃ­_krÃ¡lovstvÃ­
       SETMIESTO PredKralovstvim
     ENDCOMMAND
 
@@ -696,44 +696,44 @@ REM ----------------------------------------------------------------------------
       SETTEXTCOLOR 125 255 0
       OUT >Copak, copak? Nejede to?<
       SETTEXTCOLOR 255 255 0
-      OUT >Coe? Nestarej se! Všechno je v pohodì!<
+      OUT >CoÅ¾e? Nestarej se! VÅ¡echno je v pohodÄ›!<
       SETTEXTCOLOR 125 255 0
-      OUT >No kdy to øíkáš, tak to tak urèitì bude...<
+      OUT >No kdyÅ¾ to Å™Ã­kÃ¡Å¡, tak to tak urÄitÄ› bude...<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
     COMMAND Prozkoumej Klokana
-      OUT Tux si prohlédl klokana Tondu.
+      OUT Tux si prohlÃ©dl klokana Tondu.
       SETTEXTCOLOR 125 255 0
-      OUT >Má na sobì zelenobílé pruhované triko, ušpinìné od èokolád a zmrzlin,
-      OUT které tento protekèní vaènatec dostává od øeditele ZOO.<
+      OUT >MÃ¡ na sobÄ› zelenobÃ­lÃ© pruhovanÃ© triko, uÅ¡pinÄ›nÃ© od ÄokolÃ¡d a zmrzlin,
+      OUT kterÃ© tento protekÄnÃ­ vaÄnatec dostÃ¡vÃ¡ od Å™editele ZOO.<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
-    COMMAND Prozkoumej Motorové_kolo
-      OUT Tux se pokusil poøádnì prozkoumat klokanovo motokolo. Tonda jej ale
-      OUT prudce odstrèil nedbaje jeho štìbetavé protesty.
+    COMMAND Prozkoumej MotorovÃ©_kolo
+      OUT Tux se pokusil poÅ™Ã¡dnÄ› prozkoumat klokanovo motokolo. Tonda jej ale
+      OUT prudce odstrÄil nedbaje jeho Å¡tÄ›betavÃ© protesty.
       SETTEXTCOLOR 255 255 0
-      OUT >Hele, tuèòáku, be od toho. Nerozumíš tomu, ještì to pokazíš víc, ne
-      OUT u to pokaené je.<
+      OUT >Hele, tuÄÅˆÃ¡ku, beÅ¾ od toho. NerozumÃ­Å¡ tomu, jeÅ¡tÄ› to pokazÃ­Å¡ vÃ­c, neÅ¾
+      OUT uÅ¾ to pokaÅ¾enÃ© je.<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
-    COMMAND Vezmi Motorové_kolo
+    COMMAND Vezmi MotorovÃ©_kolo
       SETTEXTCOLOR 125 255 0
-      OUT >Motorové kolo samozøejmì neunesu. Kromì toho by bylo krajnì nerozumné
-      OUT krást ho pøímo pøed zraky jeho majitele!<
+      OUT >MotorovÃ© kolo samozÅ™ejmÄ› neunesu. KromÄ› toho by bylo krajnÄ› nerozumnÃ©
+      OUT krÃ¡st ho pÅ™Ã­mo pÅ™ed zraky jeho majitele!<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
-    COMMAND Pouij Motorové_kolo
+    COMMAND PouÅ¾ij MotorovÃ©_kolo
       SETTEXTCOLOR 125 255 0
-      OUT >Motorové kolo je momentálnì nepojízdné. Kromì toho znaènì pochybuji,
-      OUT e by mi ho klokan Tonda pùjèil!<
+      OUT >MotorovÃ© kolo je momentÃ¡lnÄ› nepojÃ­zdnÃ©. KromÄ› toho znaÄnÄ› pochybuji,
+      OUT Å¾e by mi ho klokan Tonda pÅ¯jÄil!<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
@@ -746,69 +746,69 @@ REM ----------------------------------------------------------------------------
 
     ZMEN :KdeJsem 9
 
-    OUT Tux stanul pøed kanceláøí øeditele ZOO, jak alespoò  hlásá zdobenı lesklı
-    OUT štít na dveøích. Pøed kanceláøí je poloena rohoka. Nalevo od veøejí je
-    OUT umístìn kvìtináè s fíkusem.
-    (:kancelarotevrena==0)OUT Dveøe jsou uzamèeny.
-    (:kancelarotevrena==1)OUT Dveøe jsou vypáèeny a je tedy mono vstoupit dovnitø.
+    OUT Tux stanul pÅ™ed kancelÃ¡Å™Ã­ Å™editele ZOO, jak alespoÅˆ  hlÃ¡sÃ¡ zdobenÃ½ lesklÃ½
+    OUT Å¡tÃ­t na dveÅ™Ã­ch. PÅ™ed kancelÃ¡Å™Ã­ je poloÅ¾ena rohoÅ¾ka. Nalevo od veÅ™ejÃ­ je
+    OUT umÃ­stÄ›n kvÄ›tinÃ¡Ä s fÃ­kusem.
+    (:kancelarotevrena==0)OUT DveÅ™e jsou uzamÄeny.
+    (:kancelarotevrena==1)OUT DveÅ™e jsou vypÃ¡Äeny a je tedy moÅ¾no vstoupit dovnitÅ™.
     OUT
 
-    SETMAINMENU Jdi Prozkoumej Oslov Vezmi Pouij Dej 
+    SETMAINMENU Jdi Prozkoumej Oslov Vezmi PouÅ¾ij Dej 
 
-    ADDMENU Prozkoumej Rohoku
-    ADDMENU Vezmi Rohoku
-    ADDMENU Pouij Rohoku
-    ADDMENU Prozkoumej Kvìtináè
-    ADDMENU Vezmi Kvìtináè
-    (:kancelarotevrena==1)ADDMENU Jdi do_kanceláøe    
-    ADDMENU Jdi pøed_Zimní_království
+    ADDMENU Prozkoumej RohoÅ¾ku
+    ADDMENU Vezmi RohoÅ¾ku
+    ADDMENU PouÅ¾ij RohoÅ¾ku
+    ADDMENU Prozkoumej KvÄ›tinÃ¡Ä
+    ADDMENU Vezmi KvÄ›tinÃ¡Ä
+    (:kancelarotevrena==1)ADDMENU Jdi do_kancelÃ¡Å™e    
+    ADDMENU Jdi pÅ™ed_ZimnÃ­_krÃ¡lovstvÃ­
 
-    COMMAND Jdi do_kanceláøe
+    COMMAND Jdi do_kancelÃ¡Å™e
       SETMIESTO UPapoucha
     ENDCOMMAND
 
-    COMMAND Jdi pøed_Zimní_království
+    COMMAND Jdi pÅ™ed_ZimnÃ­_krÃ¡lovstvÃ­
       SETMIESTO PredKralovstvim
     ENDCOMMAND
 
-    COMMAND Prozkoumej Rohoku
-      (:kancelarotevrena==0)OUT Tux nadzvedl rohoku leící pøede dveømi kanceláøe øeditele ZOO.
+    COMMAND Prozkoumej RohoÅ¾ku
+      (:kancelarotevrena==0)OUT Tux nadzvedl rohoÅ¾ku leÅ¾Ã­cÃ­ pÅ™ede dveÅ™mi kancelÃ¡Å™e Å™editele ZOO.
       SETTEXTCOLOR 125 255 0
-      (:kancelarotevrena==0)OUT >Pod rohokou se ádnı klíè nenachází.<
-      (:kancelarotevrena==1)OUT >Zkoumáním rohoky se sotva dozvím nìco o osudu Tuxie.<
+      (:kancelarotevrena==0)OUT >Pod rohoÅ¾kou se Å¾Ã¡dnÃ½ klÃ­Ä nenachÃ¡zÃ­.<
+      (:kancelarotevrena==1)OUT >ZkoumÃ¡nÃ­m rohoÅ¾ky se sotva dozvÃ­m nÄ›co o osudu Tuxie.<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
-    COMMAND Vezmi Rohoku
-      (:kancelarotevrena==0)OUT Tux nadzvedl rohoku leící pøede dveømi kanceláøe øeditele ZOO.
+    COMMAND Vezmi RohoÅ¾ku
+      (:kancelarotevrena==0)OUT Tux nadzvedl rohoÅ¾ku leÅ¾Ã­cÃ­ pÅ™ede dveÅ™mi kancelÃ¡Å™e Å™editele ZOO.
       SETTEXTCOLOR 125 255 0
-      (:kancelarotevrena==0)OUT >Pod rohokou se ádnı klíè nenachází.<
-      (:kancelarotevrena==1)OUT >Rohoku nechám tam, kde je. Jistì mi k nièemu nebude.<
+      (:kancelarotevrena==0)OUT >Pod rohoÅ¾kou se Å¾Ã¡dnÃ½ klÃ­Ä nenachÃ¡zÃ­.<
+      (:kancelarotevrena==1)OUT >RohoÅ¾ku nechÃ¡m tam, kde je. JistÄ› mi k niÄemu nebude.<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
-    COMMAND Pouij Rohoku
-      OUT Tux si oèistil nohy o rohoku, èím ji znaènì zneèistil.
+    COMMAND PouÅ¾ij RohoÅ¾ku
+      OUT Tux si oÄistil nohy o rohoÅ¾ku, ÄÃ­mÅ¾ ji znaÄnÄ› zneÄistil.
       SETTEXTCOLOR 125 255 0
-      OUT >To je ovšem velmi ubohá pomsta...<
+      OUT >To je ovÅ¡em velmi ubohÃ¡ pomsta...<
       SETTEXTCOLOR 0 255 255      
       OUT
     ENDCOMMAND
 
-    COMMAND Prozkoumej Kvìtináè
-      OUT Tux prozkoumal kvìtináè s fíkusem.
+    COMMAND Prozkoumej KvÄ›tinÃ¡Ä
+      OUT Tux prozkoumal kvÄ›tinÃ¡Ä s fÃ­kusem.
       SETTEXTCOLOR 125 255 0
-      (:kancelarotevrena==0)OUT >Není na nìm nic pozoruhodného. Mimochodem, klíè se v nìm nenachází.<
-      (:kancelarotevrena==1)OUT >Není na nìm nic pozoruhodného.<
+      (:kancelarotevrena==0)OUT >NenÃ­ na nÄ›m nic pozoruhodnÃ©ho. Mimochodem, klÃ­Ä se v nÄ›m nenachÃ¡zÃ­.<
+      (:kancelarotevrena==1)OUT >NenÃ­ na nÄ›m nic pozoruhodnÃ©ho.<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
-    COMMAND Vezmi Kvìtináè
+    COMMAND Vezmi KvÄ›tinÃ¡Ä
       SETTEXTCOLOR 125 255 0
-      OUT >Kvìtináè bych snad s vypìtím všech sil unesl, ale proè bych to dìlal?<
+      OUT >KvÄ›tinÃ¡Ä bych snad s vypÄ›tÃ­m vÅ¡ech sil unesl, ale proÄ bych to dÄ›lal?<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
@@ -821,33 +821,33 @@ REM ----------------------------------------------------------------------------
 
     ZMEN :KdeJsem 10
 
-    OUT Tux se ocitl pøed vchodem do expozice, její souèástí a do dnešního
-    OUT zcela vıjimeèného dne byl. Expozice se nachází poblí hlavního vchodu do
-    OUT ZOO. Dokud ale Tux nezíská potøebné dokumenty, nemá smysl, rozptylovat se
-    OUT myšlenkami na opuštìní zahrady. Podstatnou je tedy nedaleká hlavní budova,
-    OUT kde se nalézá kanceláø øeditele ZOO!
+    OUT Tux se ocitl pÅ™ed vchodem do expozice, jejÃ­Å¾ souÄÃ¡stÃ­ aÅ¾ do dneÅ¡nÃ­ho
+    OUT zcela vÃ½jimeÄnÃ©ho dne byl. Expozice se nachÃ¡zÃ­ poblÃ­Å¾ hlavnÃ­ho vchodu do
+    OUT ZOO. Dokud ale Tux nezÃ­skÃ¡ potÅ™ebnÃ© dokumenty, nemÃ¡ smysl, rozptylovat se
+    OUT myÅ¡lenkami na opuÅ¡tÄ›nÃ­ zahrady. Podstatnou je tedy nedalekÃ¡ hlavnÃ­ budova,
+    OUT kde se nalÃ©zÃ¡ kancelÃ¡Å™ Å™editele ZOO!
     OUT
 
-    SETMAINMENU Jdi Prozkoumej Oslov Vezmi Pouij Dej 
+    SETMAINMENU Jdi Prozkoumej Oslov Vezmi PouÅ¾ij Dej 
 
-    ADDMENU Jdi do_Zimního_království
-    ADDMENU Jdi ke_kanceláøi_øeditele_ZOO
-    ADDMENU Jdi k_opicím
-    ADDMENU Jdi k_voliérám_s_ptáky
+    ADDMENU Jdi do_ZimnÃ­ho_krÃ¡lovstvÃ­
+    ADDMENU Jdi ke_kancelÃ¡Å™i_Å™editele_ZOO
+    ADDMENU Jdi k_opicÃ­m
+    ADDMENU Jdi k_voliÃ©rÃ¡m_s_ptÃ¡ky
 
-    COMMAND Jdi k_opicím
+    COMMAND Jdi k_opicÃ­m
       SETMIESTO Opice
     ENDCOMMAND
 
-    COMMAND Jdi k_voliérám_s_ptáky
+    COMMAND Jdi k_voliÃ©rÃ¡m_s_ptÃ¡ky
       SETMIESTO Klokan
     ENDCOMMAND
 
-    COMMAND Jdi do_Zimního_království
+    COMMAND Jdi do_ZimnÃ­ho_krÃ¡lovstvÃ­
       SETMIESTO ZimniKralovstvi
     ENDCOMMAND
 
-    COMMAND Jdi ke_kanceláøi_øeditele_ZOO
+    COMMAND Jdi ke_kancelÃ¡Å™i_Å™editele_ZOO
       SETMIESTO PredKancelari
     ENDCOMMAND
 
@@ -859,62 +859,62 @@ REM ----------------------------------------------------------------------------
    
     ZMEN :KdeJsem 11
 
-    OUT Tux se ocitl u rozlehlého vıbìhu s antilopami, na kterı navazují další vıbìhy
-    OUT obsazené napøíklad velbloudy, zubry a bizony.
-    OUT Prastarı rozloitı platan skıtá za sluneèních dní pøíjemnı stín.
-    (:klokan==1)OUT Na vìtvi visí za pruhované triko klokan Tonda a hrozí Tuxovi pìstièkou.
-    (:klokan==1)OUT Pod platanem leí kouøící zbytky znièeného motorového kola.
-    (:klokan==1 :klakson==0)OUT Mezi nimi se nalézá i klakson, kterım Tonda obtìoval obyvatele ZOO.
+    OUT Tux se ocitl u rozlehlÃ©ho vÃ½bÄ›hu s antilopami, na kterÃ½ navazujÃ­ dalÅ¡Ã­ vÃ½bÄ›hy
+    OUT obsazenÃ© napÅ™Ã­klad velbloudy, zubry a bizony.
+    OUT PrastarÃ½ rozloÅ¾itÃ½ platan skÃ½tÃ¡ za sluneÄnÃ­ch dnÃ­ pÅ™Ã­jemnÃ½ stÃ­n.
+    (:klokan==1)OUT Na vÄ›tvi visÃ­ za pruhovanÃ© triko klokan Tonda a hrozÃ­ Tuxovi pÄ›stiÄkou.
+    (:klokan==1)OUT Pod platanem leÅ¾Ã­ kouÅ™Ã­cÃ­ zbytky zniÄenÃ©ho motorovÃ©ho kola.
+    (:klokan==1 :klakson==0)OUT Mezi nimi se nalÃ©zÃ¡ i klakson, kterÃ½m Tonda obtÄ›Å¾oval obyvatele ZOO.
     OUT
 
-    SETMAINMENU Jdi Prozkoumej Oslov Vezmi Pouij Dej 
+    SETMAINMENU Jdi Prozkoumej Oslov Vezmi PouÅ¾ij Dej 
 
     ADDMENU Prozkoumej Strom
     (:klokan==1 :klakson==0)ADDMENU Vezmi Klakson
     (:klokan==1)ADDMENU Prozkoumej Klokana
     (:klokan==1)ADDMENU Oslov Klokana
-    ADDMENU Jdi na_hlavní_rozcestí
-    ADDMENU Jdi na_høištì
+    ADDMENU Jdi na_hlavnÃ­_rozcestÃ­
+    ADDMENU Jdi na_hÅ™iÅ¡tÄ›
 
-    COMMAND Jdi na_hlavní_rozcestí
+    COMMAND Jdi na_hlavnÃ­_rozcestÃ­
       SETMIESTO Automat
     ENDCOMMAND
 
-    COMMAND Jdi na_høištì
+    COMMAND Jdi na_hÅ™iÅ¡tÄ›
       SETMIESTO Hriste
     ENDCOMMAND
 
     COMMAND Prozkoumej Strom
-      OUT Tux prozkoumal ohromnı platan. Nic zajímavého ale nezjistil.
+      OUT Tux prozkoumal ohromnÃ½ platan. Nic zajÃ­mavÃ©ho ale nezjistil.
       OUT
     ENDCOMMAND 
 
     COMMAND Oslov Klokana
       SETTEXTCOLOR 125 255 0
-      OUT >Copak je, Tondo? Koleèko se polámalo?<
+      OUT >Copak je, Tondo? KoleÄko se polÃ¡malo?<
       SETTEXTCOLOR 255 255 0
-      OUT >Poèkej, a se dostanu dolù! Polámu ti ruce i nohy!<
+      OUT >PoÄkej, aÅ¾ se dostanu dolÅ¯! PolÃ¡mu ti ruce i nohy!<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
     COMMAND Prozkoumej Klokana
-      OUT Tux se s pobavením zahledìl na klokana Tondu.
+      OUT Tux se s pobavenÃ­m zahledÄ›l na klokana Tondu.
       SETTEXTCOLOR 125 255 0
-      OUT >To je pech. Motorové kolo v háji a ještì visí na stromì jako opice.<
+      OUT >To je pech. MotorovÃ© kolo v hÃ¡ji a jeÅ¡tÄ› visÃ­ na stromÄ› jako opice.<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND 
 
     COMMAND Vezmi Klakson
       ZMEN :klakson 255
-      OUT Tux se sehnul a zmocnil se klaksonu. Ze stromu se ozval ostrı protest:
+      OUT Tux se sehnul a zmocnil se klaksonu. Ze stromu se ozval ostrÃ½ protest:
       SETTEXTCOLOR 255 255 0
-      OUT >Ty zlodìji! Ten klakson patøí mnì!<      
+      OUT >Ty zlodÄ›ji! Ten klakson patÅ™Ã­ mnÄ›!<      
       SETTEXTCOLOR 125 255 0
-      OUT >Co se jen tak povaluje na zemi, to nepatøí nikomu!<
+      OUT >Co se jen tak povaluje na zemi, to nepatÅ™Ã­ nikomu!<
       SETTEXTCOLOR 0 255 255
-      OUT Zajímavá právní úvaha. Jisté nicménì je, e s tím Tonda stejnì nic nenadìlá.
+      OUT ZajÃ­mavÃ¡ prÃ¡vnÃ­ Ãºvaha. JistÃ© nicmÃ©nÄ› je, Å¾e s tÃ­m Tonda stejnÄ› nic nenadÄ›lÃ¡.
       OUT
     ENDCOMMAND
 
@@ -926,45 +926,45 @@ REM ----------------------------------------------------------------------------
 
 
 ALL
-    (:kafe==255)ADDMENU Prozkoumej Kávu
-    (:kafe==255)ADDMENU Pouij Kávu
+    (:kafe==255)ADDMENU Prozkoumej KÃ¡vu
+    (:kafe==255)ADDMENU PouÅ¾ij KÃ¡vu
     (:stetoskop==255)ADDMENU Prozkoumej Stetoskop
     (:KdeJsem==5 :zirafa==1 :stetoskop==0)ADDMENU Prozkoumej Stetoskop
-    (:stetoskop==255)ADDMENU Pouij Stetoskop
-    (:pistolesesipkou==255)ADDMENU Prozkoumej Pistoli_se_šipkou
-    (:pistolesesipkou==255)ADDMENU Pouij Pistoli_se_šipkou
-    (:kelimeksolejem==255)ADDMENU Prozkoumej Kelímek_s_olejem
-    (:kelimeksolejem==255)ADDMENU Pouij Kelímek_s_olejem
-    (:mince==255)ADDMENU Pouij Minci
+    (:stetoskop==255)ADDMENU PouÅ¾ij Stetoskop
+    (:pistolesesipkou==255)ADDMENU Prozkoumej Pistoli_se_Å¡ipkou
+    (:pistolesesipkou==255)ADDMENU PouÅ¾ij Pistoli_se_Å¡ipkou
+    (:kelimeksolejem==255)ADDMENU Prozkoumej KelÃ­mek_s_olejem
+    (:kelimeksolejem==255)ADDMENU PouÅ¾ij KelÃ­mek_s_olejem
+    (:mince==255)ADDMENU PouÅ¾ij Minci
     (:mince==255)ADDMENU Prozkoumej Minci
-    (:klakson==255)ADDMENU Pouij Klakson
+    (:klakson==255)ADDMENU PouÅ¾ij Klakson
     (:KdeJsem==11 :klokan==1 :klakson==0)ADDMENU Prozkoumej Klakson
     (:klakson==255)ADDMENU Prozkoumej Klakson
-    (:buraky==255)ADDMENU Prozkoumej Buráky
-    (:buraky==255)ADDMENU Pouij Buráky
-    (:sipka==255)ADDMENU Prozkoumej Šipku
-    (:sipka==255)ADDMENU Pouij Šipku
+    (:buraky==255)ADDMENU Prozkoumej BurÃ¡ky
+    (:buraky==255)ADDMENU PouÅ¾ij BurÃ¡ky
+    (:sipka==255)ADDMENU Prozkoumej Å ipku
+    (:sipka==255)ADDMENU PouÅ¾ij Å ipku
     (:pistole==255)ADDMENU Prozkoumej Pistolku
-    (:pistole==255)ADDMENU Pouij Pistolku
+    (:pistole==255)ADDMENU PouÅ¾ij Pistolku
     (:trubka!=0)ADDMENU Prozkoumej Trubku
-    (:trubka==255)ADDMENU Pouij Trubku
-    (:kostky==255)ADDMENU Pouij Kostky
-    (:kostky==0 :KdeJsem==3)ADDMENU Pouij Kostky 
+    (:trubka==255)ADDMENU PouÅ¾ij Trubku
+    (:kostky==255)ADDMENU PouÅ¾ij Kostky
+    (:kostky==0 :KdeJsem==3)ADDMENU PouÅ¾ij Kostky 
     (:kostky==0 :KdeJsem==3)ADDMENU Prozkoumej Kostky
     (:kostky==255)ADDMENU Prozkoumej Kostky
-    (:kelimek==0 :KdeJsem==4)ADDMENU Prozkoumej Kelímek
-    (:kelimek==255)ADDMENU Prozkoumej Kelímek
-    (:kelimek==255)ADDMENU Pouij Kelímek
+    (:kelimek==0 :KdeJsem==4)ADDMENU Prozkoumej KelÃ­mek
+    (:kelimek==255)ADDMENU Prozkoumej KelÃ­mek
+    (:kelimek==255)ADDMENU PouÅ¾ij KelÃ­mek
     
-    COMMAND Prozkoumej Kávu
-      OUT Tux prozkoumal kelímek s horkou kávou.
+    COMMAND Prozkoumej KÃ¡vu
+      OUT Tux prozkoumal kelÃ­mek s horkou kÃ¡vou.
       SETTEXTCOLOR 125 255 0
-      OUT >Káva z automatu to je jako pivo z prášku.<
+      OUT >KÃ¡va z automatu to je jako pivo z prÃ¡Å¡ku.<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
-    COMMAND Pouij Kávu
+    COMMAND PouÅ¾ij KÃ¡vu
       SETTEXTCOLOR 125 255 0
       OUT >Kafe nepiju! Je to JED!<
       SETTEXTCOLOR 0 255 255
@@ -972,28 +972,28 @@ ALL
     ENDCOMMAND
 
     COMMAND Prozkoumej Minci
-      OUT Tux prozkoumal ušmudlanou minci.
+      OUT Tux prozkoumal uÅ¡mudlanou minci.
       SETTEXTCOLOR 125 255 0
-      OUT >Její hodnota i mìna je nerozluštitelná!<
+      OUT >JejÃ­ hodnota i mÄ›na je nerozluÅ¡titelnÃ¡!<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
     COMMAND Prozkoumej Stetoskop
-      OUT Tux prozkoumal stetoskop irafy iletky.
+      OUT Tux prozkoumal stetoskop Å¾irafy Å½iletky.
       SETTEXTCOLOR 125 255 0
-      OUT >Není na nìm nic zvláštního.<
+      OUT >NenÃ­ na nÄ›m nic zvlÃ¡Å¡tnÃ­ho.<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
-    COMMAND Pouij Stetoskop
-      (:KdeJsem==1)OUT Tux si nasadil stetoskop na uši a postupnì nastavil správnou èíselnou
-      (:KdeJsem==1)OUT kombinaci. Papoušek zuøivì naráel do klece, zatímco tuèòák prohledával
-      (:KdeJsem==1)OUT hromadu listin, které trezor ukrıval. Koneènì našel dokumenty, je hledal!
+    COMMAND PouÅ¾ij Stetoskop
+      (:KdeJsem==1)OUT Tux si nasadil stetoskop na uÅ¡i a postupnÄ› nastavil sprÃ¡vnou ÄÃ­selnou
+      (:KdeJsem==1)OUT kombinaci. PapouÅ¡ek zuÅ™ivÄ› narÃ¡Å¾el do klece, zatÃ­mco tuÄÅˆÃ¡k prohledÃ¡val
+      (:KdeJsem==1)OUT hromadu listin, kterÃ© trezor ukrÃ½val. KoneÄnÄ› naÅ¡el dokumenty, jeÅ¾ hledal!
       SETTEXTCOLOR 125 255 0
-      (:KdeJsem!=1)OUT >Nechápu, proè bych zrovna teï a na tomto místì pouíval stetoskop...<
-      (:KdeJsem==1)OUT >Mám to! Tuxie, jdu si pro tebe!<
+      (:KdeJsem!=1)OUT >NechÃ¡pu, proÄ bych zrovna teÄ a na tomto mÃ­stÄ› pouÅ¾Ã­val stetoskop...<
+      (:KdeJsem==1)OUT >MÃ¡m to! Tuxie, jdu si pro tebe!<
       OUT
       (:KdeJsem==1)PRESSKEY
       (:KdeJsem==1)CLS
@@ -1002,12 +1002,12 @@ ALL
       (:KdeJsem==1)OUT
       (:KdeJsem==1)OUT SHLEDAL SE TUX ZNOVA S TUXIE?
       (:KdeJsem==1)OUT
-      (:KdeJsem==1)OUT CO VŠECHNO PØITOM JEŠTÌ ZAIL?
+      (:KdeJsem==1)OUT CO VÅ ECHNO PÅ˜ITOM JEÅ TÄš ZAÅ½IL?
       (:KdeJsem==1)OUT
       (:KdeJsem==1)OUT
-      (:KdeJsem==1)OUT Napadá Vás nìco?
+      (:KdeJsem==1)OUT NapadÃ¡ VÃ¡s nÄ›co?
       (:KdeJsem==1)OUT
-      (:KdeJsem==1)OUT Pokud ano, neváhejte a napište pokraèování!!!
+      (:KdeJsem==1)OUT Pokud ano, nevÃ¡hejte a napiÅ¡te pokraÄovÃ¡nÃ­!!!
       (:KdeJsem==1)OUT
       (:KdeJsem==1)OUT
       (:KdeJsem==1)OUT Petr KaiN
@@ -1015,39 +1015,39 @@ ALL
       (:KdeJsem==1)END
     ENDCOMMAND 
 
-    COMMAND Prozkoumej Pistoli_se_šipkou
-      OUT Tux si prohlédl plastikovou pistoli nabitou uspávací šipkou.
+    COMMAND Prozkoumej Pistoli_se_Å¡ipkou
+      OUT Tux si prohlÃ©dl plastikovou pistoli nabitou uspÃ¡vacÃ­ Å¡ipkou.
       SETTEXTCOLOR 125 255 0
-      OUT >Moc nevìøím, e to bude fungovat. Ale zázraky se dìjí. Obèas.<
+      OUT >Moc nevÄ›Å™Ã­m, Å¾e to bude fungovat. Ale zÃ¡zraky se dÄ›jÃ­. ObÄas.<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
-    COMMAND Pouij Pistoli_se_šipkou
-      (:KdeJsem==5)OUT Tux trpìlivì vyèkal, a iletka pøiskáká do jeho tìsné blízkosti.
-      (:KdeJsem==5)OUT Rychle zamíøil a stiskl spouš. Vystøelená šipka se zabodla irafì do boku.
-      (:KdeJsem==5)OUT iletka strnula a pak se zhroutila na zem.
+    COMMAND PouÅ¾ij Pistoli_se_Å¡ipkou
+      (:KdeJsem==5)OUT Tux trpÄ›livÄ› vyÄkal, aÅ¾ Å½iletka pÅ™iskÃ¡kÃ¡ do jeho tÄ›snÃ© blÃ­zkosti.
+      (:KdeJsem==5)OUT Rychle zamÃ­Å™il a stiskl spouÅ¡Å¥. VystÅ™elenÃ¡ Å¡ipka se zabodla Å¾irafÄ› do boku.
+      (:KdeJsem==5)OUT Å½iletka strnula a pak se zhroutila na zem.
       SETTEXTCOLOR 125 255 0
-      (:KdeJsem==5)OUT >Doufám, e vím, proè to dìlám...<
+      (:KdeJsem==5)OUT >DoufÃ¡m, Å¾e vÃ­m, proÄ to dÄ›lÃ¡m...<
       (:KdeJsem==5)ZMEN :zirafa 1
       (:KdeJsem==5)ZMEN :pistolesesipkou 2
       (:KdeJsem==5)ZMEN :pistole 255
-      (:KdeJsem!=5)OUT >Nechápu, proè bych zrovna teï a na tomto místì pouíval pistoli se šipkou...<
+      (:KdeJsem!=5)OUT >NechÃ¡pu, proÄ bych zrovna teÄ a na tomto mÃ­stÄ› pouÅ¾Ã­val pistoli se Å¡ipkou...<
       SETTEXTCOLOR 0 255 255
       OUT
       (:KdeJsem==5)PRESSKEY
       (:KdeJsem==5)SETMIESTO Zirafy
     ENDCOMMAND
 
-    COMMAND Pouij Klakson
-      OUT Tux hlasitì zatroubil na klakson.
-      (:KdeJsem==1)OUT Vydìšenı papoušek spadl z bidılka a chvíli zmatenì tloukl køídli do klece.
-      (:KdeJsem==1)OUT Kdy zjistil, e se nic nebezpeèného nedìje, seslal na Tuxe spršku nadávek.
-      (:KdeJsem==1)OUT Tuxovi ještì dlouho v uších drnèelo papouškovo "rrrrr", take si jistì domyslíte,
-      (:KdeJsem==1)OUT k jakım nepìknım slovùm se nezdvoøilı opeøenec uchılil.
-      (:KdeJsem==1 :papousek==0)OUT Kromì toho ještì po tuèòákovi hodil nìkolik nevyloupanıch burákù.
+    COMMAND PouÅ¾ij Klakson
+      OUT Tux hlasitÄ› zatroubil na klakson.
+      (:KdeJsem==1)OUT VydÄ›Å¡enÃ½ papouÅ¡ek spadl z bidÃ½lka a chvÃ­li zmatenÄ› tloukl kÅ™Ã­dli do klece.
+      (:KdeJsem==1)OUT KdyÅ¾ zjistil, Å¾e se nic nebezpeÄnÃ©ho nedÄ›je, seslal na Tuxe sprÅ¡ku nadÃ¡vek.
+      (:KdeJsem==1)OUT Tuxovi jeÅ¡tÄ› dlouho v uÅ¡Ã­ch drnÄelo papouÅ¡kovo "rrrrr", takÅ¾e si jistÄ› domyslÃ­te,
+      (:KdeJsem==1)OUT k jakÃ½m nepÄ›knÃ½m slovÅ¯m se nezdvoÅ™ilÃ½ opeÅ™enec uchÃ½lil.
+      (:KdeJsem==1 :papousek==0)OUT KromÄ› toho jeÅ¡tÄ› po tuÄÅˆÃ¡kovi hodil nÄ›kolik nevyloupanÃ½ch burÃ¡kÅ¯.
       (:KdeJsem==1 :papousek==0)OUT
-      (:KdeJsem==1 :papousek==0)OUT Tuxùv inventáø se rozrostl o sesbírané buráky!
+      (:KdeJsem==1 :papousek==0)OUT TuxÅ¯v inventÃ¡Å™ se rozrostl o sesbÃ­ranÃ© burÃ¡ky!
       (:KdeJsem==1 :papousek==0)ZMEN :buraky 255
       (:KdeJsem==1)ZMEN :papousek 1
       OUT 
@@ -1056,164 +1056,164 @@ ALL
     COMMAND Prozkoumej Klakson
       OUT Tux prozkoumal klakson.
       SETTEXTCOLOR 125 255 0
-      OUT >Klokan Tonda jej mìl na svém motorovém kole.<
+      OUT >Klokan Tonda jej mÄ›l na svÃ©m motorovÃ©m kole.<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
-    COMMAND Prozkoumej Buráky
-      OUT Tux prozkoumal burské oøíšky.
+    COMMAND Prozkoumej BurÃ¡ky
+      OUT Tux prozkoumal burskÃ© oÅ™Ã­Å¡ky.
       SETTEXTCOLOR 125 255 0
-      OUT >Tohle po mnì házel papoušek, kdy jsem ho probudil.<
+      OUT >Tohle po mnÄ› hÃ¡zel papouÅ¡ek, kdyÅ¾ jsem ho probudil.<
       SETTEXTCOLOR 0 255 255
       OUT 
     ENDCOMMAND
 
-    COMMAND Pouij Buráky
-      OUT Tuèòáci buráky neerou. Tux není vıjimkou.
+    COMMAND PouÅ¾ij BurÃ¡ky
+      OUT TuÄÅˆÃ¡ci burÃ¡ky neÅ¾erou. Tux nenÃ­ vÃ½jimkou.
       OUT
     ENDCOMMAND
 
-    COMMAND Prozkoumej Šipku
-      OUT Tux si opatrnì prohlédl uloupenou uspávací šipku.
+    COMMAND Prozkoumej Å ipku
+      OUT Tux si opatrnÄ› prohlÃ©dl uloupenou uspÃ¡vacÃ­ Å¡ipku.
       SETTEXTCOLOR 125 255 0
-      OUT >Dlouhı hlubokı spánek se zárukou.<
+      OUT >DlouhÃ½ hlubokÃ½ spÃ¡nek se zÃ¡rukou.<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
-    COMMAND Pouij Šipku
-      (:pistole==255)OUT Tux natáhl pruinu dìtské pistolky a do hlavnì zasunul šipku.
+    COMMAND PouÅ¾ij Å ipku
+      (:pistole==255)OUT Tux natÃ¡hl pruÅ¾inu dÄ›tskÃ© pistolky a do hlavnÄ› zasunul Å¡ipku.
       SETTEXTCOLOR 125 255 0
-      (:pistole==255)OUT >Tux - ozbrojen a nebezpeènı.<
+      (:pistole==255)OUT >Tux - ozbrojen a nebezpeÄnÃ½.<
       (:pistole==255)ZMEN :pistolesesipkou 255
       (:pistole==255)ZMEN :sipka 1
       (:pistole==255)ZMEN :pistole 1
-      (:pistolesesipkou==0)OUT >Šipku je nutno vloit do šípostøelu nebo nìèeho takového...<
+      (:pistolesesipkou==0)OUT >Å ipku je nutno vloÅ¾it do Å¡Ã­postÅ™elu nebo nÄ›Äeho takovÃ©ho...<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND      
 
     COMMAND Prozkoumej Pistolku
-      OUT Tux si prohlédl Béïovu pistolku.
+      OUT Tux si prohlÃ©dl BÃ©Äovu pistolku.
       SETTEXTCOLOR 125 255 0
-      OUT >Èínskı plastikovı krám na "pøísavkové" náboje.<
+      OUT >ÄŒÃ­nskÃ½ plastikovÃ½ krÃ¡m na "pÅ™Ã­savkovÃ©" nÃ¡boje.<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
-    COMMAND Pouij Pistolku
+    COMMAND PouÅ¾ij Pistolku
       SETTEXTCOLOR 125 255 0
-      OUT >S nenabitou pistolkou ádná velká "legrace" nebude.<
+      OUT >S nenabitou pistolkou Å¾Ã¡dnÃ¡ velkÃ¡ "legrace" nebude.<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
-    COMMAND Pouij Kelímek
-      (:KdeJsem==7)OUT Tux pøistoupil ke kádi a naplnil kelímek olejem.
+    COMMAND PouÅ¾ij KelÃ­mek
+      (:KdeJsem==7)OUT Tux pÅ™istoupil ke kÃ¡di a naplnil kelÃ­mek olejem.
       (:KdeJsem==7)ZMEN :kelimek 2
       (:KdeJsem==7)ZMEN :kelimeksolejem 255
       SETTEXTCOLOR 125 255 0
-      (:KdeJsem==7)OUT >Fuj, úplnì se mi z té bøeèky dìlá nedobøe.<
-      (:KdeJsem!=7)OUT >Nechápu, jak bych zrovna teï a na tomto místì mohl pouít kelímek...<
+      (:KdeJsem==7)OUT >Fuj, ÃºplnÄ› se mi z tÃ© bÅ™eÄky dÄ›lÃ¡ nedobÅ™e.<
+      (:KdeJsem!=7)OUT >NechÃ¡pu, jak bych zrovna teÄ a na tomto mÃ­stÄ› mohl pouÅ¾Ã­t kelÃ­mek...<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
-    COMMAND Prozkoumej Kelímek_s_olejem
-      OUT Tux necítí nejmenší potøebu zkoumat kelímek s olejem.
+    COMMAND Prozkoumej KelÃ­mek_s_olejem
+      OUT Tux necÃ­tÃ­ nejmenÅ¡Ã­ potÅ™ebu zkoumat kelÃ­mek s olejem.
       SETTEXTCOLOR 125 255 0
-      OUT >Plastovı kelímek jsem tím svinstvem naplnil sám!<
+      OUT >PlastovÃ½ kelÃ­mek jsem tÃ­m svinstvem naplnil sÃ¡m!<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
-    COMMAND Pouij Kelímek_s_olejem
+    COMMAND PouÅ¾ij KelÃ­mek_s_olejem
       (:KdeJsem==8)ZMEN :klokan 1
       (:KdeJsem==8)ZMEN :kelimeksolejem 2
-      (:KdeJsem==8)OUT Tux dùraznì odstrèil Tondu a odšrouboval víko od nádre jeho motokola.
-      (:KdeJsem==8)OUT Nalil dovnitø lehce zatuhlı obsah kelímku a nádr opìt uzavøel.
+      (:KdeJsem==8)OUT Tux dÅ¯raznÄ› odstrÄil Tondu a odÅ¡rouboval vÃ­ko od nÃ¡drÅ¾e jeho motokola.
+      (:KdeJsem==8)OUT Nalil dovnitÅ™ lehce zatuhlÃ½ obsah kelÃ­mku a nÃ¡drÅ¾ opÄ›t uzavÅ™el.
       SETTEXTCOLOR 125 255 0
-      (:KdeJsem==8)OUT >Musíš doplòovat šávu! To ti nikdo neøekl?<
+      (:KdeJsem==8)OUT >MusÃ­Å¡ doplÅˆovat Å¡Å¥Ã¡vu! To ti nikdo neÅ™ekl?<
       SETTEXTCOLOR 255 255 0
-      (:KdeJsem==8)OUT >Jasnì, jasnì. Nedìlej chytrıho, tuèòáku, a uhni.<
+      (:KdeJsem==8)OUT >JasnÄ›, jasnÄ›. NedÄ›lej chytrÃ½ho, tuÄÅˆÃ¡ku, a uhni.<
       SETTEXTCOLOR 0 255 255
-      (:KdeJsem==8)OUT Tonda usedl na motokolo a nastartoval stroj. Motor silnì huèel a z vıfuku
-      (:KdeJsem==8)OUT se valil hustı kouø. Tonda pøesto vypadal spokojenì.
+      (:KdeJsem==8)OUT Tonda usedl na motokolo a nastartoval stroj. Motor silnÄ› huÄel a z vÃ½fuku
+      (:KdeJsem==8)OUT se valil hustÃ½ kouÅ™. Tonda pÅ™esto vypadal spokojenÄ›.
       SETTEXTCOLOR 255 255 0
-      (:KdeJsem==8)OUT >To je kravál! To je smrad! To nemá chybu! Díkes!<
+      (:KdeJsem==8)OUT >To je kravÃ¡l! To je smrad! To nemÃ¡ chybu! DÃ­kes!<
       SETTEXTCOLOR 0 255 255
-      (:KdeJsem==8)OUT Tonda pøidal plyn a zmizel v hustém oblaku zlovìstného kouøe. Tux odhodil
-      (:KdeJsem==8)OUT kelímek a èekal. Vìdìl, e døíve nebo pozdìji se to stane. Nemılil se.
-      (:KdeJsem==8)OUT Brzy se ozvala mohutná exploze. Motor motokola explodoval.
+      (:KdeJsem==8)OUT Tonda pÅ™idal plyn a zmizel v hustÃ©m oblaku zlovÄ›stnÃ©ho kouÅ™e. Tux odhodil
+      (:KdeJsem==8)OUT kelÃ­mek a Äekal. VÄ›dÄ›l, Å¾e dÅ™Ã­ve nebo pozdÄ›ji se to stane. NemÃ½lil se.
+      (:KdeJsem==8)OUT Brzy se ozvala mohutnÃ¡ exploze. Motor motokola explodoval.
       SETTEXTCOLOR 125 255 0
-      (:KdeJsem==8)OUT >Z toho plyne dvojí ponauèení. To první je praktické: Nelejte do nádre
-      (:KdeJsem==8)OUT kdejakı lacinı sajrajt! Druhé teoretické: Jestli nìkdo pomáhá anebo škodí
-      (:KdeJsem==8)OUT je nutno vdy posuzovat s èasovım odstupem!<
-      (:KdeJsem!=8)OUT >Nechápu, jak bych zrovna teï a na tomto místì mohl pouít olej...<
+      (:KdeJsem==8)OUT >Z toho plyne dvojÃ­ ponauÄenÃ­. To prvnÃ­ je praktickÃ©: Nelejte do nÃ¡drÅ¾e
+      (:KdeJsem==8)OUT kdejakÃ½ lacinÃ½ sajrajt! DruhÃ© teoretickÃ©: Jestli nÄ›kdo pomÃ¡hÃ¡ anebo Å¡kodÃ­
+      (:KdeJsem==8)OUT je nutno vÅ¾dy posuzovat s ÄasovÃ½m odstupem!<
+      (:KdeJsem!=8)OUT >NechÃ¡pu, jak bych zrovna teÄ a na tomto mÃ­stÄ› mohl pouÅ¾Ã­t olej...<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
-    COMMAND Prozkoumej Kelímek
-      OUT Tux prozkoumal lehce pomaèkanı kelímek.
+    COMMAND Prozkoumej KelÃ­mek
+      OUT Tux prozkoumal lehce pomaÄkanÃ½ kelÃ­mek.
       SETTEXTCOLOR 125 255 0
-      OUT >Je to pouitı hnìdı plastovı kelímek z automatu na kávu!<
+      OUT >Je to pouÅ¾itÃ½ hnÄ›dÃ½ plastovÃ½ kelÃ­mek z automatu na kÃ¡vu!<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
     COMMAND Prozkoumej Trubku
-      OUT Tux pozornì prozkoumal zahnutou trubku, co se odlomila z kolotoèe.
+      OUT Tux pozornÄ› prozkoumal zahnutou trubku, co se odlomila z kolotoÄe.
       SETTEXTCOLOR 125 255 0
-      OUT >Moná by šla pouít jako páèidlo!<
+      OUT >MoÅ¾nÃ¡ by Å¡la pouÅ¾Ã­t jako pÃ¡Äidlo!<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
-    COMMAND Pouij Trubku
-      (:KdeJsem==9 :kancelarotevrena==0)OUT Tux pomocí zahnuté trubky vypáèil dveøe vedoucí do kanceláøe øeditele ZOO!
+    COMMAND PouÅ¾ij Trubku
+      (:KdeJsem==9 :kancelarotevrena==0)OUT Tux pomocÃ­ zahnutÃ© trubky vypÃ¡Äil dveÅ™e vedoucÃ­ do kancelÃ¡Å™e Å™editele ZOO!
       SETTEXTCOLOR 125 255 0
-      (:KdeJsem==9 :kancelarotevrena==0)OUT >Jsem fakt BOREC! A kdo tvrdí, e ne, tak le!<
-      (:KdeJsem==1)OUT >Bohuel, ani pomocí trubky ten trezor neotevøu.<
-      (:KdeJsem!=9 :KdeJsem!=1)OUT >Nechápu, jak bych zrovna teï a na tomto místì mohl pouít trubku...<
-      (:KdeJsem==9 :kancelarotevrena==1)OUT >Nechápu, jak bych zrovna teï a na tomto místì mohl pouít trubku...<
+      (:KdeJsem==9 :kancelarotevrena==0)OUT >Jsem fakt BOREC! A kdo tvrdÃ­, Å¾e ne, tak lÅ¾e!<
+      (:KdeJsem==1)OUT >BohuÅ¾el, ani pomocÃ­ trubky ten trezor neotevÅ™u.<
+      (:KdeJsem!=9 :KdeJsem!=1)OUT >NechÃ¡pu, jak bych zrovna teÄ a na tomto mÃ­stÄ› mohl pouÅ¾Ã­t trubku...<
+      (:KdeJsem==9 :kancelarotevrena==1)OUT >NechÃ¡pu, jak bych zrovna teÄ a na tomto mÃ­stÄ› mohl pouÅ¾Ã­t trubku...<
       (:KdeJsem==9 :kancelarotevrena==0)ZMEN :kancelarotevrena 1
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
-    COMMAND Pouij Minci
-      (:KdeJsem==4 :kostky==1)OUT Tux vyskákal po døevìnıch kostkách a ke slotu a vhodil dovnitø ušmudlanou
-      (:KdeJsem==4 :kostky==1)OUT minci. Stiskl kulatı bílı knoflík s volbou "èerná káva s cukrem" a sebìhl dolù.
-      (:KdeJsem==4 :kostky==1)OUT Do dráku vklouzl kelímek a tryska jej prudce naplnila èernou tekutinou.
-      (:KdeJsem==4 :kostky==1)OUT Automat zapískal a Tux pøemístil horkı nápoj do svého inventáøe.
+    COMMAND PouÅ¾ij Minci
+      (:KdeJsem==4 :kostky==1)OUT Tux vyskÃ¡kal po dÅ™evÄ›nÃ½ch kostkÃ¡ch aÅ¾ ke slotu a vhodil dovnitÅ™ uÅ¡mudlanou
+      (:KdeJsem==4 :kostky==1)OUT minci. Stiskl kulatÃ½ bÃ­lÃ½ knoflÃ­k s volbou "ÄernÃ¡ kÃ¡va s cukrem" a sebÄ›hl dolÅ¯.
+      (:KdeJsem==4 :kostky==1)OUT Do drÅ¾Ã¡ku vklouzl kelÃ­mek a tryska jej prudce naplnila Äernou tekutinou.
+      (:KdeJsem==4 :kostky==1)OUT Automat zapÃ­skal a Tux pÅ™emÃ­stil horkÃ½ nÃ¡poj do svÃ©ho inventÃ¡Å™e.
       (:KdeJsem==4 :kostky==1)ZMEN :mince 2
       (:KdeJsem==4 :kostky==1)ZMEN :kafe 255
       SETTEXTCOLOR 125 255 0
-      (:KdeJsem!=4)OUT  >Nechápu, jak bych zrovna teï a na tomto místì mohl pouít minci...<
-      (:KdeJsem==4 :kostky!=1)OUT >Ten slot na mince je pøíliš vysoko!<
+      (:KdeJsem!=4)OUT  >NechÃ¡pu, jak bych zrovna teÄ a na tomto mÃ­stÄ› mohl pouÅ¾Ã­t minci...<
+      (:KdeJsem==4 :kostky!=1)OUT >Ten slot na mince je pÅ™Ã­liÅ¡ vysoko!<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
-    COMMAND Pouij Kostky
-      (:KdeJsem==4)OUT Tux postavil tìsnì vedle automatu na kávu schùdky z kostek, a to a ke slotu
-      (:KdeJsem==4)OUT pro mince, kterı se nachází jen kousek od jeho vrcholu.
+    COMMAND PouÅ¾ij Kostky
+      (:KdeJsem==4)OUT Tux postavil tÄ›snÄ› vedle automatu na kÃ¡vu schÅ¯dky z kostek, a to aÅ¾ ke slotu
+      (:KdeJsem==4)OUT pro mince, kterÃ½ se nachÃ¡zÃ­ jen kousek od jeho vrcholu.
       SETTEXTCOLOR 125 255 0
-      (:KdeJsem==4)OUT >Moc hezké. Asi bych se mìl vrhnout na studium architektury èi stavitelství.<
+      (:KdeJsem==4)OUT >Moc hezkÃ©. Asi bych se mÄ›l vrhnout na studium architektury Äi stavitelstvÃ­.<
       (:KdeJsem==4)ZMEN :kostky 1
-      (:KdeJsem==3 :kostky==0) OUT >Nemám èas ani chu, hrát si tu s kostkami!<
-      (:KdeJsem!=4 :KdeJsem!=3 :kostky!=0)OUT >Nechápu, jak bych zrovna teï a na tomto místì mohl pouít kostky...<
-      (:KdeJsem!=4 :KdeJsem==3 :kostky!=0)OUT >Nechápu, jak bych zrovna teï a na tomto místì mohl pouít kostky...<
+      (:KdeJsem==3 :kostky==0) OUT >NemÃ¡m Äas ani chuÅ¥, hrÃ¡t si tu s kostkami!<
+      (:KdeJsem!=4 :KdeJsem!=3 :kostky!=0)OUT >NechÃ¡pu, jak bych zrovna teÄ a na tomto mÃ­stÄ› mohl pouÅ¾Ã­t kostky...<
+      (:KdeJsem!=4 :KdeJsem==3 :kostky!=0)OUT >NechÃ¡pu, jak bych zrovna teÄ a na tomto mÃ­stÄ› mohl pouÅ¾Ã­t kostky...<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND
 
     COMMAND Prozkoumej Kostky
-      OUT Tux bez valného zaujetí pohlédl na døevìné kostky.
+      OUT Tux bez valnÃ©ho zaujetÃ­ pohlÃ©dl na dÅ™evÄ›nÃ© kostky.
       SETTEXTCOLOR 125 255 0
-      OUT >Obyèejné døevìné kostky. Jejich stìny jsou nalakovány rùznımi barvami.<
+      OUT >ObyÄejnÃ© dÅ™evÄ›nÃ© kostky. Jejich stÄ›ny jsou nalakovÃ¡ny rÅ¯znÃ½mi barvami.<
       SETTEXTCOLOR 0 255 255
       OUT
     ENDCOMMAND

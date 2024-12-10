@@ -1,0 +1,7 @@
+TUX verze 1.01 (15.08.2005)
+
+Fixed bugs:
+- opraveno nìkolik gramatických pochybení resp. pøeklepù a nedoklepù
+- opravena deaktivace pøíkazù u Klokana a Motorového kola (thanx to klokyn)
+- oprava duplicity pøi zadání pøíkazu Prozkoumej Klakson (thanx to Oroborus)
+

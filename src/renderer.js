@@ -12,7 +12,7 @@ ipcRenderer.on('edit-file', (event, filePath) => {
     console.log(`Opening file: ${filePath} in editor.`);
 });
 
-ipcRenderer.on('set-language', (event, translations, lang) => {
+ipcRenderer.on('set-language', (translations, lang) => {
     console.log(`Setting language to: ${lang}`);
     console.log('Translations:', translations);
     document.documentElement.lang = lang;

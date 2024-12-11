@@ -1,4 +1,4 @@
-const { app, Menu, BrowserWindow, ipcMain } = require('electron');
+const { app, Menu, dialog, BrowserWindow, ipcMain } = require('electron');
 const fs = require('fs');
 const path = require('path');
 const i18next = require('./i18n');
@@ -46,56 +46,34 @@ function createMenu(currentLanguage, store, win) {
                 {
                     label: i18next.t('menu.newGameDefinition'),
                     accelerator: 'Ctrl+N',
-                    click: () => {
-                        const inputWin = new BrowserWindow({
-                            parent: win,
-                            modal: true,
-                            show: false,
-                            width: 400,
-                            height: 250,
-                            webPreferences: {
-                                nodeIntegration: true,
-                                contextIsolation: false
-                            },
-                            autoHideMenuBar: true
+                    click: async () => {
+                        const { canceled, filePath } = await dialog.showSaveDialog(win, {
+                            title: i18next.t('dialog.saveGameDefinition'),
+                            defaultPath: path.join(app.getPath('documents'), 'new_game.yaml'),
+                            filters: [{ name: 'YAML Files', extensions: ['yaml'] }]
                         });
 
-                        inputWin.loadFile(path.join(__dirname, '../resources/web/input_dialog.html'));
-                        inputWin.once('ready-to-show', () => {
-                            inputWin.show();
-                            inputWin.webContents.send('set-language', i18next.getDataByLanguage(currentLanguage).inputDialog, currentLanguage);
-                        });
+                        if (!canceled && filePath) {
+                            const templatePath = path.join(__dirname, '../resources/game_definition_template.yaml');
+                            fs.copyFileSync(templatePath, filePath);
 
-                        ipcMain.once('input-dialog-submit', (event, gameName) => {
-                            if (gameName) {
-                                const templatePath = path.join(__dirname, '../resources/game_definition_template.yaml');
-                                const newGamePath = path.join(app.getPath('documents'), `${gameName}.yaml`);
+                            exec(`start "" "${filePath}"`, (error) => {
+                                if (error) {
+                                    console.error(`Error opening file: ${error.message}`);
+                                } else {
+                                    console.log(`File ${filePath} opened successfully.`);
+                                }
+                            });
 
-                                fs.copyFileSync(templatePath, newGamePath);
-
-                                exec(`start "" "${newGamePath}"`, (error) => {
-                                    if (error) {
-                                        console.error(`Error opening file: ${error.message}`);
-                                    } else {
-                                        console.log(`File ${newGamePath} opened successfully.`);
+                            fs.watchFile(filePath, (curr, prev) => {
+                                if (curr.mtime !== prev.mtime) {
+                                    const gameData = loadGameFile(filePath);
+                                    if (gameData) {
+                                        console.log('Reloaded game data:', gameData);
                                     }
-                                });
-
-                                fs.watchFile(newGamePath, (curr, prev) => {
-                                    if (curr.mtime !== prev.mtime) {
-                                        const gameData = loadGameFile(newGamePath);
-                                        if (gameData) {
-                                            console.log('Reloaded game data:', gameData);
-                                        }
-                                    }
-                                });
-                            }
-                            inputWin.close();
-                        });
-
-                        ipcMain.once('input-dialog-cancel', () => {
-                            inputWin.close();
-                        });
+                                }
+                            });
+                        }
                     }
                 },
                 {

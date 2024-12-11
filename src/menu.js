@@ -170,6 +170,12 @@ function createMenu(currentLanguage, store, win) {
                     accelerator: 'Ctrl+R',
                     click: () => {
                         win.reload();
+                        win.webContents.once('did-finish-load', () => {
+                            i18next.changeLanguage(currentLanguage, (err, t) => {
+                                if (err) return console.error('Error changing language:', err);
+                                win.webContents.send('set-language', t('index', { returnObjects: true }), currentLanguage);
+                            });
+                        });
                     }
                 },
             ]

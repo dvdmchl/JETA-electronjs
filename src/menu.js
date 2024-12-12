@@ -1,4 +1,4 @@
-const { app, Menu, dialog, BrowserWindow, ipcMain } = require('electron');
+const { app, Menu, BrowserWindow, ipcMain } = require('electron');
 const fs = require('fs');
 const path = require('path');
 const i18next = require('./i18n');
@@ -44,39 +44,6 @@ function createMenu(currentLanguage, store, win) {
             label: i18next.t('menu.file'),
             submenu: [
                 {
-                    label: i18next.t('menu.newGameDefinition'),
-                    accelerator: 'Ctrl+N',
-                    click: async () => {
-                        const { canceled, filePath } = await dialog.showSaveDialog(win, {
-                            title: i18next.t('dialog.saveGameDefinition'),
-                            defaultPath: path.join(app.getPath('documents'), 'new_game.yaml'),
-                            filters: [{ name: 'YAML Files', extensions: ['yaml'] }]
-                        });
-
-                        if (!canceled && filePath) {
-                            const templatePath = path.join(__dirname, '../resources/game_definition_template.yaml');
-                            fs.copyFileSync(templatePath, filePath);
-
-                            exec(`start "" "${filePath}"`, (error) => {
-                                if (error) {
-                                    console.error(`Error opening file: ${error.message}`);
-                                } else {
-                                    console.log(`File ${filePath} opened successfully.`);
-                                }
-                            });
-
-                            fs.watchFile(filePath, (curr, prev) => {
-                                if (curr.mtime !== prev.mtime) {
-                                    const gameData = loadGameFile(filePath);
-                                    if (gameData) {
-                                        console.log('Reloaded game data:', gameData);
-                                    }
-                                }
-                            });
-                        }
-                    }
-                },
-                {
                     label: i18next.t('menu.loadGameDefinition'),
                     accelerator: 'Ctrl+O',
                     click: async () => {
@@ -109,8 +76,98 @@ function createMenu(currentLanguage, store, win) {
                         }
                     }
                 },
+                { type: 'separator' },
+                {
+                    label: i18next.t('menu.loadGameState'),
+                    accelerator: 'Ctrl+L'
+                },
+                {
+                    label: i18next.t('menu.saveGameState'),
+                    accelerator: 'Ctrl+S'
+                },
+                { type: 'separator' },
+                {
+                    label: i18next.t('menu.restartGame'),
+                },
+                { type: 'separator' },
+                { role: 'quit', label: i18next.t('menu.quit'),
+                                accelerator: 'Ctrl+Q'
+                },
+            ],
+        },
+        {
+            label: i18next.t('menu.edit'),
+            submenu: [
+                {
+                    label: i18next.t('menu.reload'),
+                    accelerator: 'Ctrl+R',
+                    click: () => {
+                        win.reload();
+                    }
+                },
+                { type: 'separator' },
+                {
+                    label: i18next.t('menu.language'),
+                    submenu: createLanguageMenu(currentLanguage, store, win)
+                },
+                {
+                    label: i18next.t('menu.newGameDefinition'),
+                    accelerator: 'Ctrl+N',
+                    click: () => {
+                        const inputWin = new BrowserWindow({
+                            parent: win,
+                            modal: true,
+                            show: false,
+                            width: 400,
+                            height: 250,
+                            webPreferences: {
+                                nodeIntegration: true,
+                                contextIsolation: false
+                            },
+                            autoHideMenuBar: true
+                        });
+
+                        inputWin.loadFile(path.join(__dirname, '../resources/web/input_dialog.html'));
+                        inputWin.once('ready-to-show', () => {
+                            inputWin.show();
+                            inputWin.webContents.send('set-language', i18next.getDataByLanguage(currentLanguage).inputDialog, currentLanguage);
+                        });
+
+                        ipcMain.once('input-dialog-submit', (event, gameName) => {
+                            if (gameName) {
+                                const templatePath = path.join(__dirname, '../resources/game_definition_template.yaml');
+                                const newGamePath = path.join(app.getPath('documents'), `${gameName}.yaml`);
+
+                                fs.copyFileSync(templatePath, newGamePath);
+
+                                exec(`start "" "${newGamePath}"`, (error) => {
+                                    if (error) {
+                                        console.error(`Error opening file: ${error.message}`);
+                                    } else {
+                                        console.log(`File ${newGamePath} opened successfully.`);
+                                    }
+                                });
+
+                                fs.watchFile(newGamePath, (curr, prev) => {
+                                    if (curr.mtime !== prev.mtime) {
+                                        const gameData = loadGameFile(newGamePath);
+                                        if (gameData) {
+                                            console.log('Reloaded game data:', gameData);
+                                        }
+                                    }
+                                });
+                            }
+                            inputWin.close();
+                        });
+
+                        ipcMain.once('input-dialog-cancel', () => {
+                            inputWin.close();
+                        });
+                    }
+                },
                 {
                     label: i18next.t('menu.editGameDefinition'),
+                    accelerator: 'Ctrl+E',
                     id: 'editGameDefinition',
                     enabled: false,
                     click: () => {
@@ -125,12 +182,10 @@ function createMenu(currentLanguage, store, win) {
                         }
                     }
                 },
-                { role: 'quit', label: i18next.t('menu.quit') },
-            ],
-        },
-        {
-            label: i18next.t('menu.tools'),
-            submenu: [
+                {
+                    label: i18next.t('menu.encryptGame'),
+                },
+                { type: 'separator' },
                 {
                     label: i18next.t('menu.openDevTools'),
                     accelerator: 'Ctrl+Shift+I',
@@ -138,26 +193,21 @@ function createMenu(currentLanguage, store, win) {
                         win.webContents.openDevTools();
                     }
                 },
-                {
-                    label: i18next.t('menu.language'),
-                    submenu: createLanguageMenu(currentLanguage, store, win)
-                },
                 { type: 'separator' },
-                {
-                    label: 'Reload',
-                    accelerator: 'Ctrl+R',
-                    click: () => {
-                        win.reload();
-                        win.webContents.once('did-finish-load', () => {
-                            i18next.changeLanguage(currentLanguage, (err, t) => {
-                                if (err) return console.error('Error changing language:', err);
-                                win.webContents.send('set-language', t('index', { returnObjects: true }), currentLanguage);
-                            });
-                        });
-                    }
-                },
             ]
-        }
+        },
+        {
+            label: i18next.t('menu.help'),
+            submenu: [
+                {
+                    label: i18next.t('menu.help'),
+                    accelerator: 'Ctrl+H'
+                },
+                {
+                    label: i18next.t('menu.about'),
+                },
+                    ],
+        },
     ]);
 }
 

@@ -1,13 +1,19 @@
-const { app, Menu, BrowserWindow, ipcMain } = require('electron');
+const {app, Menu, BrowserWindow, ipcMain, dialog} = require('electron');
 const fs = require('fs');
 const path = require('path');
 const i18next = require('./i18n');
-const { exec } = require('child_process');
-const { loadGameFile } = require('./game_definition_loader');
+const {exec} = require('child_process');
+const {loadGameFile} = require('./game_definition_loader');
+const {getMenu} = require('./jeta_ui');
 
 function updateMenu(currentLanguage, store, win) {
     const menu = createMenu(currentLanguage, store, win);
     Menu.setApplicationMenu(menu);
+}
+
+function updateWindowTitle(win, filePath) {
+    const fileName = path.basename(filePath);
+    win.setTitle(`Jeta - ${fileName}`);
 }
 
 function createLanguageMenu(currentLanguage, store, win) {
@@ -48,35 +54,39 @@ function createMenu(currentLanguage, store, win) {
                     accelerator: 'Ctrl+O',
                     click: async () => {
                         try {
-                            const { canceled, filePaths } = await dialog.showOpenDialog(win, {
+                            const {canceled, filePaths} = await dialog.showOpenDialog(win, {
                                 properties: ['openFile'],
-                                filters: [{ name: 'YAML Files', extensions: ['yaml'] }],
+                                filters: [{name: 'YAML Files', extensions: ['yaml']}],
                             });
 
                             if (!canceled && filePaths.length > 0) {
-                                gameFilePath = filePaths[0];
+                                let gameFilePath = filePaths[0];
                                 const gameData = loadGameFile(gameFilePath);
+                                getMenu().getMenuItemById('editGameDefinition').enabled = true;
 
                                 if (gameData) {
                                     console.log('Game data loaded');
-                                    menu.getMenuItemById('editGameDefinition').enabled = true;
-
-                                    fs.watchFile(gameFilePath, (curr, prev) => {
-                                        if (curr.mtime !== prev.mtime) {
-                                            const gameData = loadGameFile(gameFilePath);
-                                            if (gameData) {
-                                                console.log('Reloaded game data:', gameData);
-                                            }
-                                        }
-                                    });
                                 }
+                                fs.watchFile(gameFilePath, (curr, prev) => {
+                                    if (curr.mtime !== prev.mtime) {
+                                        const gameData = loadGameFile(gameFilePath);
+                                        if (gameData) {
+                                            console.log('Reloaded game data:', gameData);
+                                        }
+                                    }
+                                });
+
+                                updateWindowTitle(win, gameFilePath);
+
+                            } else {
+                                getMenu().getMenuItemById('editGameDefinition').enabled = false;
                             }
                         } catch (error) {
                             console.error('Error loading game definition:', error);
                         }
                     }
                 },
-                { type: 'separator' },
+                {type: 'separator'},
                 {
                     label: i18next.t('menu.loadGameState'),
                     accelerator: 'Ctrl+L'
@@ -85,13 +95,14 @@ function createMenu(currentLanguage, store, win) {
                     label: i18next.t('menu.saveGameState'),
                     accelerator: 'Ctrl+S'
                 },
-                { type: 'separator' },
+                {type: 'separator'},
                 {
                     label: i18next.t('menu.restartGame'),
                 },
-                { type: 'separator' },
-                { role: 'quit', label: i18next.t('menu.quit'),
-                                accelerator: 'Ctrl+Q'
+                {type: 'separator'},
+                {
+                    role: 'quit', label: i18next.t('menu.quit'),
+                    accelerator: 'Ctrl+Q'
                 },
             ],
         },
@@ -105,7 +116,7 @@ function createMenu(currentLanguage, store, win) {
                         win.reload();
                     }
                 },
-                { type: 'separator' },
+                {type: 'separator'},
                 {
                     label: i18next.t('menu.language'),
                     submenu: createLanguageMenu(currentLanguage, store, win)
@@ -113,56 +124,34 @@ function createMenu(currentLanguage, store, win) {
                 {
                     label: i18next.t('menu.newGameDefinition'),
                     accelerator: 'Ctrl+N',
-                    click: () => {
-                        const inputWin = new BrowserWindow({
-                            parent: win,
-                            modal: true,
-                            show: false,
-                            width: 400,
-                            height: 250,
-                            webPreferences: {
-                                nodeIntegration: true,
-                                contextIsolation: false
-                            },
-                            autoHideMenuBar: true
+                    click: async () => {
+                        const {canceled, filePath} = await dialog.showSaveDialog(win, {
+                            title: i18next.t('dialog.saveGameDefinition'),
+                            defaultPath: path.join(app.getPath('documents'), 'new_game.yaml'),
+                            filters: [{name: 'YAML Files', extensions: ['yaml']}]
                         });
 
-                        inputWin.loadFile(path.join(__dirname, '../resources/web/input_dialog.html'));
-                        inputWin.once('ready-to-show', () => {
-                            inputWin.show();
-                            inputWin.webContents.send('set-language', i18next.getDataByLanguage(currentLanguage).inputDialog, currentLanguage);
-                        });
+                        if (!canceled && filePath) {
+                            const templatePath = path.join(__dirname, '../resources/game_definition_template.yaml');
+                            fs.copyFileSync(templatePath, filePath);
 
-                        ipcMain.once('input-dialog-submit', (event, gameName) => {
-                            if (gameName) {
-                                const templatePath = path.join(__dirname, '../resources/game_definition_template.yaml');
-                                const newGamePath = path.join(app.getPath('documents'), `${gameName}.yaml`);
+                            exec(`start "" "${filePath}"`, (error) => {
+                                if (error) {
+                                    console.error(`Error opening file: ${error.message}`);
+                                } else {
+                                    console.log(`File ${filePath} opened successfully.`);
+                                }
+                            });
 
-                                fs.copyFileSync(templatePath, newGamePath);
-
-                                exec(`start "" "${newGamePath}"`, (error) => {
-                                    if (error) {
-                                        console.error(`Error opening file: ${error.message}`);
-                                    } else {
-                                        console.log(`File ${newGamePath} opened successfully.`);
+                            fs.watchFile(filePath, (curr, prev) => {
+                                if (curr.mtime !== prev.mtime) {
+                                    const gameData = loadGameFile(filePath);
+                                    if (gameData) {
+                                        console.log('Reloaded game data:', gameData);
                                     }
-                                });
-
-                                fs.watchFile(newGamePath, (curr, prev) => {
-                                    if (curr.mtime !== prev.mtime) {
-                                        const gameData = loadGameFile(newGamePath);
-                                        if (gameData) {
-                                            console.log('Reloaded game data:', gameData);
-                                        }
-                                    }
-                                });
-                            }
-                            inputWin.close();
-                        });
-
-                        ipcMain.once('input-dialog-cancel', () => {
-                            inputWin.close();
-                        });
+                                }
+                            });
+                        }
                     }
                 },
                 {
@@ -179,13 +168,15 @@ function createMenu(currentLanguage, store, win) {
                                     console.log(`File ${gameFilePath} opened successfully.`);
                                 }
                             });
+
+                            updateWindowTitle(win, filePath);
                         }
                     }
                 },
                 {
                     label: i18next.t('menu.encryptGame'),
                 },
-                { type: 'separator' },
+                {type: 'separator'},
                 {
                     label: i18next.t('menu.openDevTools'),
                     accelerator: 'Ctrl+Shift+I',
@@ -193,7 +184,7 @@ function createMenu(currentLanguage, store, win) {
                         win.webContents.openDevTools();
                     }
                 },
-                { type: 'separator' },
+                {type: 'separator'},
             ]
         },
         {
@@ -206,9 +197,9 @@ function createMenu(currentLanguage, store, win) {
                 {
                     label: i18next.t('menu.about'),
                 },
-                    ],
+            ],
         },
     ]);
 }
 
-module.exports = { createMenu };
+module.exports = {createMenu};

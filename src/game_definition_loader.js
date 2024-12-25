@@ -1,3 +1,4 @@
+const { dialog} = require('electron');
 const Ajv = require("ajv");
 const fs = require("fs");
 const yaml = require("js-yaml");
@@ -18,6 +19,8 @@ function loadGameFile(filePath) {
         const valid = validate(gameData);
         if (!valid) {
             console.error("Validation errors:", validate.errors);
+            // show modal window with error message
+            dialog.showErrorBox("Validation Error", JSON.stringify(validate.errors, null, 2));
             return null;
         }
 

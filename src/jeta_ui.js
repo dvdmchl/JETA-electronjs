@@ -4,6 +4,7 @@ const i18next = require('./i18n');
 const { createMenu } = require('./menu');
 
 let win;
+let menu;
 
 const createWindow = async () => {
     const Store = (await import('electron-store')).default;
@@ -17,6 +18,7 @@ const createWindow = async () => {
         y: windowState.y,
         width: windowState.width,
         height: windowState.height,
+        title: 'Jeta',
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             nodeIntegration: false,
@@ -33,7 +35,7 @@ const createWindow = async () => {
             win.webContents.send('set-language', t('index', { returnObjects: true }), currentLanguage);
         });
 
-        const menu = createMenu(currentLanguage, store, win);
+        menu = createMenu(currentLanguage, store, win);
         Menu.setApplicationMenu(menu);
     });
 
@@ -56,4 +58,4 @@ const createWindow = async () => {
 
 };
 
-module.exports = { createWindow };
+module.exports = { createWindow, getMenu: () => menu };

@@ -1,15 +1,16 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "required": ["metadata", "locations", "items", "quests", "characters"],
+  "required": ["metadata"],
   "properties": {
     "metadata": {
       "type": "object",
-      "required": ["title", "author", "version", "description"],
+      "required": ["title", "language"],
       "properties": {
         "title": { "type": "string" },
         "author": { "type": "string" },
         "version": { "type": "string" },
+        "language": { "type": "string" },
         "description": { "type": "string" }
       }
     },
@@ -17,11 +18,11 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "name", "description", "connections"],
+        "required": ["id", "name", "descriptions", "connections"],
         "properties": {
           "id": { "type": "string" },
           "name": { "type": "string" },
-          "description": { "type": "string" },
+          "descriptions": { "type": "array" },
           "connections": {
             "type": "array",
             "items": {
@@ -40,11 +41,11 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "name", "description"],
+        "required": ["id", "name", "descriptions"],
         "properties": {
           "id": { "type": "string" },
           "name": { "type": "string" },
-          "description": { "type": "string" },
+          "descriptions": { "type": "array" },
           "location": { "type": "string" }
         }
       }
@@ -77,11 +78,12 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "name", "description"],
+        "required": ["id", "name"],
         "properties": {
           "id": { "type": "string" },
           "name": { "type": "string" },
-          "description": { "type": "string" }
+          "description": { "type": "string" },
+          "location": { "type": "string" }
         }
       }
     }

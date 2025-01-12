@@ -1,0 +1,265 @@
+REM Vendova první textovka 2024-11-27
+
+NAME TEST
+LANGMOD CZ
+MIESTO start
+ 
+SETTEXTCOLOR 0 255 255
+SETMENUCOLOR 209 240 245
+
+ZMEN :SVT 0
+ZMEN :Kdejsem 4
+ZMEN :Zámek 0
+ZMEN :Žvýkaèky 1
+ZMEN :Papírekodžvýkaèky 0
+ZMEN :Klíèe 0
+ZMEN :Šálekèaje 0
+ZMEN :Vypínaè 0
+ZMEN :Dveøe 0
+
+OUT
+OUT Dnes ráno jsem se probudil a po snídani, když jsem si zrovna 
+OUT chtìl vypít svùj ranní šálek èaje, nìkdo zazvonil na dveøe:
+OUT >Mám se bát a èekat nìco špatného, nebo co?<
+OUT Jen kdybych vìdìl, kde mám ty svoje klíèe, vèera veèer jsem
+OUT si je nìkam dal, ale kam...   to už si asi nevzpomenu.
+PRESSKEY
+
+
+OUT
+OUT >Musím je co nejrychleji najít a otevøít èlovìku, který tam
+OUT chudák venku stojí a celý mrzne, mìl bych si pospíšit
+OUT nechci nechat toho nìkoho èekat<
+PRESSKEY
+
+SETMIESTO kuchyò
+
+REM MÍSTNOST KUCHIÒ A JEJÍ NASTAVENÍ
+
+MIESTO kuchyò
+
+ZMEN :Kdejsem 3
+
+SETTEXTCOLOR 0 255 255
+
+CLS
+OUT
+OUT Jsem v kuchyni.
+OUT Kromì kuchyòské linky, spotøebièù, stolu a jedné židle
+OUT tu nic není. Jen malý šálek èaje na stole.
+
+SETMAINMENU Jít Prozkoumat Použít Sebrat Mluvit Otevøít Seznam_Vìcí
+
+(:Kdejsem==3) ADDMENU Jít pøedsíò
+(:Kdejsem==3) ADDMENU Jít ložnice
+(:Šálekèaje==1) ADDMENU Prozkoumat Šálek_èaje
+(:Šálekèaje==0) ADDMENU Sebrat Šálek_èaje
+
+COMMAND Sebrat Šálek_èaje
+(:Šálekèaje==0) OUT
+(:Šálekèaje==0) OUT Na stole v kuchyni jsi uvidìl šálek èaje a vzal jsi ho
+(:Šálekèaje==0) OUT do ruky. 
+(:Šalekèaje==0) ZMEN :Šálekèaje 1
+
+ENDCOMMAND
+
+COMMAND Jít pøedsíò
+SETMIESTO pøedsíò
+ENDCOMMAND
+
+COMMAND Jít ložnice
+SETMIESTO ložnice
+ENDCOMMAND
+
+
+
+COMMAND Prozkoumat Šálek_èaje
+(:Šálekèaje==1) OUT
+(:Šálekèaje==1) OUT Tenhle šálek èaje, který právì držím v ruce je velmi horký 
+(:Šálekèaje==1) OUT a plný lahodného èaje, který mám moc rád a nestihl 
+(:Šálekèaje==1) OUT jsem ho vypít proto, že nìkdo zazvonil na dveøe.
+ENDCOMMAND
+
+REM MÍSTNOST LOŽNICE A JEJÍ NASTAVENÍ
+
+MIESTO ložnice
+
+ZMEN :Kdejsem 2
+
+CLS
+OUT
+OUT Ložnice je velká místnost, kde mám uloženo ve skøíních a 
+OUT nebo šuplících obleèení, kromì toho tu mám postel, ve které 
+OUT spím a vedle postele stolek. V pravo od postele je vypínaè a 
+OUT v levo od ní mám skøínì na obleèením.
+
+SETMAINMENU Jít Prozkoumat Použít Sebrat Mluvit Otevøít Seznam_Vìcí
+
+(:Kdejsem==2) ADDMENU Jít kuchyò
+ADDMENU Použít vypínaè
+ADDMENU Prozkoumat vypínaè
+ADDMENU Prozkoumat skøíò
+(:Klíèe==1) ADDMENU Sebrat Klíèe
+
+COMMAND Jít kuchyò
+SETMIESTO kuchyò
+ENDCOMMAND
+
+COMMAND Použít vypínaè
+(:SVT==0) OUT
+(:SVT==0) OUT Rozsvítil jsi svìtlo v ložnici, už tu není taková tma.
+ZMEN :SVT 1
+ZMEN :Vypínaè 1
+ENDCOMMAND
+
+COMMAND Prozkoumat vypínaè
+(:SVT==0) OUT
+(:SVT==0) OUT Teï jsem nahmatal nìco coby možná i mohl být vypínaè, 
+(:SVT==0) OUT ale s tím si nejsem jistý
+
+(:SVT==1) OUT Teï se koukám na vypínaè ale co je na nìm tak zvláštního?
+(:SVT==1) OUT vždy jenom rozsvicí a zhasíná svìtlo
+(:SVT==1) ZMEN :SVT 2
+(:SVT==3) OUT Co máš poøád s tím svìtlem? Už mì s ním vážnì otravuješ!  
+ENDCOMMAND
+
+COMMAND Prozkoumat skøíò
+(:Vypínaè==0) OUT
+(:Vypínaè==0) OUT V té skøíòce není nic vidìt tak že tam nemùžu nic najít!...
+(:Vypínaè==1) OUT
+(:Vypínaè==1) OUT Ahá tak sem jsem si dal ty klíèe, to bych nikdy neøekl, 
+(:Vypínaè==1) OUT že je najdu zrovinka na tomhle místì, ale vlastnì proè bych 
+(:Vypínaè==1) OUT je sem dával?
+(:Vypínaè==1) ZMEN :Klíèe 1
+ENDCOMMAND
+
+COMMAND Sebrat Klíèe
+OUT
+OUT Sebral jsem klíèe ze skøíòky s obleèením.
+ZMEN :Klíèe 2
+ENDCOMMAND
+
+REM MÍSTNOST PØEDSÍÒ A NASTAVENÍ
+
+MIESTO pøedsíò
+
+ZMEN :Kdejsem 1
+
+CLS
+OUT
+OUT V pøedsíni skladuji boty, obleèení anebo deštníky.
+OUT Na pravé stranì mám vìšák s bundami a rùzným obleèením,
+OUT kdežto na levé stranì mám botník, ve kterém mám boty normální,
+OUT sálovky a nebo pohorky. Pøímo pøede mnou jsou dvìøe ven, 
+OUT pøed kterými  nìkdo stojí, ale já mu nemùžu otevøít a ani 
+OUT nevím kdo pøed tìmi dveømi stojí.
+
+SETMAINMENU Jít Prozkoumat Použít Sebrat Mluvit Otevøít Seznam_Vìcí
+
+ADDMENU Prozkoumat botník
+(:Kdejsem==1) ADDMENU Jít kuchyò
+ADDMENU Prozkoumat dveøe
+ADDMENU Otevøít dveøe
+ADDMENU Mluvit osoba
+(:Klíèe==2) ADDMENU Použít Klíèe
+
+COMMAND Jít kuchyò
+SETMIESTO kuchyò
+ENDCOMMAND
+
+COMMAND Prozkoumat botník
+OUT
+OUT Není tu nic zajímavého o èem by se stálo bavit , jen boty!
+ENDCOMMAND
+
+COMMAND Prozkoumat dveøe
+(:Dveøe==0) OUT
+(:Dveøe==0) OUT Jsou to obyèejné dveøe ze smrku.
+(:Dveøe==2) OUT
+(:Dveøe==2) OUT Jseu to obyèejné dveøe ze smrku za kterými stojí mladý muž
+ENDCOMMAND
+
+COMMAND Otevøít dveøe
+SETTEXTCOLOR 0 255 255 
+(:Klíèe==3) OUT
+(:Klíèe==3) OUT Úspìšnì jsem odemkl dveøe ven a otevøel je, pøed dveømi
+(:Klíèe==3) OUT stojí nìjaký mladší muž okolo tøiceti let vysoké postavy a 
+(:Klíèe==3) OUT krásných hnìdých vlasù.
+(:Klíèe==3) ZMEN :Dveøe 2
+(:Klíèe==0) OUT
+(:Klíèe==0) OUT No, i kdybych sebevíc chtìl zamèené dveøe prostì nedokážu 
+(:Klíèe==0) OUT otevøít chtìlo by to nìkde po bytì najít klíèe ale kde?...
+(:Klíèe==1) OUT
+(:Klíèe==1) OUT No, tak tohle se mi ještì nestalo, já najdu klíèe a zapomenu si 
+(:Klíèe==1) OUT je ve skøíòce?!. No tohle je opravdu neuvìøitelné.
+ENDCOMMAND
+
+COMMAND Použít Klíèe
+OUT 
+OUT Odemkl jsem vchodové dveøe.
+ZMEN :Klíèe 3
+ZMEN :Dveøe 1
+ENDCOMMAND
+
+ALL
+(:Šálekèaje==1) ADDMENU Použít Šálek_èaje
+(:Klíèe==2) (:Klíèe==3) ADDMENU Seznam_Vìcí Klíèe
+(:Žvýkaèky==1) ADDMENU Seznam_Vìcí Žvýkyèka
+(:Papírekodžvýkaèky==1) ADDMENU Seznam_Vìcí Papírek_od_žvýkaèek
+(:Žvýkaèky==1) ADDMENU Použít žvýkaèku
+(:Papírekodžvýkaèky==1) ADDMENU Použít Papírek_od_žvýkaèek
+(:Šálekèaje==1) ADDMENU Seznam_Vìcí Šálek_èaje
+
+COMMAND Použít Šálek_èaje
+(:Šálekèaje==1) OUT
+(:Šálekèaje==1) OUT Vypil jsem si svùj šálek èaje a už si vzpomínám
+(:Šálekèaje==1) OUT ten klíè jsem urèitì zase zapomìl ve skøíni v ložnici
+ZMEN :Šálekèaje 2
+ENDCOMMAND
+
+COMMAND Použít žvýkaèku
+(:Žvýkaèky==1) OUT
+(:Žvýkaèky==1) OUT A hele, v kapse mi zbyla ještì jedna žvýkaèka
+(:Žvýkaèky==1) OUT tak tomuhle neodoám a hned si ji dám >Mlask<.>Mòam<.
+ZMEN :Žvýkaèky 0
+ZMEN :Papírekodžvýkaèky 1
+ENDCOMMAND
+
+COMMAND Použít Papírek_od_žvýkaèek
+OUT
+OUT Na co bych asi tak mìl použít papírek od žvýkaèky??
+ZMEN :Papírekodžvýkaèek 2
+ENDCOMMAND
+
+COMMAND Seznam_Vìcí Klíèe
+ENDCOMMAND
+
+COMMAND Seznam_Vìcí Žvýkaèka
+ENDCOMMAND
+
+COMMAND Seznam_Vìcí Papírek_od_žvýkaèek
+ENDCOMMAND
+
+COMMAND Seznam_Vìcí Šálek_èaje
+ENDCOMMAND
+ENDALL
+
+COMMAND Mluvit osoba
+(:Dveøe!=2) OUT
+(:Dveøe!=2) OUT Nemùžu mluvit s nìkým pøes dveøe to se pøece nesluší na 
+(:Dveøe!=2) OUT vychovaného mladého èlovìka.
+(:Dveøe==2) CLS
+(:Dveøe==2) SETTEXTCOLOR 255 255 50
+(:Dveøe==2) OUT
+(:Dveøe==2) OUT >Dobrý den pane co pro vás mohu udìlat?!...<
+(:Dveøe==2) OUT "Dobrý den pane mám tu pro vás dopis od >Ammm...< Kamaráda 
+(:Dveøe==2) OUT Honzy >No ahá vy jste ten nový poštmistr co u nás mìl od 
+(:Dveøe==2) OUT ledna nastoupit že?<
+(:Dveøe==2) OUT Nu dá se to tak brát, i když tu jsem jen na záskok ale 
+(:Dveøe==2) OUT díky za optání. >Není zaè nashledanou!< Nashledanou!
+(:Dveøe==2) OUT >Vrzz<  >Cvak< Nu to jsem zvìdav co v tom dopise vlasnì je" 
+(:Dveøe==2) OUT >Trhh< "AHÁ to je Pozvánka pro vás na moji další hru!!!"
+(:Dveøe==2)PRESSKEY 
+(:Dveøe==2) SHOWIMAGE ENDGAME.jpg
+(:Dveøe==2) END
+ENDCOMMAND

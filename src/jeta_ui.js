@@ -1,7 +1,10 @@
-const { BrowserWindow, Menu } = require('electron');
+const {loadGameFile} = require("./game_definition_loader");
+const {play} = require("./game_engine");
+
+const {BrowserWindow, Menu} = require('electron');
 const path = require('path');
 const i18next = require('./i18n');
-const { createMenu } = require('./menu');
+const {createMenu} = require('./menu');
 
 let win;
 let menu;
@@ -9,7 +12,7 @@ let menu;
 const createWindow = async () => {
     const Store = (await import('electron-store')).default;
     const store = new Store();
-    const windowState = store.get('windowState') || { width: 1280, height: 760 };
+    const windowState = store.get('windowState') || {width: 1280, height: 760};
     let currentLanguage = store.get('language') || 'en';
     const devMode = store.get('devMode') || false;
 
@@ -32,13 +35,25 @@ const createWindow = async () => {
         win.loadFile(`./resources/web/index.html`);
         win.once('ready-to-show', () => {
             win.show();
-            win.webContents.send('set-language', t('index', { returnObjects: true }), currentLanguage);
+            win.webContents.send('set-language', t('index', {returnObjects: true}), currentLanguage);
         });
 
         menu = createMenu(currentLanguage, store, win);
         Menu.setApplicationMenu(menu);
+        let indexName = 'index' + '_' + currentLanguage + '.yaml';
+        let indexGameFilePath = path.join(__dirname, '../resources/' + indexName);
+        console.log('Loading game data from:', indexGameFilePath);
+        const indexGameData = loadGameFile(indexGameFilePath);
+        if (indexGameData) {
+            console.log('Game data loaded successfully.');
+            play(indexGameData, win);
+            console.log('Game started.');
+        } else {
+            console.error('Failed to load game data.');
+        }
     });
 
+    console.log('DevMode:', devMode);
     if (devMode) {
         win.webContents.openDevTools();
     }
@@ -49,13 +64,19 @@ const createWindow = async () => {
     });
 
     win.webContents.on('devtools-opened', () => {
+        console.log('DevTools opened');
         store.set('devMode', true);
     });
 
     win.webContents.on('devtools-closed', () => {
+        console.log('DevTools closed');
         store.set('devMode', false);
     });
 
 };
 
-module.exports = { createWindow, getMenu: () => menu };
+function getMenu() {
+    return menu;
+}
+
+module.exports = {createWindow, getMenu};

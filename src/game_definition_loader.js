@@ -14,7 +14,9 @@ const validate = ajv.compile(schema);
 function loadGameFile(filePath) {
     try {
         const fileData = fs.readFileSync(filePath, "utf-8");
+        console.log("File data read successfully.");
         const gameData = yaml.load(fileData);
+        console.log("YAML data parsed successfully.");
 
         const valid = validate(gameData);
         if (!valid) {

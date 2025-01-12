@@ -1,0 +1,12 @@
+metadata:
+  title: "JETA Index"
+  author: "JETA"
+  version: "0.0.1"
+  description: "Index definition for JETA"
+  language: "en"
+
+intro:
+  - page: '<h1 id="header">JETA</h1>
+            <p id="description">Javascript Engine for Text Adventures</p>
+            <img src="../assets/index_img_lg.png">
+            <p id="info"></p>'

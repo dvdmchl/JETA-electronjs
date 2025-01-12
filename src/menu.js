@@ -4,7 +4,7 @@ const path = require('path');
 const i18next = require('./i18n');
 const {exec} = require('child_process');
 const {loadGameFile} = require('./game_definition_loader');
-const {getMenu} = require('./jeta_ui');
+const {play} = require('./game_engine');
 
 function updateMenu(currentLanguage, store, win) {
     const menu = createMenu(currentLanguage, store, win);
@@ -62,10 +62,11 @@ function createMenu(currentLanguage, store, win) {
                             if (!canceled && filePaths.length > 0) {
                                 let gameFilePath = filePaths[0];
                                 const gameData = loadGameFile(gameFilePath);
-                                getMenu().getMenuItemById('editGameDefinition').enabled = true;
 
                                 if (gameData) {
                                     console.log('Game data loaded');
+                                    win.webContents.send('clear-output');
+                                    play(gameData, win);
                                 }
                                 fs.watchFile(gameFilePath, (curr, prev) => {
                                     if (curr.mtime !== prev.mtime) {
@@ -79,7 +80,7 @@ function createMenu(currentLanguage, store, win) {
                                 updateWindowTitle(win, gameFilePath);
 
                             } else {
-                                getMenu().getMenuItemById('editGameDefinition').enabled = false;
+                                console.log('No file selected');
                             }
                         } catch (error) {
                             console.error('Error loading game definition:', error);
@@ -181,6 +182,7 @@ function createMenu(currentLanguage, store, win) {
                     label: i18next.t('menu.openDevTools'),
                     accelerator: 'Ctrl+Shift+I',
                     click: () => {
+                        console.log('Opening DevTools'); // Debugging line
                         win.webContents.openDevTools();
                     }
                 },

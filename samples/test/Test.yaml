@@ -1,0 +1,206 @@
+metadata:
+  title: "Test - Vendova první"
+  author: "Venda"
+  version: "0.0.1"
+  description: "Remake of Vendova první textovka 2024-11-27"
+  language: "cs"
+
+intro:
+  - page: "<p>Dnes ráno jsem se probudil a po snídani, když jsem si zrovna chtěl vypít svůj ranní šálek čaje, někdo zazvonil na dveře: Mám se bát a čekat něco špatného, nebo co? Jen kdybych věděl, kde mám ty svoje klíče, včera večer jsem si je někam dal, ale kam...   to už si asi nevzpomenu.</p>"
+  - page: "<p>Musím je co nejrychleji najít a otevřít člověku, který tam chudák venku stojí a celý mrzne, měl bych si pospíšit nechci nechat toho někoho čekat.</p>"
+
+endings:
+  - description: "<img src='ENDGAME.jpg' alt='ENDGAME'>"
+
+locations:
+  - id: "kuchyně"
+    name: "Kuchyně"
+    descriptions:
+      - default: "<p>Jsem v kuchyni. Kromě kuchyňské linky, spotřebičů, stolu a jedné židle tu nic není.</p>"
+      - condition: "šálek-čaje:owner:kuchyně"
+        description: "<p>Jen malý šálek čaje na stole.</p>"
+    connections:
+      - direction: "Předsíň"
+        target: "předsíň"
+      - direction: "Ložnice"
+        target: "ložnice"
+
+  - id: "ložnice"
+    name: "Ložnice"
+    descriptions:
+      - default: "<p>Ložnice je velká místnost, kde mám uloženo ve skříních a nebo šuplících oblečení, kromě toho tu mám postel, ve které spím a vedle postele stolek. V pravo od postele je vypínač a v levo od ní mám skříně na oblečením.</p>"
+      - condition: "!světlo"
+        description: "<p>Ale je tu tma a nic nevidím.</p>"
+    connections:
+      - direction: "Kuchyně"
+        target: "kuchyně"
+
+  - id: "předsíň"
+    name: "Předsíň"
+    descriptions:
+      - default: "<p>V předsíni skladuji boty, oblečení anebo deštníky. Na pravé straně mám věšák s bundami a různým oblečením, kdežto na levé straně mám botník, ve kterém mám boty normální, sálovky a nebo pohorky. Přímo přede mnou jsou dvěře ven, před kterými  někdo stojí, ale já mu nemůžu otevřít a ani nevím kdo před těmi dveřmi stojí.</p>"
+    connections:
+      - direction: "Kuchyně"
+        target: "kuchyně"
+items:
+  - id: "šálek-čaje"
+    name: "Malý šálek čaje"
+    descriptions:
+      - default: ""
+      - condition: "šálek-čaje:owner:player && plný_šálek"
+        description: "<p>Tenhle šálek čaje, který právě držím v ruce je velmi horký a plný lahodného čaje, který mám moc rád a nestihl jsem ho vypít proto, že někdo zazvonil na dveře.</p>"
+      - condition: "!šálek-čaje:owner:player && plný_šálek"
+        description: "<p>Šálek čaje, velmi horký a plný lahodného čaje, který mám moc rád a nestihl jsem ho vypít proto, že někdo zazvonil na dveře.</p>"
+      - condition: "šálek-čaje:owner:player && !plný_šálek"
+        description: "<p>Šálek čaje, který právě držím v ruce je prázdný a chladný, už jsem ho vypil a měl bych ho položit na stůl.</p>"
+      - condition: "!šálek-čaje:owner:player && !plný_šálek"
+        description: "<p>Prázdný šálek.</p>"
+    movable: "true"
+    onTake:
+      - default: "<p>Vzal jsem šálek čaje do ruky.</p>"
+    onDrop:
+      - condition: "šálek-čaje.owner:player && player:location:kuchyně"
+        description: "<p>Šálek čaje jsem položil na stůl.</p>"
+    onUse:
+      - condition: "šálek-čaje:owner:player && !klíče.owner:player"
+        description: "<p>Vypil jsem si svůj šálek čaje a už si vzpomínám ten klíč jsem určitě zase zapoměl ve skříni v ložnici.</p>"
+        set: "plný_šálek = false"
+    owner: "kuchyně"
+
+  - id: "vypínač"
+    name: "Vypínač"
+    descriptions:
+      - default: ""
+      - condition: "!světlo"
+        description: "<p>Teď jsem nahmatal něco coby možná i mohl být vypínač, ale tím si nejsem jistý.</p>"
+      - condition: "světlo"
+        description: "<p>Teď se koukám na vypínač ale co je na něm tak zvláštního? Vždyť jenom rozsvicí a zhasíná světlo.</p>"
+      - condition: "světlo && vypínač:onSee:count > 2"
+        description: "<p>Co máš pořád s tím světlem? Už mě s ním vážně otravuješ!</p>"
+    movable: "false"
+    onUse:
+      - condition: "player:location:ložnice"
+        description: "<p>Zapnul jsem světlo.</p>"
+    variables:
+      - id: "světlo"
+        value: "false"
+    owner: "ložnice"
+
+  - id: "skříň"
+    name: "Skříň"
+    movable: "false"
+    descriptions:
+      - default: ""
+      - condition: "!světlo"
+        description: "<p>V té skříňce není nic vidět tak že tam nemůžu nic najít!....</p>"
+      - condition: "světlo"
+        description: "<p>Oblečení, svačina. Hmm měl bych si tam uklidit.</p>"
+      - condition: "světlo && klíče:owner:skříň"
+        description: "<p>Ahá tak sem jsem si dal ty klíče, to bych nikdy neřekl, že je najdu zrovinka na tomhle místě, ale vlastně proč bych je sem dával?</p>"
+        set: "klíče:visible = true"
+    owner: "ložnice"
+
+  - id: "klíče"
+    name: "Klíče"
+    movable: "true"
+    visible: "false"
+    owner: "skříň"
+    descriptions:
+      - default: "<p>Klíče od bytu.</p>"
+    onTake:
+      - condition: "klíče:location:skřiň && klíče:visible"
+        description: "<p>Sebral jsem klíče ze skříňky s oblečením.</p>"
+    onUse:
+      - condition: "klíče:owner:player && player:location:předsíň && !dveře_odemčeny"
+        description: "<p>Odemkl jsem vchodové dveře.</p>"
+        set: "dveře_odemčeny = true"
+      - condition: "klíče:owner:player && player:location:předsíň && dveře_odemčeny"
+        description: "<p>Zamknul jsem vchodové dveře.</p>"
+        set: "dveře_odemčeny = false"
+
+  - id: "botník"
+    name: "Botník"
+    movable: "false"
+    owner: "předsíň"
+    descriptions:
+      - default: "<p>Není tu nic zajímavého o čem by se stálo bavit , jen boty!</p>"
+
+  - id: "dveře"
+    name: "Dveře"
+    movable: "false"
+    owner: "předsíň"
+    descriptions:
+      - default: "<p>Jsou to obyčejné dveře ze smrku.</p>"
+      - condition: "dveře_otevřeny"
+        description: "<p>za kterými stojí mladý muž.</p>"
+    onUse:
+      - condition: "klíče.owner:player && !dveře_odemčeny"
+        description: "<p>Úspěšně jsem odemkl dveře ven a otevřel je, před dveřmi stojí nějaký mladší muž okolo třiceti let vysoké postavy a krásných hnědých vlasů.</p>"
+        set: "dveře_otevřeny"
+      - condition: "!klíče.owner:player && !dveře_odemčeny && klíče:visible"
+        description: "<p>No, tak tohle se mi ještě nestalo, já najdu klíče a zapomenu si je ve skříňce?!. No tohle je opravdu neuvěřitelné.</p>"
+      - condition: "!klíče:owner:player && !dveře_odemčeny && !klíče:visible"
+        description: "<p>No, i kdybych sebevíc chtěl zamčené dveře prostě nedokážu otevřít chtělo by to někde po bytě najít klíče ale kde?...</p>"
+      - condition: "dveře_otevřeny"
+        description: "<p>Zavřel jsem dveře. Všiml jsem si překvapeného výrazu muže za dveřmi.</p>"
+        set: "dveře_otevřeny = false"
+
+  - id: "žvýkačka"
+    name: "Žvýkačka"
+    movable: "false"
+    owner: "player"
+    descriptions:
+      - default: "<p>A hele, v kapse mi zbyla ještě jedna žvýkačka tak tomuhle neodoám a hned si ji dám Mlask Mňam..</p>"
+    onSee:
+      - default: ""
+      - condition: "žvýkačka:onSee:count > 0"
+        set: "žvýkačka:visible = false; papírek:visible = true"
+
+  - id: "papírek"
+    name: "Papírek"
+    visible: "false"
+    owner: "player"
+    descriptions:
+      - default: "<p>Papírek od žvýkačky.'</p>"
+    onUse:
+      - condition: "žvýkačka:owner:player"
+        description: "<p>Na co bych asi tak měl použít papírek od žvýkačky?</p>"
+
+characters:
+  - id: "player"
+    name: "Venda"
+    location: "kuchyně"
+
+  - id: "osoba"
+    name: "Osoba"
+    location: "předsíň"
+    descriptions:
+      - default: ""
+      - condition: "dveře_otevřeny"
+        description: "<p>Je to mladý muž okolo třiceti let vysoké postavy a krásných hnědých vlasů.</p>"
+    onTalk:
+      - condition: "!dveře_otevřeny"
+        description: "<p>Nemůžu mluvit s někým přes dveře to se přece nesluší na vychovaného mladého člověka.</p>"
+      - condition: "dveře_otevřeny"
+        description: "<p>Dobrý den pane co pro vás mohu udělat?!<br>
+         Dobrý den pane mám tu pro vás dopis od Ammm...Kamaráda Honzy. <br>
+         No ahá vy jste ten nový poštmistr co u nás měl od ledna nastoupit že? <br>
+         Nu dá se to tak brát, i když tu jsem jen na záskok ale díky za optání. <br> 
+         Není zač nashledanou! <br>
+         Nashledanou!<br>
+         Vrzz Cvak  Nu to jsem zvědav co v tom dopise vlasně je <br>
+         Trhh AHÁ to je Pozvánka pro vás na moji další hru!!!</p>"
+        set: "dveře_otevřeny = false; end_game = true"
+
+variables:
+  - id: "světlo"
+    value: "false"
+
+  - id: "dveře_odemčeny"
+    value: "false"
+
+  - id: "dveře_otevřeny"
+    value: "false"
+
+  - id: "plný_šálek"
+    value: "true"

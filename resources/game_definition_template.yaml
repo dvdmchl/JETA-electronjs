@@ -36,3 +36,8 @@ items:
     location: "Loc1"
 
 quests:
+
+characters:
+  - id: "player"
+    name: "Player"
+    location: "Loc1"

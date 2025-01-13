@@ -1,6 +1,6 @@
-const { ipcMain } = require('electron');
+const {ipcMain} = require('electron');
 
-ipcMain.on('game-action', (event, { action, param }) => {
+ipcMain.on('game-action', (event, {action, param}) => {
     console.log(`Action received: ${action}, Parameter: ${param}`);
 
     if (!event.sender.gameInstance) {
@@ -29,6 +29,7 @@ ipcMain.on('game-action', (event, { action, param }) => {
         default:
             console.error(`Unknown action: ${action}`);
     }
+    game.listCommands();
 });
 
 
@@ -312,21 +313,6 @@ class GameEngine {
                 this.sendUpdate(name);
             }
         }
-
-        // add possible commands
-        this.sendUpdate("<b>Příkazy:</b>");
-        // see
-        let itemsInLoc = Object.values(this.items)
-            .filter(i => i.owner === locId && i.visible !== false);
-        let itemsHrefRow = createItemsHrefRow(itemsInLoc);
-        this.sendUpdate(itemsHrefRow);
-
-        // go
-        for (let conn of loc.connections) {
-            this.sendUpdate("Jdi " + conn.direction);
-        }
-
-        this.sendUpdate("<hr>")
     }
 
     // prozkoumání objektu
@@ -496,13 +482,33 @@ class GameEngine {
         }
     }
 
+    listCommands() {
+        // add possible commands
+        this.sendUpdate("<b>Příkazy:</b>");
+
+        const locId = this.player.location;
+        const loc = this.locations[locId];
+
+        // see
+        let itemsInLoc = Object.values(this.items)
+            .filter(i => i.owner === locId && i.visible !== false);
+        let itemsHrefRow = createItemsHrefRow(itemsInLoc);
+        this.sendUpdate(itemsHrefRow);
+
+        // go
+        let connectionsForLoc = (loc.connections || []);
+        let goHrefRow = createDirectionsHrefRow(connectionsForLoc, this.locations);
+        this.sendUpdate(goHrefRow);
+
+        this.sendUpdate("<hr>")
+    }
+
     sendUpdate(message) {
         console.log("Sending update: ", message);
         if (this.win && this.win.webContents) {
             this.win.webContents.send('game-update', message);
             console.log("Message sent.");
-        }
-        else {
+        } else {
             console.error("Failed to send message: win or webContents is not defined.");
         }
     }
@@ -549,15 +555,25 @@ class GameEngine {
 }
 
 function createItemsHrefRow(items) {
-    if (!items) return "";
+    if (!items || items.length === 0) return "";
     let itemsHrefRow = "";
     items.forEach(item => {
+        if (itemsHrefRow !== "") itemsHrefRow += " | ";
         itemsHrefRow += `<a href="#" class="game-action" data-action="see" data-param="${item.id}">${item.name}</a>`;
     });
     return '<span>Prozkoumat: </span>' + itemsHrefRow;
 }
 
-
+function createDirectionsHrefRow(directions, locations) {
+    if (!directions || directions.length === 0) return "";
+    let locationsHrefRow = "";
+    directions.forEach(direction => {
+        let locId = Object.values(locations).find(l => l.id === direction.target).id;
+        if (locationsHrefRow !== "") locationsHrefRow += " | ";
+        locationsHrefRow += `<a href="#" class="game-action" data-action="go" data-param="${locId}">${direction.direction}</a>`;
+    });
+    return '<span>Jít: </span>' + locationsHrefRow;
+}
 
 
 function play(gameData, win) {
@@ -568,7 +584,8 @@ function play(gameData, win) {
 
     game.start();
     game.look();
+    game.listCommands();
     console.log("Game play method finished.");
 }
 
-module.exports = { play };
+module.exports = {play};

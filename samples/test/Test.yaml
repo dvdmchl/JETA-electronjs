@@ -79,11 +79,12 @@ items:
         description: "<p>Co máš pořád s tím světlem? Už mě s ním vážně otravuješ!</p>"
     movable: "false"
     onUse:
-      - condition: "player:location:ložnice"
+      - condition: "player:location:ložnice && !světlo"
         description: "<p>Zapnul jsem světlo.</p>"
-    variables:
-      - id: "světlo"
-        value: "false"
+        set: "světlo"
+      - condition: "player:location:ložnice && světlo"
+        description: "<p>Vypnul jsem světlo.</p>"
+        set: "!světlo"
     owner: "ložnice"
 
   - id: "skříň"

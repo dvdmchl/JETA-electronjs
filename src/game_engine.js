@@ -484,7 +484,6 @@ class GameEngine {
 
     listCommands() {
         // add possible commands
-        this.sendUpdate("<b>Příkazy:</b>");
 
         const locId = this.player.location;
         const loc = this.locations[locId];
@@ -493,13 +492,16 @@ class GameEngine {
         let itemsInLoc = Object.values(this.items)
             .filter(i => i.owner === locId && i.visible !== false);
         let itemsHrefRow = createItemsHrefRow(itemsInLoc);
-        this.sendUpdate(itemsHrefRow);
 
         // go
         let connectionsForLoc = (loc.connections || []);
         let goHrefRow = createDirectionsHrefRow(connectionsForLoc, this.locations);
-        this.sendUpdate(goHrefRow);
 
+        if (itemsHrefRow || goHrefRow) {
+            this.sendUpdate("<b>Příkazy:</b>");
+            this.sendUpdate(itemsHrefRow);
+            this.sendUpdate(goHrefRow);
+        }
         this.sendUpdate("<hr>")
     }
 

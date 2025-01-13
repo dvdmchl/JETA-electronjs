@@ -179,6 +179,8 @@ characters:
       - default: ""
       - condition: "dveře_otevřeny"
         description: "<p>Je to mladý muž okolo třiceti let vysoké postavy a krásných hnědých vlasů.</p>"
+      - condition: "!dveře_otevřeny"
+        description: "<p>Někdo je asi za dveřmi, ale nevím kdo. Možná by pomohlo otevřít dveře.</p>"
     onTalk:
       - condition: "!dveře_otevřeny"
         description: "<p>Nemůžu mluvit s někým přes dveře to se přece nesluší na vychovaného mladého člověka.</p>"

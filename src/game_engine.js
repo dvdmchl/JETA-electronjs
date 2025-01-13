@@ -50,35 +50,69 @@ function parseCondition(cond, game) {
         }
 
         let result = false;
-        const parts = c.split(':');
-        if (parts.length === 3 || parts.length === 4) {
-            const itemId = parts[0];
-            const attr = parts[1];
-            let value = parts[2];
-            let op = null;
 
-            if (parts.length === 4) {
-                op = parts[2];
-                value = parts[3];
+        // Rozpoznání složitých podmínek s operátory
+        const match = c.match(/^(.+?)([><!=]=?|==)(.+)$/);
+        if (match) {
+            const left = match[1].trim();       // Levá strana podmínky
+            const operator = match[2].trim();  // Operátor
+            const right = match[3].trim();     // Pravá strana podmínky
+
+            // Získání hodnoty levé strany (může to být proměnná, atribut nebo hodnota)
+            let leftValue;
+            if (game.vars.hasOwnProperty(left)) {
+                leftValue = game.vars[left];
+            } else {
+                const [itemId, attr] = left.split(':');
+                const item = game.items[itemId];
+                leftValue = item ? item[attr] : undefined;
             }
 
-            const item = game.items[itemId];
+            // Získání hodnoty pravé strany (číslo, boolean nebo řetězec)
+            let rightValue = isNaN(right) ? (right === "true" ? true : (right === "false" ? false : right)) : parseFloat(right);
 
-            if (itemId === 'player' && attr === 'location') {
-                result = (game.player.location === value);
-            } else if (item && attr === 'owner') {
-                result = (item.owner === value);
-            } else if (item && attr === 'visible') {
-                result = (String(item.visible) === value);
-            } else if (item && attr === 'onSee' && op === 'count>2') {
-                result = false; // Ukázka
+            // Porovnání podle operátoru
+            switch (operator) {
+                case '>':
+                    result = leftValue > rightValue;
+                    break;
+                case '<':
+                    result = leftValue < rightValue;
+                    break;
+                case '>=':
+                    result = leftValue >= rightValue;
+                    break;
+                case '<=':
+                    result = leftValue <= rightValue;
+                    break;
+                case '!=':
+                    result = leftValue != rightValue;
+                    break;
+                case '=': // Podpora pro jediné "="
+                case '==':
+                    result = leftValue == rightValue;
+                    break;
+                default:
+                    console.error(`Unsupported operator: ${operator}`);
+                    result = false;
             }
+        } else if (game.vars.hasOwnProperty(c)) {
+            // Jednoduchá proměnná (bez operátoru)
+            result = game.vars[c];
         } else {
-            result = !!game.vars[c.trim()];
+            // Pokud podmínka obsahuje "item:attr" bez operátorů
+            const parts = c.split(':');
+            if (parts.length === 2) {
+                const item = game.items[parts[0]];
+                result = item ? !!item[parts[1]] : false;
+            }
         }
 
         return negation ? !result : result;
     };
+
+
+
 
     const tokenize = (input) => {
         // Tokenizace podmínky: oddělíme závorky, operátory a podmínky
@@ -264,8 +298,16 @@ class GameEngine {
         // Globální proměnné
         this.vars = {};
         (this.data.variables || []).forEach(v => {
-            this.vars[v.id] = v.value;
+            if (v.value === "true") {
+                this.vars[v.id] = true;
+            } else if (v.value === "false") {
+                this.vars[v.id] = false;
+            } else {
+                // Pokud je hodnota jiná než "true" nebo "false", uložíme ji přímo
+                this.vars[v.id] = v.value;
+            }
         });
+
 
         // Najdeme player
         this.player = this.characters["player"] || null;

@@ -4,7 +4,7 @@
   "description": "Javascript Engine for Text Adventures",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
+    "start": "electron --inspect=5858 .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "dvdmchl",
@@ -16,6 +16,7 @@
   "dependencies": {
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
+    "bootstrap": "^5.3.3",
     "electron-store": "^10.0.0",
     "i18next": "^24.0.5",
     "i18next-fs-backend": "^2.6.0",

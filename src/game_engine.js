@@ -1,99 +1,163 @@
 const { ipcMain } = require('electron');
 
+ipcMain.on('game-action', (event, { action, param }) => {
+    console.log(`Action received: ${action}, Parameter: ${param}`);
+
+    if (!event.sender.gameInstance) {
+        console.error("Game instance is not attached to this renderer.");
+        return;
+    }
+
+    const game = event.sender.gameInstance;
+
+    switch (action) {
+        case 'see':
+            game.see(param);
+            break;
+        case 'look':
+            game.look();
+            break;
+        case 'go':
+            game.go(param);
+            break;
+        case 'use':
+            game.use(param);
+            break;
+        case 'talk':
+            game.talk(param);
+            break;
+        default:
+            console.error(`Unknown action: ${action}`);
+    }
+});
+
+
 ///////////////////////////////////////////
 // 2) Pomocné funkce pro engine
 ///////////////////////////////////////////
 function parseCondition(cond, game) {
-    // Vrátí true/false podle splnění condition
-    // Příklady condition:
-    //   "šálek-čaje:owner:kuchyně"
-    //   "!světlo"
-    //   "světlo"
-    //   "vypínač:onSee:count>2"
-    //   "klíče:visible"
-    //   ...
-    let negation = false;
-    let c = cond.trim();
+    // Funkce na parsování a vyhodnocení složených podmínek
 
-    // Pokud condition začíná '!', je to negace
-    if (c.startsWith('!')) {
-        negation = true;
-        c = c.substring(1).trim();
-    }
+    // 1. Pomocné funkce
+    const evaluateCondition = (c) => {
+        let negation = false;
 
-    // Rozparsujeme si varianty
-    // 1) item:owner:xxx
-    // 2) var
-    // 3) item:visible
-    // 4) item:onSee:count>2 (ukázka složitější podmínky – tady je spíš pro illustraci)
-    // 5) player:location:xxx
-    // 6) c=== 'světlo'
-    let result = false;
-
-    const parts = c.split(':');
-    if (parts.length === 3 || parts.length === 4) {
-        // Možné formáty:
-        // itemId:owner:xxx
-        // itemId:visible= true/false
-        // itemId:onSee:count>2
-        let itemId = parts[0];
-        let attr = parts[1];
-        let value = parts[2];
-        let op = null;
-        if (parts.length === 4) {
-            // Třeba "vypínač:onSee:count>2"
-            op = parts[2];
-            value = parts[3];
+        // Zpracuj negaci (!)
+        if (c.startsWith('!')) {
+            negation = true;
+            c = c.substring(1).trim();
         }
 
-        // Najdeme item
-        const item = game.items[itemId];
-        const char = game.characters[itemId];
-        const location = game.locations[itemId];
+        let result = false;
+        const parts = c.split(':');
+        if (parts.length === 3 || parts.length === 4) {
+            const itemId = parts[0];
+            const attr = parts[1];
+            let value = parts[2];
+            let op = null;
 
-        // 'player:location:xxx'
-        if (itemId === 'player' && attr === 'location') {
-            result = (game.player.location === value);
-        }
-        // 'xxx:owner:yyy'
-        else if (item && attr === 'owner') {
-            result = (item.owner === value);
-        }
-        // 'xxx:location:yyy' – občas se v definicích plete 'location' vs. 'owner'
-        else if (item && attr === 'location') {
-            result = (item.location === value);
-        }
-        // 'xxx:visible'
-        else if (item && attr === 'visible') {
-            // tady value může být "" nebo 'true' podle definice
-            if (value === 'true' || value === 'false') {
+            if (parts.length === 4) {
+                op = parts[2];
+                value = parts[3];
+            }
+
+            const item = game.items[itemId];
+
+            if (itemId === 'player' && attr === 'location') {
+                result = (game.player.location === value);
+            } else if (item && attr === 'owner') {
+                result = (item.owner === value);
+            } else if (item && attr === 'visible') {
                 result = (String(item.visible) === value);
+            } else if (item && attr === 'onSee' && op === 'count>2') {
+                result = false; // Ukázka
+            }
+        } else {
+            result = !!game.vars[c.trim()];
+        }
+
+        return negation ? !result : result;
+    };
+
+    const tokenize = (input) => {
+        // Tokenizace podmínky: oddělíme závorky, operátory a podmínky
+        const regex = /\(|\)|\|\||&&|![^(&&|\|\|)]*|[^(&&|\|\|)\s]+/g;
+        return input.match(regex) || [];
+    };
+
+    const parseTokens = (tokens) => {
+        const stack = [];
+        const output = [];
+
+        // Priorita operátorů
+        const precedence = {
+            '||': 1,
+            '&&': 2,
+            '!': 3,
+        };
+
+        const isOperator = (token) => ['&&', '||', '!'].includes(token);
+
+        for (const token of tokens) {
+            if (token === '(') {
+                stack.push(token);
+            } else if (token === ')') {
+                while (stack.length > 0 && stack[stack.length - 1] !== '(') {
+                    output.push(stack.pop());
+                }
+                stack.pop(); // Odstraň '(' ze zásobníku
+            } else if (isOperator(token)) {
+                while (
+                    stack.length > 0 &&
+                    precedence[token] <= precedence[stack[stack.length - 1]]
+                    ) {
+                    output.push(stack.pop());
+                }
+                stack.push(token);
             } else {
-                // Bez rovnání – jen existence
-                result = !!item.visible;
+                output.push(token); // Operand
             }
         }
-        // 'xxx:onSee:count>2' – jen ukázka
-        else if (item && attr === 'onSee' && op === 'count>2') {
-            // Tady by sis musel ukládat, kolikrát hráč na item "koukl".
-            // Teď jen dám do result = false pro ilustraci.
-            // Kdybychom to chtěli řešit, museli bychom to ukládat do stavu itemu.
-            result = false;
-        }
-    }
-    else {
-        // Je to asi jen jméno globální proměnné: "světlo" / "dveře_odemčeny" ...
-        if (game.vars[c] !== undefined) {
-            result = !!game.vars[c];
-        } else {
-            // Může být item s c==id a test jestli je "true"? ...
-            result = false;
-        }
-    }
 
-    if (negation) return !result;
-    return result;
+        while (stack.length > 0) {
+            output.push(stack.pop());
+        }
+
+        return output;
+    };
+
+    const evaluateAST = (tokens) => {
+        const stack = [];
+
+        for (const token of tokens) {
+            if (['&&', '||', '!'].includes(token)) {
+                if (token === '!') {
+                    const operand = stack.pop();
+                    stack.push(!operand);
+                } else {
+                    const b = stack.pop();
+                    const a = stack.pop();
+                    if (token === '&&') stack.push(a && b);
+                    if (token === '||') stack.push(a || b);
+                }
+            } else {
+                stack.push(evaluateCondition(token));
+            }
+        }
+
+        return stack[0];
+    };
+
+    // 2. Tokenizace
+    const tokens = tokenize(cond);
+
+    // 3. Parsování do postfixového zápisu (RPN - Reverse Polish Notation)
+    const postfixTokens = parseTokens(tokens);
+
+    // 4. Vyhodnocení
+    return evaluateAST(postfixTokens);
 }
+
 
 function parseSet(setCmd, game) {
     // "plný_šálek = false"  nebo  "dveře_otevřeny=true"
@@ -151,7 +215,7 @@ function getDescription(descrArray, game) {
     for (let d of descrArray) {
         if (d.condition) {
             if (parseCondition(d.condition, game)) {
-                return d.description;
+                return defaultDescr + d.description;
             }
         }
     }
@@ -160,6 +224,7 @@ function getDescription(descrArray, game) {
 
 ///////////////////////////////////////////
 // 3) Třída hry
+
 ///////////////////////////////////////////
 class GameEngine {
     constructor(data, win) {
@@ -207,8 +272,7 @@ class GameEngine {
 
     start() {
         console.log("Starting game...");
-        this.sendUpdate(`*** ${this.data.metadata.title} ***\n`);
-        this.sendUpdate("Intro:");
+        this.sendUpdate(`${this.data.metadata.title}`);
         (this.data.intro || []).forEach(introPage => {
             this.sendUpdate(introPage.page);
         });
@@ -230,13 +294,13 @@ class GameEngine {
 
         // Položky, které "owner" = lokace a jsou "viditelné"
         if (this.items != null) {
-            this.sendUpdate("<p>Vidíš předměty:</p><br>");
+            this.sendUpdate("<b>Vidíš předměty:</b>");
         }
         for (let itemId in this.items) {
             const it = this.items[itemId];
             if (it.owner === locId && it.visible !== false) {
-                let descr = getDescription(it.descriptions || [], this);
-                if (descr) this.sendUpdate(descr);
+                let name = '<div class="game-item">' + it.name + '</div>';
+                this.sendUpdate(name);
             }
         }
 
@@ -244,10 +308,57 @@ class GameEngine {
         for (let charId in this.characters) {
             const ch = this.characters[charId];
             if (ch.location === locId && ch.id !== "player") {
-                // Ten popis se může měnit podle condition
-                let cDescr = getDescription(ch.descriptions || [], this);
-                if (cDescr) this.sendUpdate(cDescr);
+                let name = '<div class="game-character">' + ch.name + '</div>';
+                this.sendUpdate(name);
             }
+        }
+
+        // add possible commands
+        this.sendUpdate("<b>Příkazy:</b>");
+        // see
+        let itemsInLoc = Object.values(this.items)
+            .filter(i => i.owner === locId && i.visible !== false);
+        let itemsHrefRow = createItemsHrefRow(itemsInLoc);
+        this.sendUpdate(itemsHrefRow);
+
+        // go
+        for (let conn of loc.connections) {
+            this.sendUpdate("Jdi " + conn.direction);
+        }
+
+        this.sendUpdate("<hr>")
+    }
+
+    // prozkoumání objektu
+    see(itemId) {
+
+        let foundItem = Object.values(this.items).find(i => i.id === itemId);
+        if (!foundItem) {
+            this.sendUpdate("Takový předmět tu není.");
+            return;
+        }
+        this.sendUpdate("Prozkoumáváš " + foundItem.name + ".");
+
+        // Musí být v aktuální lokaci
+        if (foundItem.owner !== this.player.location) {
+            this.sendUpdate("Tady nic takového neleží.");
+            return;
+        }
+        // Musí být viditelný
+        if (foundItem.visible === false) {
+            this.sendUpdate("To nevidíš.");
+            return;
+        }
+
+        let descr = getDescription(foundItem.descriptions || [], this);
+        this.sendUpdate(descr);
+
+        // increase onSee count
+        let variablePath = foundItem.id + ":onSee:count";
+        this.setData(variablePath, this.getData(variablePath, 0) + 1);
+        // onSee?
+        if (foundItem.onSee) {
+            // TODO: implement onSee actions
         }
     }
 
@@ -395,10 +506,66 @@ class GameEngine {
             console.error("Failed to send message: win or webContents is not defined.");
         }
     }
+
+    // set variable to gameData
+    setData(pathToVariable, value) {
+        let parts = pathToVariable.split(':');
+        let current = this.data;
+
+        for (let i = 0; i < parts.length - 1; i++) {
+            if (!current[parts[i]]) {
+                // Pokud klíč neexistuje, vytvoř ho jako prázdný objekt
+                current[parts[i]] = {};
+            }
+            current = current[parts[i]];
+        }
+
+        // Nastav poslední část na hodnotu
+        current[parts[parts.length - 1]] = value;
+    }
+
+
+    getData(pathToVariable, defaultValue) {
+        let parts = pathToVariable.split(':');
+        let current = this.data;
+
+        for (let i = 0; i < parts.length - 1; i++) {
+            if (!current[parts[i]]) {
+                // Pokud klíč neexistuje, vytvoříme ho jako prázdný objekt
+                current[parts[i]] = {};
+            }
+            current = current[parts[i]];
+        }
+
+        // Pokud poslední část cesty neexistuje, nastavíme defaultní hodnotu
+        if (current[parts[parts.length - 1]] === undefined) {
+            current[parts[parts.length - 1]] = defaultValue;
+        }
+
+        // Vrátíme hodnotu
+        return current[parts[parts.length - 1]];
+    }
+
 }
+
+function createItemsHrefRow(items) {
+    if (!items) return "";
+    let itemsHrefRow = "";
+    items.forEach(item => {
+        itemsHrefRow += `<a href="#" class="game-action" data-action="see" data-param="${item.id}">${item.name}</a>`;
+    });
+    return '<span>Prozkoumat: </span>' + itemsHrefRow;
+}
+
+
+
 
 function play(gameData, win) {
     const game = new GameEngine(gameData, win);
+
+    // Připoj hru k rendereru
+    win.webContents.gameInstance = game;
+
     game.start();
     game.look();
     console.log("Game play method finished.");

@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain } = require('electron/main');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const { createWindow } = require('./src/jeta_ui.js');
 
 app.whenReady().then(() => {

@@ -1,23 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta charset="utf-8" />
-        <meta
-                http-equiv="Content-Security-Policy"
-                content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'"
-        />
-        <meta
-                http-equiv="X-Content-Security-Policy"
-                content="default-src 'self'; script-src 'self'"
-        />
-        <title id="title">JETA</title>
-    </head>
-    <body>
-        <div id="game-output"></div>
-        <div id="menu-look"></div>
-        <div id="menu-go"></div>
-        <div id="info"></div>
-    </body>
-    <script src="../../src/renderer.js"></script>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8"/>
+    <meta
+            http-equiv="Content-Security-Policy"
+            content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'"
+    />
+    <meta
+            http-equiv="X-Content-Security-Policy"
+            content="default-src 'self'; script-src 'self'"
+    />
+    <title id="title">JETA</title>
+    <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div id="container m-1">
+    <div class="row">
+        <div class="col">
+            <div id="game-output"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div id="menu-look"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div id="menu-go"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <br><br>
+        </div>
+    </div>
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+        <div class="row">
+            <div class="col" id="info">
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="../../src/renderer.js"></script>
 </html>

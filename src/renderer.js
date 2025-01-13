@@ -47,6 +47,8 @@ ipcRenderer.on('game-update', (data) => {
         const newDiv = document.createElement('div');
         newDiv.innerHTML = data;
         gameOutput.appendChild(newDiv);
+        // Scroll to the bottom of the container
+        gameOutput.scrollTop = gameOutput.scrollHeight;
     } else {
         console.error('Element with id "game-output" not found');
     }
@@ -55,6 +57,21 @@ ipcRenderer.on('game-update', (data) => {
 
 ipcRenderer.on('game-command', (event, command) => {
     console.log('Received game-command:', command); // Debugging line
+});
+
+document.addEventListener('click', (event) => {
+    const target = event.target;
+
+    // Ověř, zda je kliknutý prvek "game-action"
+    if (target.classList.contains('game-action')) {
+        event.preventDefault();
+
+        const action = target.getAttribute('data-action');
+        const param = target.getAttribute('data-param');
+
+        // Pošli akci zpět do hlavního procesu
+        window.electron.ipcRenderer.send('game-action', { action, param });
+    }
 });
 
 func();

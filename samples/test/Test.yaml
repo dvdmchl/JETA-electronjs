@@ -17,7 +17,7 @@ locations:
     name: "Kuchyně"
     descriptions:
       - default: "<p>Jsem v kuchyni. Kromě kuchyňské linky, spotřebičů, stolu a jedné židle tu nic není.</p>"
-      - condition: "šálek-čaje:owner:kuchyně"
+      - condition: "šálek-čaje:owner = kuchyně"
         description: "<p>Jen malý šálek čaje na stole.</p>"
     connections:
       - direction: "Předsíň"
@@ -47,22 +47,22 @@ items:
     name: "Malý šálek čaje"
     descriptions:
       - default: ""
-      - condition: "šálek-čaje:owner:player && plný_šálek"
+      - condition: "šálek-čaje:owner = player && plný_šálek"
         description: "<p>Tenhle šálek čaje, který právě držím v ruce je velmi horký a plný lahodného čaje, který mám moc rád a nestihl jsem ho vypít proto, že někdo zazvonil na dveře.</p>"
-      - condition: "!šálek-čaje:owner:player && plný_šálek"
+      - condition: "!šálek-čaje:owner = player && plný_šálek"
         description: "<p>Šálek čaje, velmi horký a plný lahodného čaje, který mám moc rád a nestihl jsem ho vypít proto, že někdo zazvonil na dveře.</p>"
-      - condition: "šálek-čaje:owner:player && !plný_šálek"
+      - condition: "šálek-čaje:owner = player && !plný_šálek"
         description: "<p>Šálek čaje, který právě držím v ruce je prázdný a chladný, už jsem ho vypil a měl bych ho položit na stůl.</p>"
-      - condition: "!šálek-čaje:owner:player && !plný_šálek"
+      - condition: "!šálek-čaje:owner = player && !plný_šálek"
         description: "<p>Prázdný šálek.</p>"
     movable: "true"
     onTake:
       - default: "<p>Vzal jsem šálek čaje do ruky.</p>"
     onDrop:
-      - condition: "šálek-čaje.owner:player && player:location:kuchyně"
+      - condition: "šálek-čaje.owner = player && player:location = kuchyně"
         description: "<p>Šálek čaje jsem položil na stůl.</p>"
     onUse:
-      - condition: "šálek-čaje:owner:player && !klíče.owner:player"
+      - condition: "šálek-čaje:owner = player && klíče.owner != player"
         description: "<p>Vypil jsem si svůj šálek čaje a už si vzpomínám ten klíč jsem určitě zase zapoměl ve skříni v ložnici.</p>"
         set: "plný_šálek = false"
     owner: "kuchyně"
@@ -79,10 +79,10 @@ items:
         description: "<p>Co máš pořád s tím světlem? Už mě s ním vážně otravuješ!</p>"
     movable: "false"
     onUse:
-      - condition: "player:location:ložnice && !světlo"
+      - condition: "player:location = ložnice && !světlo"
         description: "<p>Zapnul jsem světlo.</p>"
         set: "světlo"
-      - condition: "player:location:ložnice && světlo"
+      - condition: "player:location = ložnice && světlo"
         description: "<p>Vypnul jsem světlo.</p>"
         set: "!světlo"
     owner: "ložnice"
@@ -96,7 +96,7 @@ items:
         description: "<p>V té skříňce není nic vidět tak že tam nemůžu nic najít!....</p>"
       - condition: "světlo"
         description: "<p>Oblečení, svačina. Hmm měl bych si tam uklidit.</p>"
-      - condition: "světlo && klíče:owner:skříň"
+      - condition: "světlo && klíče:owner = skříň"
         description: "<p>Ahá tak sem jsem si dal ty klíče, to bych nikdy neřekl, že je najdu zrovinka na tomhle místě, ale vlastně proč bych je sem dával?</p>"
         set: "klíče:visible = true"
     owner: "ložnice"
@@ -109,13 +109,13 @@ items:
     descriptions:
       - default: "<p>Klíče od bytu.</p>"
     onTake:
-      - condition: "klíče:location:skřiň && klíče:visible"
+      - condition: "klíče:location  = skřiň && klíče:visible = true"
         description: "<p>Sebral jsem klíče ze skříňky s oblečením.</p>"
     onUse:
-      - condition: "klíče:owner:player && player:location:předsíň && !dveře_odemčeny"
+      - condition: "klíče:owner = player && player:location = předsíň && !dveře_odemčeny"
         description: "<p>Odemkl jsem vchodové dveře.</p>"
         set: "dveře_odemčeny = true"
-      - condition: "klíče:owner:player && player:location:předsíň && dveře_odemčeny"
+      - condition: "klíče:owner = player && player:location = předsíň && dveře_odemčeny"
         description: "<p>Zamknul jsem vchodové dveře.</p>"
         set: "dveře_odemčeny = false"
 
@@ -135,12 +135,12 @@ items:
       - condition: "dveře_otevřeny"
         description: "<p>za kterými stojí mladý muž.</p>"
     onUse:
-      - condition: "klíče.owner:player && !dveře_odemčeny"
+      - condition: "klíče.owner = player && !dveře_odemčeny"
         description: "<p>Úspěšně jsem odemkl dveře ven a otevřel je, před dveřmi stojí nějaký mladší muž okolo třiceti let vysoké postavy a krásných hnědých vlasů.</p>"
         set: "dveře_otevřeny"
-      - condition: "!klíče.owner:player && !dveře_odemčeny && klíče:visible"
+      - condition: "!klíče.owner = player && !dveře_odemčeny && klíče:visible = true"
         description: "<p>No, tak tohle se mi ještě nestalo, já najdu klíče a zapomenu si je ve skříňce?!. No tohle je opravdu neuvěřitelné.</p>"
-      - condition: "!klíče:owner:player && !dveře_odemčeny && !klíče:visible"
+      - condition: "!klíče:owner = player && !dveře_odemčeny && !klíče:visible= true"
         description: "<p>No, i kdybych sebevíc chtěl zamčené dveře prostě nedokážu otevřít chtělo by to někde po bytě najít klíče ale kde?...</p>"
       - condition: "dveře_otevřeny"
         description: "<p>Zavřel jsem dveře. Všiml jsem si překvapeného výrazu muže za dveřmi.</p>"
@@ -153,9 +153,12 @@ items:
     descriptions:
       - default: "<p>A hele, v kapse mi zbyla ještě jedna žvýkačka tak tomuhle neodoám a hned si ji dám Mlask Mňam..</p>"
     onSee:
-      - default: ""
-      - condition: "žvýkačka:onSee:count > 0"
+      - condition: "žvýkačka:visible = true"
         set: "žvýkačka:visible = false; papírek:visible = true"
+    onUse:
+        - condition: "žvýkačka:owner = player"
+          description: "<p>Dal jsem si žvýkačku do pusy. Mlask Mňam..</p>"
+          set: "žvýkačka:visible = false; papírek:visible = true"
 
   - id: "papírek"
     name: "Papírek"
@@ -164,7 +167,7 @@ items:
     descriptions:
       - default: "<p>Papírek od žvýkačky.'</p>"
     onUse:
-      - condition: "žvýkačka:owner:player"
+      - condition: "žvýkačka:owner = player"
         description: "<p>Na co bych asi tak měl použít papírek od žvýkačky?</p>"
 
 characters:

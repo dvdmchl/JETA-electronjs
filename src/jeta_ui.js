@@ -12,6 +12,8 @@ let menu;
 const createWindow = async () => {
     const Store = (await import('electron-store')).default;
     const store = new Store();
+    console.log("Store path:", store.path);
+
     const windowState = store.get('windowState') || {width: 1280, height: 760};
     let currentLanguage = store.get('language') || 'en';
     const devMode = store.get('devMode') || false;

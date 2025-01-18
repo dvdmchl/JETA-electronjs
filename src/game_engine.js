@@ -23,6 +23,12 @@ ipcMain.on('game-action', (event, {action, param}) => {
         case 'use':
             game.use(param);
             break;
+        case 'take':
+            game.take(param);
+            break;
+        case 'drop':
+            game.drop(param);
+            break;
         case 'talk':
             game.talk(param);
             break;
@@ -49,8 +55,6 @@ function parseCondition(cond, game) {
             c = c.substring(1).trim();
         }
 
-        let result = false;
-
         // Rozpoznání složitých podmínek s operátory
         const match = c.match(/^(.+?)([><!=]=?|==)(.+)$/);
         if (match) {
@@ -72,6 +76,7 @@ function parseCondition(cond, game) {
             let rightValue = isNaN(right) ? (right === "true" ? true : (right === "false" ? false : right)) : parseFloat(right);
 
             // Porovnání podle operátoru
+            let result = false;
             switch (operator) {
                 case '>':
                     result = leftValue > rightValue;
@@ -94,7 +99,6 @@ function parseCondition(cond, game) {
                     break;
                 default:
                     console.error(`Unsupported operator: ${operator}`);
-                    result = false;
             }
         } else if (game.vars.hasOwnProperty(c)) {
             // Jednoduchá proměnná (bez operátoru)
@@ -110,8 +114,6 @@ function parseCondition(cond, game) {
 
         return negation ? !result : result;
     };
-
-
 
 
     const tokenize = (input) => {
@@ -282,9 +284,10 @@ class GameEngine {
         (this.data.items || []).forEach(it => {
             this.items[it.id] = {
                 ...it,
-                // defaultní parametry
+                // Defaultní parametry
                 owner: it.owner || null,
-                visible: it.visible === undefined ? true : it.visible
+                visible: it.visible === undefined ? true : (it.visible === "true" ? true : (it.visible === "false" ? false : it.visible)),
+                movable: it.movable === undefined ? true : (it.movable === "true" ? true : (it.movable === "false" ? false : it.movable))
             };
         });
 
@@ -337,23 +340,24 @@ class GameEngine {
 
         // Položky, které "owner" = lokace a jsou "viditelné"
         if (this.items != null) {
-            this.sendUpdate("<b>Vidíš předměty:</b>");
-        }
-        for (let itemId in this.items) {
-            const it = this.items[itemId];
-            if (it.owner === locId && it.visible !== false) {
-                let name = '<div class="game-item">' + it.name + '</div>';
-                this.sendUpdate(name);
-            }
+            let itemsInLoc = Object.values(this.items)
+                .filter(i => i.owner === locId && i.visible !== false)
+                .map(i => i.name);
+            let joinItems = itemsInLoc.join(", ");
+            if (joinItems === "") joinItems = "nic";
+            let items = '<span><b>Předměty: </b></span><span class="game-item">' + joinItems + '</span>';
+            this.sendUpdate(items);
         }
 
         // Postavy v této lokaci
-        for (let charId in this.characters) {
-            const ch = this.characters[charId];
-            if (ch.location === locId && ch.id !== "player") {
-                let name = '<div class="game-character">' + ch.name + '</div>';
-                this.sendUpdate(name);
-            }
+        if (this.characters != null) {
+            let charactersInLoc = Object.values(this.characters)
+                .filter(ch => ch.location === locId && ch.id !== "player")
+                .map(ch =>  ch.name);
+            let joinCharacters = charactersInLoc.join(", ");
+            if (joinCharacters === "") joinCharacters = "nikdo";
+            let characters = '<span><b>Postavy: </b></span><span class="game-character">' + joinCharacters + '</span>';
+            this.sendUpdate(characters);
         }
     }
 
@@ -365,18 +369,21 @@ class GameEngine {
             this.sendUpdate("Takový předmět tu není.");
             return;
         }
-        this.sendUpdate("Prozkoumáváš " + foundItem.name + ".");
 
-        // Musí být v aktuální lokaci
-        if (foundItem.owner !== this.player.location) {
-            this.sendUpdate("Tady nic takového neleží.");
-            return;
-        }
         // Musí být viditelný
         if (foundItem.visible === false) {
             this.sendUpdate("To nevidíš.");
             return;
         }
+
+        this.sendUpdate("Prozkoumáváš " + foundItem.name + ".");
+
+        // Musí být v aktuální lokaci nebo u hráče
+        if (foundItem.owner !== this.player.location && foundItem.owner !== "player") {
+            this.sendUpdate("Tady nic takového neleží.");
+            return;
+        }
+
 
         let descr = getDescription(foundItem.descriptions || [], this);
         this.sendUpdate(descr);
@@ -386,7 +393,13 @@ class GameEngine {
         this.setData(variablePath, this.getData(variablePath, 0) + 1);
         // onSee?
         if (foundItem.onSee) {
-            // TODO: implement onSee actions
+            for (let action of foundItem.onSee) {
+                // Pokud má condition, vyhodnotíme
+                if (action.condition) {
+                    if (!parseCondition(action.condition, this)) continue;
+                }
+                this.sendUpdate(action.description);
+            }
         }
     }
 
@@ -530,10 +543,29 @@ class GameEngine {
         const locId = this.player.location;
         const loc = this.locations[locId];
 
+        // look
+        let lookHref = '<a href="#" class="game-action" data-action="look">rozhlédnout se</a>';
+
         // see
         let itemsInLoc = Object.values(this.items)
-            .filter(i => i.owner === locId && i.visible !== false);
-        let itemsHrefRow = createItemsHrefRow(itemsInLoc);
+            .filter(i => i.owner === locId && i.visible);
+        let itemsInInventory = Object.values(this.items)
+            .filter(i => i.owner === "player" && i.visible);
+        let itemsHrefRow = createItemsHrefRow(itemsInLoc, itemsInInventory);
+
+        // take
+        let itemsInLocAndTakeable = itemsInLoc.filter(i => (i.owner === locId) && i.movable);
+        let takeHrefRow = createTakeHrefRow(itemsInLocAndTakeable);
+
+        // use
+        let itemsForLocAndInventory = Object.values(this.items)
+            .filter(i => (i.owner === locId || i.owner === "player") && i.visible);
+        let useHrefRow = createUseHrefRow(itemsForLocAndInventory);
+
+        // drop
+        let itemsInInventoryAndDropable = Object.values(this.items)
+            .filter(i => (i.owner === "player" ) && i.movable && i.visible);
+        let dropHrefRow = createDropHrefRow(itemsInInventoryAndDropable);
 
         // go
         let connectionsForLoc = (loc.connections || []);
@@ -541,7 +573,11 @@ class GameEngine {
 
         if (itemsHrefRow || goHrefRow) {
             this.sendUpdate("<b>Příkazy:</b>");
+            this.sendUpdate(lookHref);
             this.sendUpdate(itemsHrefRow);
+            this.sendUpdate(useHrefRow);
+            this.sendUpdate(takeHrefRow);
+            this.sendUpdate(dropHrefRow);
             this.sendUpdate(goHrefRow);
         }
         this.sendUpdate("<hr>")
@@ -598,14 +634,49 @@ class GameEngine {
 
 }
 
-function createItemsHrefRow(items) {
+function createItemsHrefRow(items, itemsInInventory) {
     if (!items || items.length === 0) return "";
     let itemsHrefRow = "";
     items.forEach(item => {
         if (itemsHrefRow !== "") itemsHrefRow += " | ";
         itemsHrefRow += `<a href="#" class="game-action" data-action="see" data-param="${item.id}">${item.name}</a>`;
     });
+    itemsHrefRow += " Inventář: ";
+    itemsInInventory.forEach(item => {
+        if (itemsHrefRow !== "") itemsHrefRow += " | ";
+        itemsHrefRow += `<a href="#" class="game-action" data-action="see" data-param="${item.id}">${item.name}</a>`;
+    });
     return '<span>Prozkoumat: </span>' + itemsHrefRow;
+}
+
+function createUseHrefRow(itemsForLocAndInventory) {
+    if (!itemsForLocAndInventory || itemsForLocAndInventory.length === 0) return "";
+    let useHrefRow = "";
+    itemsForLocAndInventory.forEach(item => {
+        if (useHrefRow !== "") useHrefRow += " | ";
+        useHrefRow += `<a href="#" class="game-action" data-action="use" data-param="${item.id}">${item.name}</a>`;
+    });
+    return '<span>Použít: </span>' + useHrefRow;
+}
+
+function createTakeHrefRow(items) {
+    if (!items || items.length === 0) return "";
+    let takeHrefRow = "";
+    items.forEach(item => {
+        if (takeHrefRow !== "") takeHrefRow += " | ";
+        takeHrefRow += `<a href="#" class="game-action" data-action="take" data-param="${item.name}">${item.name}</a>`;
+    });
+    return '<span>Vzít: </span>' + takeHrefRow;
+}
+
+function createDropHrefRow(items) {
+    if (!items || items.length === 0) return "";
+    let dropHrefRow = "";
+    items.forEach(item => {
+        if (dropHrefRow !== "") dropHrefRow += " | ";
+        dropHrefRow += `<a href="#" class="game-action" data-action="drop" data-param="${item.name}">${item.name}</a>`;
+    });
+    return '<span>Položit: </span>' + dropHrefRow;
 }
 
 function createDirectionsHrefRow(directions, locations) {

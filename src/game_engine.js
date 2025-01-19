@@ -40,227 +40,7 @@ ipcMain.on('game-action', (event, {action, param}) => {
 
 
 ///////////////////////////////////////////
-// 2) Pomocné funkce pro engine
-///////////////////////////////////////////
-function parseCondition(cond, game) {
-    // Funkce na parsování a vyhodnocení složených podmínek
-
-    // 1. Pomocné funkce
-    const evaluateCondition = (c) => {
-        let negation = false;
-
-        // Zpracuj negaci (!)
-        if (c.startsWith('!')) {
-            negation = true;
-            c = c.substring(1).trim();
-        }
-
-        // Rozpoznání složitých podmínek s operátory
-        const match = c.match(/^(.+?)([><!=]=?|==)(.+)$/);
-        if (match) {
-            const left = match[1].trim();       // Levá strana podmínky
-            const operator = match[2].trim();  // Operátor
-            const right = match[3].trim();     // Pravá strana podmínky
-
-            // Získání hodnoty levé strany (může to být proměnná, atribut nebo hodnota)
-            let leftValue;
-            if (game.vars.hasOwnProperty(left)) {
-                leftValue = game.vars[left];
-            } else {
-                const [itemId, attr] = left.split(':');
-                const item = game.items[itemId];
-                leftValue = item ? item[attr] : undefined;
-            }
-
-            // Získání hodnoty pravé strany (číslo, boolean nebo řetězec)
-            let rightValue = isNaN(right) ? (right === "true" ? true : (right === "false" ? false : right)) : parseFloat(right);
-
-            // Porovnání podle operátoru
-            let result = false;
-            switch (operator) {
-                case '>':
-                    result = leftValue > rightValue;
-                    break;
-                case '<':
-                    result = leftValue < rightValue;
-                    break;
-                case '>=':
-                    result = leftValue >= rightValue;
-                    break;
-                case '<=':
-                    result = leftValue <= rightValue;
-                    break;
-                case '!=':
-                    result = leftValue != rightValue;
-                    break;
-                case '=': // Podpora pro jediné "="
-                case '==':
-                    result = leftValue == rightValue;
-                    break;
-                default:
-                    console.error(`Unsupported operator: ${operator}`);
-            }
-        } else if (game.vars.hasOwnProperty(c)) {
-            // Jednoduchá proměnná (bez operátoru)
-            result = game.vars[c];
-        } else {
-            // Pokud podmínka obsahuje "item:attr" bez operátorů
-            const parts = c.split(':');
-            if (parts.length === 2) {
-                const item = game.items[parts[0]];
-                result = item ? !!item[parts[1]] : false;
-            }
-        }
-
-        return negation ? !result : result;
-    };
-
-
-    const tokenize = (input) => {
-        // Tokenizace podmínky: oddělíme závorky, operátory a podmínky
-        const regex = /\(|\)|\|\||&&|![^(&&|\|\|)]*|[^(&&|\|\|)\s]+/g;
-        return input.match(regex) || [];
-    };
-
-    const parseTokens = (tokens) => {
-        const stack = [];
-        const output = [];
-
-        // Priorita operátorů
-        const precedence = {
-            '||': 1,
-            '&&': 2,
-            '!': 3,
-        };
-
-        const isOperator = (token) => ['&&', '||', '!'].includes(token);
-
-        for (const token of tokens) {
-            if (token === '(') {
-                stack.push(token);
-            } else if (token === ')') {
-                while (stack.length > 0 && stack[stack.length - 1] !== '(') {
-                    output.push(stack.pop());
-                }
-                stack.pop(); // Odstraň '(' ze zásobníku
-            } else if (isOperator(token)) {
-                while (
-                    stack.length > 0 &&
-                    precedence[token] <= precedence[stack[stack.length - 1]]
-                    ) {
-                    output.push(stack.pop());
-                }
-                stack.push(token);
-            } else {
-                output.push(token); // Operand
-            }
-        }
-
-        while (stack.length > 0) {
-            output.push(stack.pop());
-        }
-
-        return output;
-    };
-
-    const evaluateAST = (tokens) => {
-        const stack = [];
-
-        for (const token of tokens) {
-            if (['&&', '||', '!'].includes(token)) {
-                if (token === '!') {
-                    const operand = stack.pop();
-                    stack.push(!operand);
-                } else {
-                    const b = stack.pop();
-                    const a = stack.pop();
-                    if (token === '&&') stack.push(a && b);
-                    if (token === '||') stack.push(a || b);
-                }
-            } else {
-                stack.push(evaluateCondition(token));
-            }
-        }
-
-        return stack[0];
-    };
-
-    // 2. Tokenizace
-    const tokens = tokenize(cond);
-
-    // 3. Parsování do postfixového zápisu (RPN - Reverse Polish Notation)
-    const postfixTokens = parseTokens(tokens);
-
-    // 4. Vyhodnocení
-    return evaluateAST(postfixTokens);
-}
-
-
-function parseSet(setCmd, game) {
-    // "plný_šálek = false"  nebo  "dveře_otevřeny=true"
-    // nebo "klíče:visible=true"
-    // nebo "dveře_otevřeny = false; end_game = true"
-    let parts = setCmd.split(';');
-    parts.forEach(p => {
-        let trimmed = p.trim();
-        let [left, right] = trimmed.split('=');
-        if (!right) return;
-        left = left.trim();
-        right = right.trim();
-
-        // Např. left = "plný_šálek", right = "false"
-        // anebo left = "klíče:visible", right = "true"
-        if (left.includes(':')) {
-            // itemId:visible = ...
-            const subParts = left.split(':');
-            const itemId = subParts[0];
-            const attr = subParts[1];
-            const item = game.items[itemId];
-            if (item) {
-                // Nastavíme item[attr] = (right === "true")
-                if (right === 'true') item[attr] = true;
-                else if (right === 'false') item[attr] = false;
-                else item[attr] = right;
-            }
-        } else {
-            // Globální proměnné
-            if (game.vars[left] !== undefined) {
-                if (right === 'true') game.vars[left] = true;
-                else if (right === 'false') game.vars[left] = false;
-                else game.vars[left] = right;
-            }
-            // Může být i end_game = true
-            if (left === 'end_game' && right === 'true') {
-                game.endGame = true;
-            }
-        }
-    });
-}
-
-function getDescription(descrArray, game) {
-    // Najdi v poli descriptions tu, která sedí k condition, jinak vem default
-    // Tj. popořadě projdeme a pokud je definována condition, testneme parseCondition
-    // Pokud sedí, vrátíme description
-    // Pokud nic nesedí, vrátíme default (nebo prázdný string)
-    let defaultDescr = "";
-    for (let d of descrArray) {
-        if (d.default !== undefined) {
-            defaultDescr = d.default;
-        }
-    }
-    // Teď zkusíme najít tu s condition
-    for (let d of descrArray) {
-        if (d.condition) {
-            if (parseCondition(d.condition, game)) {
-                return defaultDescr + d.description;
-            }
-        }
-    }
-    return defaultDescr || "";
-}
-
-///////////////////////////////////////////
-// 3) Třída hry
+// Třída hry
 
 ///////////////////////////////////////////
 class GameEngine {
@@ -268,57 +48,12 @@ class GameEngine {
         this.data = data;
         this.win = win;
         this.endGame = false;
-        this.init();
     }
 
-    init() {
-        // Načteme locations, items, characters, variables do "rychleji" přístupných map
-        this.locations = {};
-        (this.data.locations || []).forEach(loc => {
-            this.locations[loc.id] = {
-                ...loc,
-            };
-        });
-
-        this.items = {};
-        (this.data.items || []).forEach(it => {
-            this.items[it.id] = {
-                ...it,
-                // Defaultní parametry
-                owner: it.owner || null,
-                visible: it.visible === undefined ? true : (it.visible === "true" ? true : (it.visible === "false" ? false : it.visible)),
-                movable: it.movable === undefined ? true : (it.movable === "true" ? true : (it.movable === "false" ? false : it.movable))
-            };
-        });
-
-        this.characters = {};
-        (this.data.characters || []).forEach(ch => {
-            this.characters[ch.id] = {
-                ...ch
-            };
-        });
-
-        // Globální proměnné
-        this.vars = {};
-        (this.data.variables || []).forEach(v => {
-            if (v.value === "true") {
-                this.vars[v.id] = true;
-            } else if (v.value === "false") {
-                this.vars[v.id] = false;
-            } else {
-                // Pokud je hodnota jiná než "true" nebo "false", uložíme ji přímo
-                this.vars[v.id] = v.value;
-            }
-        });
-
-
-        // Najdeme player
-        this.player = this.characters["player"] || null;
-    }
 
     start() {
         console.log("Starting game...");
-        this.sendUpdate(`${this.data.metadata.title}`);
+        this.sendUpdate(`${this.data.title}`);
         (this.data.intro || []).forEach(introPage => {
             this.sendUpdate(introPage.page);
         });
@@ -327,21 +62,20 @@ class GameEngine {
     // Vypíše popis aktuální lokace + viditelné věci a postavy
     look() {
         console.log("Looking around...");
-        if (this.player === null) {
+        if (this.data.player === null) {
             this.sendUpdate("There is no player character defined.");
             return;
         }
-        const locId = this.player.location;
-        const loc = this.locations[locId];
+        const loc = this.data.getPlayerLocation();
         if (!loc) return this.sendUpdate("Neznámá lokace.");
 
-        let d = getDescription(loc.descriptions || [], this);
+        let d = this.data.getDescription(loc);
         this.sendUpdate(d);
 
         // Položky, které "owner" = lokace a jsou "viditelné"
-        if (this.items != null) {
-            let itemsInLoc = Object.values(this.items)
-                .filter(i => i.owner === locId && i.visible !== false)
+        if (this.data.items != null) {
+            let itemsInLoc = Object.values(this.data.items)
+                .filter(i => i.owner === loc.id && i.visible !== false)
                 .map(i => i.name);
             let joinItems = itemsInLoc.join(", ");
             if (joinItems === "") joinItems = "nic";
@@ -350,10 +84,10 @@ class GameEngine {
         }
 
         // Postavy v této lokaci
-        if (this.characters != null) {
-            let charactersInLoc = Object.values(this.characters)
-                .filter(ch => ch.location === locId && ch.id !== "player")
-                .map(ch =>  ch.name);
+        if (this.data.characters != null) {
+            let charactersInLoc = Object.values(this.data.characters)
+                .filter(ch => ch.location === loc.id && ch.id !== "player")
+                .map(ch => ch.name);
             let joinCharacters = charactersInLoc.join(", ");
             if (joinCharacters === "") joinCharacters = "nikdo";
             let characters = '<span><b>Postavy: </b></span><span class="game-character">' + joinCharacters + '</span>';
@@ -364,7 +98,7 @@ class GameEngine {
     // prozkoumání objektu
     see(itemId) {
 
-        let foundItem = Object.values(this.items).find(i => i.id === itemId);
+        let foundItem = Object.values(this.data.items).find(i => i.id === itemId);
         if (!foundItem) {
             this.sendUpdate("Takový předmět tu není.");
             return;
@@ -376,27 +110,26 @@ class GameEngine {
             return;
         }
 
-        this.sendUpdate("Prozkoumáváš " + foundItem.name + ".");
-
         // Musí být v aktuální lokaci nebo u hráče
-        if (foundItem.owner !== this.player.location && foundItem.owner !== "player") {
+        if (foundItem.owner !== this.data.player.location && foundItem.owner !== "player") {
             this.sendUpdate("Tady nic takového neleží.");
             return;
         }
 
+        this.sendUpdate("Prozkoumáváš " + foundItem.name + ".");
 
-        let descr = getDescription(foundItem.descriptions || [], this);
+        let descr = this.data.getDescription(foundItem);
         this.sendUpdate(descr);
 
         // increase onSee count
         let variablePath = foundItem.id + ":onSee:count";
-        this.setData(variablePath, this.getData(variablePath, 0) + 1);
+        this.data.setValue(variablePath, this.data.getValue(variablePath, 0) + 1);
         // onSee?
         if (foundItem.onSee) {
             for (let action of foundItem.onSee) {
                 // Pokud má condition, vyhodnotíme
                 if (action.condition) {
-                    if (!parseCondition(action.condition, this)) continue;
+                    if (!this.data.parseCondition(action.condition, this)) continue;
                 }
                 this.sendUpdate(action.description);
             }
@@ -406,8 +139,8 @@ class GameEngine {
     // Přesun hráče
     go(where) {
         // Najdeme v connections
-        const locId = this.player.location;
-        const loc = this.locations[locId];
+        const loc = this.data.getPlayerLocation();
+
         if (!loc) {
             this.sendUpdate("Neznámá lokace.");
             return;
@@ -418,19 +151,19 @@ class GameEngine {
             return;
         }
         // Změníme location
-        this.player.location = conn.target;
+        this.data.player.location = conn.target;
         this.look();
     }
 
     take(itemName) {
         // Najdi item podle jména nebo id
-        let found = Object.values(this.items).find(i => i.name.toLowerCase() === itemName.toLowerCase());
+        let found = Object.values(this.data.items).find(i => i.name.toLowerCase() === itemName.toLowerCase());
         if (!found) {
             this.sendUpdate("Takový předmět tu není.");
             return;
         }
         // Musí být v aktuální lokaci
-        if (found.owner !== this.player.location) {
+        if (found.owner !== this.data.player.location) {
             this.sendUpdate("Tady nic takového neleží.");
             return;
         }
@@ -446,7 +179,7 @@ class GameEngine {
             for (let action of found.onTake) {
                 // Pokud má condition, vyhodnotíme
                 if (action.condition) {
-                    if (!parseCondition(action.condition, this)) continue;
+                    if (!this.data.parseCondition(action.condition, this)) continue;
                 }
                 this.sendUpdate(action.description);
             }
@@ -457,7 +190,7 @@ class GameEngine {
 
     drop(itemName) {
         // Najdi item, který držíme
-        let found = Object.values(this.items).find(
+        let found = Object.values(this.data.items).find(
             i => i.name.toLowerCase() === itemName.toLowerCase() && i.owner === "player"
         );
         if (!found) {
@@ -465,11 +198,11 @@ class GameEngine {
             return;
         }
         // Položíme do lokace
-        found.owner = this.player.location;
+        found.owner = this.data.player.location;
         // onDrop?
         if (found.onDrop) {
             for (let action of found.onDrop) {
-                if (action.condition && !parseCondition(action.condition, this)) {
+                if (action.condition && !this.data.parseCondition(action.condition, this)) {
                     continue;
                 }
                 this.sendUpdate(action.description);
@@ -479,9 +212,9 @@ class GameEngine {
         }
     }
 
-    use(itemName) {
+    use(itemId) {
         // Najdi item, ať už je kdekoliv, hlavně existenci
-        let found = Object.values(this.items).find(i => i.name.toLowerCase() === itemName.toLowerCase());
+        let found = Object.values(this.data.items).find(i => i.id.toLowerCase() === itemId.toLowerCase());
         if (!found) {
             this.sendUpdate("Takový předmět neznám.");
             return;
@@ -495,14 +228,16 @@ class GameEngine {
         let usedSomething = false;
         for (let action of found.onUse) {
             if (action.condition) {
-                if (!parseCondition(action.condition, this)) continue;
+                if (!this.data.parseCondition(action.condition, this)) continue;
             }
+
             this.sendUpdate(action.description);
             if (action.set) {
                 parseSet(action.set, this);
             }
             usedSomething = true;
-            // Možná break? Nebo můžeme nechat projet víc pravidel...
+            // Jakmile je splněna jedna akce, končíme
+            break;
         }
         if (!usedSomething) {
             this.sendUpdate("Nic se nestalo.");
@@ -511,7 +246,7 @@ class GameEngine {
 
     talk(characterName) {
         // Najdu postavu
-        let ch = Object.values(this.characters).find(c => c.name.toLowerCase() === characterName.toLowerCase());
+        let ch = Object.values(this.data.characters).find(c => c.name.toLowerCase() === characterName.toLowerCase());
         if (!ch) {
             this.sendUpdate("Takovou postavu tu nevidím.");
             return;
@@ -524,7 +259,7 @@ class GameEngine {
         let spoke = false;
         for (let t of ch.onTalk) {
             if (t.condition) {
-                if (!parseCondition(t.condition, this)) continue;
+                if (!this.data.parseCondition(t.condition, this)) continue;
             }
             this.sendUpdate(t.description);
             if (t.set) {
@@ -540,36 +275,35 @@ class GameEngine {
     listCommands() {
         // add possible commands
 
-        const locId = this.player.location;
-        const loc = this.locations[locId];
+        const loc = this.data.getPlayerLocation();
 
         // look
         let lookHref = '<a href="#" class="game-action" data-action="look">rozhlédnout se</a>';
 
         // see
-        let itemsInLoc = Object.values(this.items)
-            .filter(i => i.owner === locId && i.visible);
-        let itemsInInventory = Object.values(this.items)
+        let itemsInLoc = Object.values(this.data.items)
+            .filter(i => i.owner === loc.id && i.visible);
+        let itemsInInventory = Object.values(this.data.items)
             .filter(i => i.owner === "player" && i.visible);
         let itemsHrefRow = createItemsHrefRow(itemsInLoc, itemsInInventory);
 
         // take
-        let itemsInLocAndTakeable = itemsInLoc.filter(i => (i.owner === locId) && i.movable);
+        let itemsInLocAndTakeable = itemsInLoc.filter(i => (i.owner === loc.id) && i.movable);
         let takeHrefRow = createTakeHrefRow(itemsInLocAndTakeable);
 
         // use
-        let itemsForLocAndInventory = Object.values(this.items)
-            .filter(i => (i.owner === locId || i.owner === "player") && i.visible);
+        let itemsForLocAndInventory = Object.values(this.data.items)
+            .filter(i => (i.owner === loc.id || i.owner === "player") && i.visible);
         let useHrefRow = createUseHrefRow(itemsForLocAndInventory);
 
         // drop
-        let itemsInInventoryAndDropable = Object.values(this.items)
-            .filter(i => (i.owner === "player" ) && i.movable && i.visible);
+        let itemsInInventoryAndDropable = Object.values(this.data.items)
+            .filter(i => (i.owner === "player") && i.movable && i.visible);
         let dropHrefRow = createDropHrefRow(itemsInInventoryAndDropable);
 
         // go
         let connectionsForLoc = (loc.connections || []);
-        let goHrefRow = createDirectionsHrefRow(connectionsForLoc, this.locations);
+        let goHrefRow = createDirectionsHrefRow(connectionsForLoc, this.data.locations);
 
         if (itemsHrefRow || goHrefRow) {
             this.sendUpdate("<b>Příkazy:</b>");
@@ -593,44 +327,7 @@ class GameEngine {
         }
     }
 
-    // set variable to gameData
-    setData(pathToVariable, value) {
-        let parts = pathToVariable.split(':');
-        let current = this.data;
 
-        for (let i = 0; i < parts.length - 1; i++) {
-            if (!current[parts[i]]) {
-                // Pokud klíč neexistuje, vytvoř ho jako prázdný objekt
-                current[parts[i]] = {};
-            }
-            current = current[parts[i]];
-        }
-
-        // Nastav poslední část na hodnotu
-        current[parts[parts.length - 1]] = value;
-    }
-
-
-    getData(pathToVariable, defaultValue) {
-        let parts = pathToVariable.split(':');
-        let current = this.data;
-
-        for (let i = 0; i < parts.length - 1; i++) {
-            if (!current[parts[i]]) {
-                // Pokud klíč neexistuje, vytvoříme ho jako prázdný objekt
-                current[parts[i]] = {};
-            }
-            current = current[parts[i]];
-        }
-
-        // Pokud poslední část cesty neexistuje, nastavíme defaultní hodnotu
-        if (current[parts[parts.length - 1]] === undefined) {
-            current[parts[parts.length - 1]] = defaultValue;
-        }
-
-        // Vrátíme hodnotu
-        return current[parts[parts.length - 1]];
-    }
 
 }
 

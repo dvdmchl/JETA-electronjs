@@ -62,9 +62,11 @@ items:
       - condition: "šálek-čaje.owner = player && player:location = kuchyně"
         description: "<p>Šálek čaje jsem položil na stůl.</p>"
     onUse:
-      - condition: "šálek-čaje:owner = player && klíče.owner != player"
+      - condition: "šálek-čaje:owner = player && klíče.owner != player && plný_šálek"
         description: "<p>Vypil jsem si svůj šálek čaje a už si vzpomínám ten klíč jsem určitě zase zapoměl ve skříni v ložnici.</p>"
         set: "plný_šálek = false"
+      - condition: "!plný_šálek"
+        description: "<p>Šálek je prázdný. Nevím jak bych ho měl použít.</p>"
     owner: "kuchyně"
 
   - id: "vypínač"

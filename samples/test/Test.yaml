@@ -59,13 +59,13 @@ items:
     onTake:
       - default: "<p>Vzal jsem šálek čaje do ruky.</p>"
     onDrop:
-      - condition: "šálek-čaje.owner = player && player:location = kuchyně"
+      - condition: "šálek-čaje:owner = player && player:location = kuchyně"
         description: "<p>Šálek čaje jsem položil na stůl.</p>"
     onUse:
-      - condition: "klíče:owner != player && plný_šálek"
+      - condition: "klíče:owner != player && plný_šálek = true"
         description: "<p>Vypil jsem si svůj šálek čaje a už si vzpomínám ten klíč jsem určitě zase zapoměl ve skříni v ložnici.</p>"
         set: "plný_šálek = false"
-      - condition: "!plný_šálek"
+      - condition: "plný_šálek = false"
         description: "<p>Šálek je prázdný. Nevím jak bych ho měl použít.</p>"
     owner: "kuchyně"
 
@@ -140,7 +140,7 @@ items:
     onUse:
       - condition: "klíče:owner = player && !dveře_odemčeny"
         description: "<p>Úspěšně jsem odemkl dveře ven a otevřel je, před dveřmi stojí nějaký mladší muž okolo třiceti let vysoké postavy a krásných hnědých vlasů.</p>"
-        set: "dveře_otevřeny"
+        set: "dveře_otevřeny = true"
       - condition: "!klíče:owner = player && !dveře_odemčeny && klíče:visible = true"
         description: "<p>No, tak tohle se mi ještě nestalo, já najdu klíče a zapomenu si je ve skříňce?!. No tohle je opravdu neuvěřitelné.</p>"
       - condition: "!klíče:owner = player && !dveře_odemčeny && !klíče:visible= true"

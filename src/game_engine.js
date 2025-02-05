@@ -124,14 +124,16 @@ class GameEngine {
         // increase onSee count
         let variablePath = foundItem.id + ":onSee:count";
         this.data.setValue(variablePath, this.data.getValue(variablePath, 0) + 1);
-        // onSee?
-        if (foundItem.onSee) {
+        // onSee and ittearble?
+        if (foundItem.onSee && foundItem.onSee.length > 0) {
             for (let action of foundItem.onSee) {
                 // Pokud má condition, vyhodnotíme
                 if (action.condition) {
                     if (!this.data.parseCondition(action.condition, this)) continue;
                 }
-                this.sendUpdate(action.description);
+                if (action.set) {
+                    this.data.parseSet(action.set);
+                }
             }
         }
     }
@@ -326,7 +328,6 @@ class GameEngine {
             console.error("Failed to send message: win or webContents is not defined.");
         }
     }
-
 
 
 }

@@ -83,10 +83,10 @@ items:
     onUse:
       - condition: "player:location = ložnice && !světlo"
         description: "<p>Zapnul jsem světlo.</p>"
-        set: "světlo"
+        set: "světlo = true"
       - condition: "player:location = ložnice && světlo"
         description: "<p>Vypnul jsem světlo.</p>"
-        set: "!světlo"
+        set: "světlo = false"
     owner: "ložnice"
 
   - id: "skříň"
@@ -94,24 +94,25 @@ items:
     movable: "false"
     descriptions:
       - default: ""
-      - condition: "!světlo"
+      - condition: "světlo = false"
         description: "<p>V té skříňce není nic vidět tak že tam nemůžu nic najít!....</p>"
-      - condition: "světlo"
+      - condition: "světlo = true && klíče:owner != skříň"
         description: "<p>Oblečení, svačina. Hmm měl bych si tam uklidit.</p>"
-      - condition: "světlo && klíče:owner = skříň"
+      - condition: "světlo = true && klíče:owner = skříň"
         description: "<p>Ahá tak sem jsem si dal ty klíče, to bych nikdy neřekl, že je najdu zrovinka na tomhle místě, ale vlastně proč bych je sem dával?</p>"
-        set: "klíče:visible = true"
+    onSee:
+      - condition: "světlo = true && klíče:owner = skříň"
+        set: "klíče:owner = ložnice"
     owner: "ložnice"
 
   - id: "klíče"
     name: "Klíče"
     movable: "true"
-    visible: "false"
     owner: "skříň"
     descriptions:
       - default: "<p>Klíče od bytu.</p>"
     onTake:
-      - condition: "klíče:location  = skřiň && klíče:visible = true"
+      - condition: "klíče:owner = ložnice && klíče:visible = true"
         description: "<p>Sebral jsem klíče ze skříňky s oblečením.</p>"
     onUse:
       - condition: "klíče:owner = player && player:location = předsíň && !dveře_odemčeny"
@@ -137,10 +138,10 @@ items:
       - condition: "dveře_otevřeny"
         description: "<p>za kterými stojí mladý muž.</p>"
     onUse:
-      - condition: "klíče.owner = player && !dveře_odemčeny"
+      - condition: "klíče:owner = player && !dveře_odemčeny"
         description: "<p>Úspěšně jsem odemkl dveře ven a otevřel je, před dveřmi stojí nějaký mladší muž okolo třiceti let vysoké postavy a krásných hnědých vlasů.</p>"
         set: "dveře_otevřeny"
-      - condition: "!klíče.owner = player && !dveře_odemčeny && klíče:visible = true"
+      - condition: "!klíče:owner = player && !dveře_odemčeny && klíče:visible = true"
         description: "<p>No, tak tohle se mi ještě nestalo, já najdu klíče a zapomenu si je ve skříňce?!. No tohle je opravdu neuvěřitelné.</p>"
       - condition: "!klíče:owner = player && !dveře_odemčeny && !klíče:visible= true"
         description: "<p>No, i kdybych sebevíc chtěl zamčené dveře prostě nedokážu otevřít chtělo by to někde po bytě najít klíče ale kde?...</p>"

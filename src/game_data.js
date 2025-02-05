@@ -159,40 +159,85 @@ class GameData {
     }
 
     parseCondition(cond) {
-        // Funkce na parsování a vyhodnocení složených podmínek
+        // Rozdělí řetězec pouze na logické operátory a závorky.
+        const tokenize = (input) => {
+            return input.split(/(\(|\)|&&|\|\|)/)
+                .map(t => t.trim())
+                .filter(t => t !== '');
+        };
 
-        // 1. Pomocné funkce
-        const evaluateCondition = (c) => {
+        // Převod do postfix notace (RPN) pomocí shunting-yard algoritmu.
+        const parseTokens = (tokens) => {
+            const output = [];
+            const stack = [];
+            const precedence = {'&&': 2, '||': 1};
+            const isOperator = token => token === '&&' || token === '||';
+
+            tokens.forEach(token => {
+                if (token === '(') {
+                    stack.push(token);
+                } else if (token === ')') {
+                    while (stack.length && stack[stack.length - 1] !== '(') {
+                        output.push(stack.pop());
+                    }
+                    if (stack.length === 0) {
+                        throw new Error("Nesouhlas závorek");
+                    }
+                    stack.pop(); // odstraníme "("
+                } else if (isOperator(token)) {
+                    while (
+                        stack.length &&
+                        isOperator(stack[stack.length - 1]) &&
+                        precedence[token] <= precedence[stack[stack.length - 1]]
+                        ) {
+                        output.push(stack.pop());
+                    }
+                    stack.push(token);
+                } else {
+                    output.push(token);
+                }
+            });
+            while (stack.length) {
+                const op = stack.pop();
+                if (op === '(' || op === ')') throw new Error("Nesouhlas závorek");
+                output.push(op);
+            }
+            return output;
+        };
+
+        // Vyhodnocení atomické podmínky, např. "plný_šálek" nebo "šálek-čaje:owner = kuchyně".
+        const evaluateAtomic = (atom) => {
+            let c = atom.trim();
             let negation = false;
-
-            // Zpracuj negaci (!)
-            if (c.startsWith('!')) {
-                negation = true;
+            while (c.startsWith('!')) {
+                negation = !negation;
                 c = c.substring(1).trim();
             }
+            // Zkusíme najít operátor (>, <, >=, <=, !=, = nebo ==)
+            const operatorMatch = c.match(/^(.+?)([><!]=|[><=]|==)(.+)$/);
+            let result;
+            if (operatorMatch) {
+                const leftStr = operatorMatch[1].trim();
+                const operator = operatorMatch[2].trim();
+                const rightStr = operatorMatch[3].trim();
 
-            // Rozpoznání složitých podmínek s operátory
-            const match = c.match(/^(.+?)([><!=]=?|==)(.+)$/);
-            let result = false;
-            if (match) {
-                const left = match[1].trim();       // Levá strana podmínky
-                const operator = match[2].trim();  // Operátor
-                const right = match[3].trim();     // Pravá strana podmínky
-
-                // Získání hodnoty levé strany (může to být proměnná, atribut nebo hodnota)
                 let leftValue;
-                if (this.#vars.hasOwnProperty(left)) {
-                    leftValue = this.#vars[left];
+                if (leftStr.includes(':')) {
+                    const [itemId, attr] = leftStr.split(':');
+                    const item = this.getObjectById(itemId);
+                    if (!item) throw new Error(`Neznámá položka: ${itemId}`);
+                    if (!(attr in item)) throw new Error(`Neznámý atribut: ${attr} v ${itemId}`);
+                    leftValue = item[attr];
                 } else {
-                    const [itemId, attr] = left.split(':');
-                    const item = this.#items[itemId];
-                    leftValue = item ? item[attr] : undefined;
+                    const varObj = this.getObjectById(leftStr);
+                    if (!varObj || !('value' in varObj))
+                        throw new Error(`Neznámá proměnná: ${leftStr}`);
+                    leftValue = varObj.value;
                 }
 
-                // Získání hodnoty pravé strany (číslo, boolean nebo řetězec)
-                let rightValue = isNaN(right) ? (right === "true" ? true : (right === "false" ? false : right)) : parseFloat(right);
-
-                // Porovnání podle operátoru
+                let rightValue = isNaN(rightStr)
+                    ? (rightStr === "true" ? true : (rightStr === "false" ? false : rightStr))
+                    : parseFloat(rightStr);
 
                 switch (operator) {
                     case '>':
@@ -210,193 +255,124 @@ class GameData {
                     case '!=':
                         result = leftValue != rightValue;
                         break;
-                    case '=': // Podpora pro jediné "="
+                    case '=':
                     case '==':
                         result = leftValue == rightValue;
                         break;
                     default:
-                        console.error(`Unsupported operator: ${operator}`);
+                        throw new Error(`Nepodporovaný operátor: ${operator}`);
                 }
-            } else if (this.#vars.hasOwnProperty(c)) {
-                // Jednoduchá proměnná (bez operátoru)
-                result = this.#vars[c];
             } else {
-                // Pokud podmínka obsahuje "item:attr" bez operátorů
-                const parts = c.split(':');
-                if (parts.length === 2) {
-                    const item = this.#items[parts[0]];
-                    result = item ? !!item[parts[1]] : false;
+                // Pokud není nalezen žádný operátor, předpokládáme, že jde o proměnnou nebo atribut.
+                if (c.includes(':')) {
+                    const [itemId, attr] = c.split(':');
+                    const item = this.getObjectById(itemId);
+                    if (!item) throw new Error(`Neznámá položka: ${itemId}`);
+                    if (!(attr in item)) throw new Error(`Neznámý atribut: ${attr} v ${itemId}`);
+                    result = !!item[attr];
+                } else {
+                    const varObj = this.getObjectById(c);
+                    if (!varObj || !('value' in varObj))
+                        throw new Error(`Neznámá proměnná: ${c}`);
+                    result = varObj.value;
                 }
             }
-
             return negation ? !result : result;
         };
 
-
-        const tokenize = (input) => {
-            // Tokenizace podmínky: oddělíme závorky, operátory a podmínky
-            const regex = /\(|\)|\|\||&&|![^(&&|\|\|)]*|[^(&&|\|\|)\s]+/g;
-            return input.match(regex) || [];
-        };
-
-        const parseTokens = (tokens) => {
+        // Vyhodnocení postfixového zápisu.
+        const evaluateAST = (postfixTokens) => {
             const stack = [];
-            const output = [];
-
-            // Priorita operátorů
-            const precedence = {
-                '||': 1,
-                '&&': 2,
-                '!': 3,
-            };
-
-            const isOperator = (token) => ['&&', '||', '!'].includes(token);
-
-            for (const token of tokens) {
-                if (token === '(') {
-                    stack.push(token);
-                } else if (token === ')') {
-                    while (stack.length > 0 && stack[stack.length - 1] !== '(') {
-                        output.push(stack.pop());
-                    }
-                    stack.pop(); // Odstraň '(' ze zásobníku
-                } else if (isOperator(token)) {
-                    while (
-                        stack.length > 0 &&
-                        precedence[token] <= precedence[stack[stack.length - 1]]
-                        ) {
-                        output.push(stack.pop());
-                    }
-                    stack.push(token);
+            postfixTokens.forEach(token => {
+                if (token === '&&' || token === '||') {
+                    if (stack.length < 2) throw new Error("Neplatný výraz");
+                    const b = stack.pop();
+                    const a = stack.pop();
+                    stack.push(token === '&&' ? (a && b) : (a || b));
                 } else {
-                    output.push(token); // Operand
+                    stack.push(evaluateAtomic(token));
                 }
-            }
-
-            while (stack.length > 0) {
-                output.push(stack.pop());
-            }
-
-            return output;
-        };
-
-        const evaluateAST = (tokens) => {
-            const stack = [];
-
-            for (const token of tokens) {
-                if (['&&', '||', '!'].includes(token)) {
-                    if (token === '!') {
-                        const operand = stack.pop();
-                        stack.push(!operand);
-                    } else {
-                        const b = stack.pop();
-                        const a = stack.pop();
-                        if (token === '&&') stack.push(a && b);
-                        if (token === '||') stack.push(a || b);
-                    }
-                } else {
-                    stack.push(evaluateCondition(token));
-                }
-            }
-
+            });
+            if (stack.length !== 1) throw new Error("Neplatný výraz");
             return stack[0];
         };
 
-        // 2. Tokenizace
         const tokens = tokenize(cond);
-
-        // 3. Parsování do postfixového zápisu (RPN - Reverse Polish Notation)
         const postfixTokens = parseTokens(tokens);
-
-        // 4. Vyhodnocení
         return evaluateAST(postfixTokens);
     }
 
+
     parseSet(setCmd) {
-        // "plný_šálek = false"  nebo  "dveře_otevřeny=true"
-        // nebo "klíče:visible=true"
-        // nebo "dveře_otevřeny = false; end_game = true"
+        // rozdělíme příkazy středníkem
         let parts = setCmd.split(';');
-        parts.forEach(p => {
-            let trimmed = p.trim();
+        parts.forEach(cmd => {
+            let trimmed = cmd.trim();
+            if (!trimmed) return;
             let [left, right] = trimmed.split('=');
             if (!right) return;
             left = left.trim();
             right = right.trim();
 
-            // Např. left = "plný_šálek", right = "false"
-            // anebo left = "klíče:visible", right = "true"
-            if (left.includes(':')) {
-                // itemId:visible = ...
-                const subParts = left.split(':');
-                const itemId = subParts[0];
-                const attr = subParts[1];
-                const item = this.#items[itemId];
-                if (item) {
-                    // Nastavíme item[attr] = (right === "true")
-                    if (right === 'true') item[attr] = true;
-                    else if (right === 'false') item[attr] = false;
-                    else item[attr] = right;
-                }
-            } else {
-                // Globální proměnné
-                if (game.vars[left] !== undefined) {
-                    if (right === 'true') this.#vars[left] = true;
-                    else if (right === 'false') this.#vars[left] = false;
-                    else game.vars[left] = right;
-                }
-                // Může být i end_game = true
-                if (left === 'end_game' && right === 'true') {
-                    this.#data.endGame = true;
-                }
-            }
+            let value;
+            if (right === 'true') value = true;
+            else if (right === 'false') value = false;
+            else value = right;
+
+            this.setValue(left, value);
         });
     }
+
 
     // set variable to gameData
     setValue(pathToVariable, value) {
         let parts = pathToVariable.split(':');
+        // when len of parts is on then pathToVariable can be a variable
+        if (parts.length === 1) {
+            this.setVariableValue(parts[0], value);
+            return;
+        }
+        const lastKey = parts.pop();
         let object = this.getObjectById(parts[0]);
-
         for (let i = 1; i < parts.length; i++) {
-            if (!object[parts[i]]) {
-                if (i != parts.length - 1) {
-                    object[parts[i]] = [];
-                } else {
-                    object[parts[i]] = {};
-                }
+            if (object[parts[i]] === undefined) {
+                object[parts[i]] = {};
             }
             object = object[parts[i]];
         }
+        object[lastKey] = value;
+    }
 
-        // Nastav poslední část na hodnotu
-        object[parts[parts.length - 1]] = value;
+    setVariableValue(variableId, value) {
+        let varObj = this.getObjectById(variableId);
+        if (!varObj) {
+            this.#vars.push({id: variableId, value: value});
+            return;
+        }
+        varObj.value = value;
     }
 
 
     getValue(pathToVariable, defaultValue) {
-        let parts = pathToVariable.split(':');
+        const parts = pathToVariable.split(':');
         let object = this.getObjectById(parts[0]);
-        if (!object) {
-            return defaultValue;
-        }
-        for (let i = 1; i < parts.length; i++) {
-            if (!object[parts[i]]) {
-                if (i != parts.length - 1) {
-                    object[parts[i]] = [];
-                } else {
-                    object[parts[i]] = {};
-                }
+        if (!object) return defaultValue;
 
+        // Projdeme všechny části kromě poslední.
+        for (let i = 1; i < parts.length - 1; i++) {
+            if (object[parts[i]] === undefined) {
+                object[parts[i]] = {};
             }
             object = object[parts[i]];
         }
-        // Pokud poslední část cesty neexistuje, nastavíme defaultní hodnotu
-        if (object[parts[parts.length - 1]] === undefined) {
-            object[parts[parts.length - 1]] = defaultValue;
+
+        const lastKey = parts[parts.length - 1];
+        if (object[lastKey] === undefined) {
+            object[lastKey] = defaultValue;
         }
-        return object[parts[parts.length - 1]];
+        return object[lastKey];
     }
+
 
     getObjectById(id) {
         let object = this.#locations.find(l => l.id === id);

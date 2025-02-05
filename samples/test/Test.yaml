@@ -62,7 +62,7 @@ items:
       - condition: "šálek-čaje.owner = player && player:location = kuchyně"
         description: "<p>Šálek čaje jsem položil na stůl.</p>"
     onUse:
-      - condition: "šálek-čaje:owner = player && klíče.owner != player && plný_šálek"
+      - condition: "klíče:owner != player && plný_šálek"
         description: "<p>Vypil jsem si svůj šálek čaje a už si vzpomínám ten klíč jsem určitě zase zapoměl ve skříni v ložnici.</p>"
         set: "plný_šálek = false"
       - condition: "!plný_šálek"
@@ -153,7 +153,7 @@ items:
     movable: "false"
     owner: "player"
     descriptions:
-      - default: "<p>A hele, v kapse mi zbyla ještě jedna žvýkačka tak tomuhle neodoám a hned si ji dám Mlask Mňam..</p>"
+      - default: "<p>A hele, v kapse mi zbyla ještě jedna žvýkačka tak tomuhle neodolám a hned si ji dám Mlask Mňam..</p>"
     onSee:
       - condition: "žvýkačka:visible = true"
         set: "žvýkačka:visible = false; papírek:visible = true"

@@ -233,7 +233,7 @@ class GameEngine {
 
             this.sendUpdate(action.description);
             if (action.set) {
-                parseSet(action.set, this);
+                this.data.parseSet(action.set, this);
             }
             usedSomething = true;
             // Jakmile je splněna jedna akce, končíme
@@ -263,7 +263,7 @@ class GameEngine {
             }
             this.sendUpdate(t.description);
             if (t.set) {
-                parseSet(t.set, this);
+                this.data.parseSet(t.set, this);
             }
             spoke = true;
         }
@@ -332,7 +332,7 @@ class GameEngine {
 }
 
 function createItemsHrefRow(items, itemsInInventory) {
-    if (!items || items.length === 0) return "";
+    if ((!items || items.length === 0) && (!itemsInInventory || itemsInInventory.length === 0)) return "";
     let itemsHrefRow = "";
     items.forEach(item => {
         if (itemsHrefRow !== "") itemsHrefRow += " | ";

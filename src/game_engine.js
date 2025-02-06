@@ -72,27 +72,6 @@ class GameEngine {
         let d = this.data.getDescription(loc);
         this.sendUpdate(d);
 
-        // Položky, které "owner" = lokace a jsou "viditelné"
-        if (this.data.items != null) {
-            let itemsInLoc = Object.values(this.data.items)
-                .filter(i => i.owner === loc.id && i.visible !== false)
-                .map(i => i.name);
-            let joinItems = itemsInLoc.join(", ");
-            if (joinItems === "") joinItems = "nic";
-            let items = '<span><b>Předměty: </b></span><span class="game-item">' + joinItems + '</span>';
-            this.sendUpdate(items);
-        }
-
-        // Postavy v této lokaci
-        if (this.data.characters != null) {
-            let charactersInLoc = Object.values(this.data.characters)
-                .filter(ch => ch.location === loc.id && ch.id !== "player")
-                .map(ch => ch.name);
-            let joinCharacters = charactersInLoc.join(", ");
-            if (joinCharacters === "") joinCharacters = "nikdo";
-            let characters = '<span><b>Postavy: </b></span><span class="game-character">' + joinCharacters + '</span>';
-            this.sendUpdate(characters);
-        }
     }
 
     // prozkoumání objektu

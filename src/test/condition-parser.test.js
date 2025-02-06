@@ -133,4 +133,11 @@ describe('GameData', () => {
         expect(gameData.parseCondition('šálek-čaje:owner = kuchyně')).toBe(true);
         expect(gameData.parseCondition('plný_šálek')).toBe(true);
     });
+
+    test('Set and avaluate onSee:count', () => {
+        gameData.setValue('šálek-čaje:onSee:count', 0);
+        var t = gameData.getValue('šálek-čaje:onSee:count');
+        expect(t).toBe(0);
+        expect(gameData.parseCondition('šálek-čaje:onSee:count = 0')).toBe(true);
+    });
 });

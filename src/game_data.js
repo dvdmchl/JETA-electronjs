@@ -213,7 +213,7 @@ class GameData {
                 negation = !negation;
                 c = c.substring(1).trim();
             }
-            // Zkusíme najít operátor (>, <, >=, <=, !=, = nebo ==)
+            // Hledáme operátor (>, <, >=, <=, !=, = nebo ==)
             const operatorMatch = c.match(/^(.+?)([><!]=|[><=]|==)(.+)$/);
             let result;
             if (operatorMatch) {
@@ -223,11 +223,17 @@ class GameData {
 
                 let leftValue;
                 if (leftStr.includes(':')) {
-                    const [itemId, attr] = leftStr.split(':');
-                    const item = this.getObjectById(itemId);
-                    if (!item) throw new Error(`Neznámá položka: ${itemId}`);
-                    if (!(attr in item)) throw new Error(`Neznámý atribut: ${attr} v ${itemId}`);
-                    leftValue = item[attr];
+                    // Rozdělíme leftStr na všechny části a projdeme je
+                    const parts = leftStr.split(':');
+                    let obj = this.getObjectById(parts[0]);
+                    if (!obj) throw new Error(`Neznámá položka: ${parts[0]}`);
+                    for (let i = 1; i < parts.length; i++) {
+                        if (!(parts[i] in obj)) {
+                            throw new Error(`Neznámý atribut: ${parts[i]} v ${parts[0]}`);
+                        }
+                        obj = obj[parts[i]];
+                    }
+                    leftValue = obj;
                 } else {
                     const varObj = this.getObjectById(leftStr);
                     if (!varObj || !('value' in varObj))
@@ -264,18 +270,25 @@ class GameData {
                 }
             } else {
                 // Pokud není nalezen žádný operátor, předpokládáme, že jde o proměnnou nebo atribut.
+                let value;
                 if (c.includes(':')) {
-                    const [itemId, attr] = c.split(':');
-                    const item = this.getObjectById(itemId);
-                    if (!item) throw new Error(`Neznámá položka: ${itemId}`);
-                    if (!(attr in item)) throw new Error(`Neznámý atribut: ${attr} v ${itemId}`);
-                    result = !!item[attr];
+                    const parts = c.split(':');
+                    let obj = this.getObjectById(parts[0]);
+                    if (!obj) throw new Error(`Neznámá položka: ${parts[0]}`);
+                    for (let i = 1; i < parts.length; i++) {
+                        if (!(parts[i] in obj)) {
+                            throw new Error(`Neznámý atribut: ${parts[i]} v ${parts[0]}`);
+                        }
+                        obj = obj[parts[i]];
+                    }
+                    value = !!obj;
                 } else {
                     const varObj = this.getObjectById(c);
                     if (!varObj || !('value' in varObj))
                         throw new Error(`Neznámá proměnná: ${c}`);
-                    result = varObj.value;
+                    value = varObj.value;
                 }
+                result = value;
             }
             return negation ? !result : result;
         };

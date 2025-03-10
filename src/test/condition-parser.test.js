@@ -76,6 +76,14 @@ describe('GameData', () => {
                     location: "kuchyně"
                 }
             ],
+            endings: [
+                {
+                    id: "end1",
+                    descriptions: [
+                        {default: "game ending 1"}
+                    ]
+                }
+            ],
             variables: [
                 {id: "plný_šálek", value: "true"}
             ]
@@ -139,5 +147,11 @@ describe('GameData', () => {
         var t = gameData.getValue('šálek-čaje:onSee:count');
         expect(t).toBe(0);
         expect(gameData.parseCondition('šálek-čaje:onSee:count = 0')).toBe(true);
+    });
+
+    test('Read game ending description', () => {
+        gameData.setValue('game_end_id', 'end1');
+        let endDescription = gameData.getEndDescription();
+        expect(endDescription).toBe('game ending 1');
     });
 });

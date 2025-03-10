@@ -8,6 +8,7 @@ class GameData {
     #characters;
     #vars;
     #player;
+    #endings
 
     constructor(inputData) {
         this.#data = inputData;
@@ -20,6 +21,7 @@ class GameData {
         this.#characters = this.#data.characters;
         this.#vars = this.#data.variables;
         this.#player = Object.values(this.#data.characters || []).find(c => c.id === "player");
+        this.#endings = this.#data.endings;
     }
 
     get title() {
@@ -48,6 +50,10 @@ class GameData {
 
     get player() {
         return this.#player;
+    }
+
+    get endings() {
+        return this.#endings;
     }
 
     getPlayerLocation() {
@@ -368,6 +374,10 @@ class GameData {
 
     getValue(pathToVariable, defaultValue) {
         const parts = pathToVariable.split(':');
+        // when len of parts is on then pathToVariable can be a variable
+        if (parts.length === 1) {
+            return this.getVariableValue(parts[0], defaultValue);
+        }
         let object = this.getObjectById(parts[0]);
         if (!object) return defaultValue;
 
@@ -386,16 +396,40 @@ class GameData {
         return object[lastKey];
     }
 
+    getVariableValue(variableId, defaultValue) {
+        let varObj = this.getObjectById(variableId);
+        if (!varObj) return defaultValue;
+        return varObj.value;
+    }
+
 
     getObjectById(id) {
         let object = this.#locations.find(l => l.id === id);
         if (object) return object;
+
         object = this.#items.find(i => i.id === id);
         if (object) return object;
+
         object = this.#characters.find(c => c.id === id);
         if (object) return object;
+
+        object = this.#endings.find(e => e.id === id);
+        if (object) return object;
+
         object = this.#vars.find(v => v.id === id);
         return object;
+    }
+
+    gameEnd() {
+        let endObject = this.getObjectById("end_game");
+        return endObject;
+    }
+
+    getEndDescription() {
+        let gameEndId = this.getValue("game_end_id", null);
+        if (!gameEndId) return null;
+        let end = this.getObjectById(gameEndId);
+        return this.getDescription(end);
     }
 }
 

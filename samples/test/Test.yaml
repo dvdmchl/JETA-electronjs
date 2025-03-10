@@ -10,7 +10,9 @@ intro:
   - page: "<p>Musím je co nejrychleji najít a otevřít člověku, který tam chudák venku stojí a celý mrzne, měl bych si pospíšit nechci nechat toho někoho čekat.</p>"
 
 endings:
-  - description: "<img src='ENDGAME.jpg' alt='ENDGAME'>"
+  - id: "end_game"
+    descriptions:
+      - default: "<img src='ENDGAME.jpg' alt='ENDGAME'>"
 
 locations:
   - id: "kuchyně"
@@ -207,7 +209,7 @@ characters:
          Nashledanou!<br>
          Vrzz Cvak  Nu to jsem zvědav co v tom dopise vlasně je <br>
          Trhh AHÁ to je Pozvánka pro vás na moji další hru!!!</p>"
-        set: "dveře_otevřeny = false; end_game = true"
+        set: "dveře_otevřeny = false; end_game = true; end_game_id=end_game"
 
 variables:
   - id: "světlo"

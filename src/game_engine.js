@@ -35,7 +35,12 @@ ipcMain.on('game-action', (event, {action, param}) => {
         default:
             console.error(`Unknown action: ${action}`);
     }
-    game.listCommands();
+    if (!game.data.getValue("game_end", false)) {
+        game.listCommands();
+    }
+    else {
+        game.listEndings();
+    }
 });
 
 
@@ -253,6 +258,13 @@ class GameEngine {
         }
     }
 
+    listEndings() {
+        let endDescription = this.data.getEndDescription();
+        if (endDescription) {
+            this.sendUpdate(endDescription);
+        }
+    }
+
     listCommands() {
         // add possible commands
 
@@ -260,6 +272,11 @@ class GameEngine {
 
         // look
         let lookHref = '<a href="#" class="game-action" data-action="look">rozhlédnout se</a>';
+
+        // talk to
+        let charactersInLoc = Object.values(this.data.characters)
+            .filter(c => c.location === loc.id && c.visible);
+        let talkHrefRow = createTalkHrefRow(charactersInLoc);
 
         // see
         let itemsInLoc = Object.values(this.data.items)
@@ -289,6 +306,7 @@ class GameEngine {
         if (itemsHrefRow || goHrefRow) {
             this.sendUpdate("<b>Příkazy:</b>");
             this.sendUpdate(lookHref);
+            this.sendUpdate(talkHrefRow);
             this.sendUpdate(itemsHrefRow);
             this.sendUpdate(useHrefRow);
             this.sendUpdate(takeHrefRow);
@@ -309,6 +327,16 @@ class GameEngine {
     }
 
 
+}
+
+function createTalkHrefRow(charactersInLoc) {
+    if (!charactersInLoc || charactersInLoc.length === 0) return "";
+    let talkHrefRow = "";
+    charactersInLoc.forEach(character => {
+        if (talkHrefRow !== "") talkHrefRow += " | ";
+        talkHrefRow += `<a href="#" class="game-action" data-action="talk" data-param="${character.name}">${character.name}</a>`;
+    });
+    return '<span>Oslovit: </span>' + talkHrefRow;
 }
 
 function createItemsHrefRow(items, itemsInInventory) {

@@ -12,6 +12,11 @@ ipcRenderer.on('edit-file', (event, filePath) => {
     console.log(`Opening file: ${filePath} in editor.`);
 });
 
+ipcRenderer.on('set-game-directory', (yamlFilePath) => {
+    console.log('Updating game directory:', yamlFilePath);
+    ipcRenderer.send('set-game-directory', yamlFilePath);
+});
+
 ipcRenderer.on('set-language', (translations, lang) => {
     console.log(`Setting language to: ${lang}`);
     console.log('Translations:', translations);

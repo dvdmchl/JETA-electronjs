@@ -27,7 +27,8 @@ const createWindow = async () => {
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             nodeIntegration: false,
-            contextIsolation: true
+            contextIsolation: true,
+            webSecurity: false
         }
     });
 
@@ -45,7 +46,7 @@ const createWindow = async () => {
         let indexName = 'index' + '_' + currentLanguage + '.yaml';
         let indexGameFilePath = path.join(__dirname, '../resources/' + indexName);
         console.log('Loading game data from:', indexGameFilePath);
-        const indexGameData = loadGameFile(indexGameFilePath);
+        const indexGameData = loadGameFile(indexGameFilePath, win);
         if (indexGameData) {
             console.log('Game data loaded successfully.');
             play(indexGameData, win);

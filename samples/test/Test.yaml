@@ -12,7 +12,7 @@ intro:
 endings:
   - id: "end_game_1"
     descriptions:
-      - default: "<img src='ENDGAME.jpg' alt='ENDGAME'>"
+      - default: "<img src='game://ENDGAME.jpg' alt='ENDGAME'>"
 
 locations:
   - id: "kuchyně"

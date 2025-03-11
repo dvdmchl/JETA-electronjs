@@ -6,6 +6,8 @@ const {exec} = require('child_process');
 const {loadGameFile} = require('./game_definition_loader');
 const {play} = require('./game_engine');
 
+
+
 function updateMenu(currentLanguage, store, win) {
     const menu = createMenu(currentLanguage, store, win);
     Menu.setApplicationMenu(menu);
@@ -61,7 +63,7 @@ function createMenu(currentLanguage, store, win) {
 
                             if (!canceled && filePaths.length > 0) {
                                 let gameFilePath = filePaths[0];
-                                const gameData = loadGameFile(gameFilePath);
+                                const gameData = loadGameFile(gameFilePath, win);
 
                                 if (gameData) {
                                     console.log('Game data loaded');

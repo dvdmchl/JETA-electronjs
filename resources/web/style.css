@@ -10,5 +10,5 @@ html, body {
 #game-output {
     overflow-y: auto;
     scroll-behavior: smooth;
-    scroll-behavior: smooth;
+    max-height: 300px;
 }

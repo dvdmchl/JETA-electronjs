@@ -2,8 +2,13 @@
     color: cornflowerblue;
 }
 
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
 #game-output {
-    max-height: 600px; /* Nastav výšku kontejneru podle potřeby */
-    overflow-y: auto; /* Povolit scrollování svisle */
+    overflow-y: auto;
+    scroll-behavior: smooth;
     scroll-behavior: smooth;
 }

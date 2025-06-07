@@ -63,16 +63,16 @@ function createMenu(currentLanguage, store, win) {
 
                             if (!canceled && filePaths.length > 0) {
                                 let gameFilePath = filePaths[0];
-                                const gameData = loadGameFile(gameFilePath, win);
+                                const gameData = await loadGameFile(gameFilePath, win);
 
                                 if (gameData) {
                                     console.log('Game data loaded');
                                     win.webContents.send('clear-output');
                                     play(gameData, win);
                                 }
-                                fs.watchFile(gameFilePath, (curr, prev) => {
+                                fs.watchFile(gameFilePath, async (curr, prev) => {
                                     if (curr.mtime !== prev.mtime) {
-                                        const gameData = loadGameFile(gameFilePath);
+                                        const gameData = await loadGameFile(gameFilePath, win);
                                         if (gameData) {
                                             console.log('Reloaded game data:', gameData);
                                         }
@@ -146,9 +146,9 @@ function createMenu(currentLanguage, store, win) {
                                 }
                             });
 
-                            fs.watchFile(filePath, (curr, prev) => {
+                            fs.watchFile(filePath, async (curr, prev) => {
                                 if (curr.mtime !== prev.mtime) {
-                                    const gameData = loadGameFile(filePath);
+                                    const gameData = await loadGameFile(filePath, win);
                                     if (gameData) {
                                         console.log('Reloaded game data:', gameData);
                                     }

@@ -15,5 +15,5 @@ contextBridge.exposeInMainWorld('electron', {
 });
 
 contextBridge.exposeInMainWorld('api', {
-    setGameDirectorySync: (yamlFilePath) => ipcRenderer.sendSync('set-game-directory', yamlFilePath)
+    setGameDirectory: (yamlFilePath) => ipcRenderer.invoke('set-game-directory', yamlFilePath)
 });

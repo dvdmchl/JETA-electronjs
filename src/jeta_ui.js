@@ -33,7 +33,7 @@ const createWindow = async () => {
     });
 
     // Change language and update menu
-    i18next.changeLanguage(currentLanguage, (err, t) => {
+    i18next.changeLanguage(currentLanguage, async (err, t) => {
         if (err) return console.error('Error changing language:', err);
         win.loadFile(`./resources/web/index.html`);
         win.once('ready-to-show', () => {
@@ -46,10 +46,10 @@ const createWindow = async () => {
         let indexName = 'index' + '_' + currentLanguage + '.yaml';
         let indexGameFilePath = path.join(__dirname, '../resources/' + indexName);
         console.log('Loading game data from:', indexGameFilePath);
-        const indexGameData = loadGameFile(indexGameFilePath, win);
-        if (indexGameData) {
+        const gameData = await loadGameFile(indexGameFilePath, win);
+        if (gameData) {
             console.log('Game data loaded successfully.');
-            play(indexGameData, win);
+            play(gameData, win);
             console.log('Game started.');
         } else {
             console.error('Failed to load game data.');

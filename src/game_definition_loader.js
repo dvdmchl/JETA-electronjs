@@ -26,7 +26,6 @@ async function loadGameFile(filePath, win) {
             return null;
         }
         console.log("Game file is valid!");
-        // win.webContents.send('set-game-directory', filePath);  // Aktualizace složky v main procesu
         const result = await window.api.setGameDirectory(filePath);
         if (result) {
             console.log('Adresář hry úspěšně nastaven');

@@ -1,44 +1,59 @@
-<div class="row">
-    <div class="col">
-        <div id="game-title"></div>
+<div class="container-fluid p-3">
+  <div class="row mb-3">
+    <div class="col text-center">
+      <h2 id="game-title"></h2>
     </div>
-</div>
-<div class="row">
+  </div>
+  <div class="row mb-4">
     <div class="col">
-        <div id="game-location"></div>
+      <h5 id="game-location" class="text-muted"></h5>
     </div>
-</div>
-<div class="row">
+  </div>
+  <div class="row mb-4">
+    <div class="col-md-6 mb-3 mb-md-0">
+      <div class="card">
+        <div class="card-body" id="game-commands"></div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body" id="game-characters"></div>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-4">
+    <div class="col-md-3 mb-3 mb-md-0">
+      <div class="card h-100">
+        <div class="card-body" id="game-items"></div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-3 mb-md-0">
+      <div class="card h-100">
+        <div class="card-body" id="game-use"></div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-3 mb-md-0">
+      <div class="card h-100">
+        <div class="card-body" id="game-take"></div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card h-100">
+        <div class="card-body" id="game-drop"></div>
+      </div>
+    </div>
+  </div>
+  <div class="row mb-4">
     <div class="col">
-        <div id="game-commands"></div>
+      <div class="card">
+        <div class="card-body" id="game-go"></div>
+      </div>
     </div>
+  </div>
+  <div class="row">
     <div class="col">
-        <div id="game-characters"></div>
+      <h5>Game log:</h5>
+      <div id="game-output" class="border p-2 bg-light"></div>
     </div>
-</div>
-<div class="row">
-    <div class="col">
-        <div id="game-items"></div>
-    </div>
-    <div class="col">
-        <div id="game-use"></div>
-    </div>
-    <div class="col">
-        <div id="game-take"></div>
-    </div>
-    <div class="col">
-        <div id="game-drop"></div>
-    </div>
-</div>
-<div class="row">
-    <div class="col">
-        <div id="game-go"></div>
-    </div>
-</div>
-<div class="row">
-    <hr>
-    <span><b>Game log:</b></span>
-    <div class="col">
-        <div id="game-output"></div>
-    </div>
+  </div>
 </div>

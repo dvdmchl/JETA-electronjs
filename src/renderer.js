@@ -42,7 +42,7 @@ ipcRenderer.on('clear-output', () => {
 });
 
 ipcRenderer.on('game-update', (data, section) => {
-    if (!data) {
+    if (!data && !section) {
         return;
     }
     console.log('Received game-update:', data);

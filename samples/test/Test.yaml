@@ -108,7 +108,7 @@ items:
         description: "<p>Ahá tak sem jsem si dal ty klíče, to bych nikdy neřekl, že je najdu zrovinka na tomhle místě, ale vlastně proč bych je sem dával?</p>"
     onSee:
       - condition: "světlo = true && klíče:owner = skříň"
-        set: "klíče:owner = ložnice"
+        set: "klíče:owner = ložnice; klíče_objeveny = true"
     owner: "ložnice"
 
   - id: "klíče"
@@ -147,9 +147,9 @@ items:
       - condition: "klíče:owner = player && !dveře_odemčeny"
         description: "<p>Úspěšně jsem odemkl dveře ven a otevřel je, před dveřmi stojí nějaký mladší muž okolo třiceti let vysoké postavy a krásných hnědých vlasů.</p>"
         set: "dveře_otevřeny = true; dveře_odemčeny = true; osoba:visible = true"
-      - condition: "!klíče:owner = player && !dveře_odemčeny && klíče:visible = true"
+      - condition: "!klíče:owner = player && !dveře_odemčeny && klíče_objeveny"
         description: "<p>No, tak tohle se mi ještě nestalo, já najdu klíče a zapomenu si je ve skříňce?!. No tohle je opravdu neuvěřitelné.</p>"
-      - condition: "!klíče:owner = player && !dveře_odemčeny && !klíče:visible= true"
+      - condition: "!klíče:owner = player && !dveře_odemčeny"
         description: "<p>No, i kdybych sebevíc chtěl zamčené dveře prostě nedokážu otevřít chtělo by to někde po bytě najít klíče ale kde?...</p>"
       - condition: "dveře_otevřeny"
         description: "<p>Zavřel jsem dveře. Všiml jsem si překvapeného výrazu muže za dveřmi.</p>"
@@ -223,3 +223,6 @@ variables:
 
   - id: "plný_šálek"
     value: "true"
+
+  - id: "klíče_objeveny"
+    value: "false"

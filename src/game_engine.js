@@ -22,7 +22,6 @@ ipcMain.on('game-action', (event, {action, param}) => {
             break;
         case 'use':
             game.use(param);
-            game.look(); // Look after using an item
             break;
         case 'take':
             game.take(param);
@@ -36,6 +35,7 @@ ipcMain.on('game-action', (event, {action, param}) => {
         default:
             console.error(`Unknown action: ${action}`);
     }
+    game.look();
     if (!game.data.getValue("game_end", false)) {
         game.listCommands();
     } else {
@@ -59,30 +59,48 @@ class GameEngine {
     start() {
         console.log("Starting game...");
         this.sendUpdate(`${this.data.title}`, 'game-title');
+        let data;
         (this.data.intro || []).forEach(introPage => {
-            this.sendUpdate(introPage.page, 'game-location');
+            if (!data) {
+                data = introPage.page;
+            }
+            else {
+                data = data + "<hr>" + introPage.page;
+            }
         });
+        data = data + "<hr>" + this.getLookText();
+        this.sendUpdate(data, 'game-location');
     }
 
     // Vypíše popis aktuální lokace + viditelné věci a postavy
     look() {
+        let data = this.getLookText();
+        this.sendUpdate(data, 'game-location');
+    }
+
+    getLookText() {
         console.log("Looking around...");
         if (this.data.player === null) {
             this.sendUpdate("There is no player character defined.");
-            return;
+            return "";
         }
         const loc = this.data.getPlayerLocation();
-        if (!loc) return this.sendUpdate("Neznámá lokace.");
+        if (!loc)  {
+            this.sendUpdate("Neznámá lokace.");
+            return "";
+        }
 
-        let d = this.data.getDescription(loc);
-        this.sendUpdate(d, 'game-location');
-
+        return this.data.getDescription(loc);
     }
 
-    // prozkoumání objektu
+    // prozkoumání objektu / characteru
     see(itemId) {
 
         let foundItem = Object.values(this.data.items).find(i => i.id === itemId);
+        if (!foundItem) {
+            // try to find character
+            foundItem = Object.values(this.data.characters).find(c => c.id === itemId);
+        }
         if (!foundItem) {
             this.sendUpdate("Takový předmět tu není.");
             return;
@@ -95,8 +113,8 @@ class GameEngine {
         }
 
         // Musí být v aktuální lokaci nebo u hráče
-        if (foundItem.owner !== this.data.player.location && foundItem.owner !== "player") {
-            this.sendUpdate("Tady nic takového neleží.");
+        if (foundItem.owner !== this.data.player.location && foundItem.owner !== "player" && foundItem.location !== this.data.player.location) {
+            this.sendUpdate("Tady nic takového není.");
             return;
         }
 
@@ -137,6 +155,7 @@ class GameEngine {
             return;
         }
         // Změníme location
+        this.sendUpdate("Přesouváš se do " + conn.direction + ".");
         this.data.player.location = conn.target;
         this.look();
     }
@@ -260,7 +279,7 @@ class GameEngine {
     listEndings() {
         let endDescription = this.data.getEndDescription();
         if (endDescription) {
-            this.sendUpdate(endDescription);
+            this.sendUpdate(endDescription, 'game-location');
         }
     }
 
@@ -328,12 +347,15 @@ class GameEngine {
 
 function createTalkHrefRow(charactersInLoc) {
     if (!charactersInLoc || charactersInLoc.length === 0) return "";
+    let seeHrefRow = "";
     let talkHrefRow = "";
     charactersInLoc.forEach(character => {
+        if (seeHrefRow !== "") seeHrefRow += " | ";
+        seeHrefRow += `<a href="#" class="game-action" data-action="see" data-param="${character.id}">${character.name}</a>`;
         if (talkHrefRow !== "") talkHrefRow += " | ";
         talkHrefRow += `<a href="#" class="game-action" data-action="talk" data-param="${character.name}">${character.name}</a>`;
     });
-    return '<span>Oslovit: </span>' + talkHrefRow;
+    return '<span>Prozkoumat:</span>' + seeHrefRow + '<br><span>Oslovit: </span>' + talkHrefRow;
 }
 
 function createItemsHrefRow(items, itemsInInventory) {
@@ -400,7 +422,6 @@ function play(gameData, win) {
     win.webContents.gameInstance = game;
 
     game.start();
-    game.look();
     game.listCommands();
     console.log("Game play method finished.");
 }

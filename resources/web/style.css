@@ -5,4 +5,5 @@
 #game-output {
     max-height: 600px; /* Nastav výšku kontejneru podle potřeby */
     overflow-y: auto; /* Povolit scrollování svisle */
+    scroll-behavior: smooth;
 }

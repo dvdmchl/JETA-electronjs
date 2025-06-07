@@ -46,18 +46,24 @@ ipcRenderer.on('game-update', (data, section) => {
         return;
     }
     console.log('Received game-update:', data);
-    var gameOutput;
-    if (section) {
-        gameOutput = document.getElementById(section);
-        gameOutput.innerHTML = data;
+
+    const targetId = section || 'game-output';
+    const outputElement = document.getElementById(targetId);
+    if (!outputElement) {
+        console.error(`Element with id "${targetId}" not found`);
+        return;
     }
-    else {
-        gameOutput = document.getElementById('game-output');
-        const newDiv = document.createElement('div');
-        newDiv.innerHTML = data;
-        gameOutput.appendChild(newDiv);
-        // Scroll to the bottom of the container
-        gameOutput.scrollTop = gameOutput.scrollHeight;
+
+    if (section) {
+        outputElement.innerHTML = data;
+    } else {
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = data;
+        outputElement.appendChild(wrapper);
+        // ensure scrolling occurs after DOM update
+        requestAnimationFrame(() => {
+            outputElement.scrollTop = outputElement.scrollHeight;
+        });
     }
 });
 

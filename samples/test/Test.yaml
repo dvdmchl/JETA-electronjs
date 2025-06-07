@@ -40,7 +40,7 @@ locations:
   - id: "předsíň"
     name: "Předsíň"
     descriptions:
-      - default: "<p>V předsíni skladuji boty, oblečení anebo deštníky. Na pravé straně mám věšák s bundami a různým oblečením, kdežto na levé straně mám botník, ve kterém mám boty normální, sálovky a nebo pohorky. Přímo přede mnou jsou dvěře ven, před kterými  někdo stojí.</p>"
+      - default: "<p>V předsíni skladuji boty, oblečení anebo deštníky. Na pravé straně mám věšák s bundami a různým oblečením, kdežto na levé straně mám botník, ve kterém mám boty normální, sálovky a nebo pohorky. Přímo přede mnou jsou dveře ven, před kterými  někdo stojí.</p>"
       - condition: "dveře_otevřeny"
         description: " Je to mladý muž."
       - condition: "klíče:owner != player && !dveře_otevřeny"

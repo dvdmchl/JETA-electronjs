@@ -58,9 +58,9 @@ class GameEngine {
 
     start() {
         console.log("Starting game...");
-        this.sendUpdate(`${this.data.title}`);
+        this.sendUpdate(`${this.data.title}`, 'location');
         (this.data.intro || []).forEach(introPage => {
-            this.sendUpdate(introPage.page);
+            this.sendUpdate(introPage.page, 'location');
         });
     }
 
@@ -316,10 +316,10 @@ class GameEngine {
         this.sendUpdate("<hr>")
     }
 
-    sendUpdate(message) {
+    sendUpdate(message, section) {
         console.log("Sending update: ", message);
         if (this.win && this.win.webContents) {
-            this.win.webContents.send('game-update', message);
+            this.win.webContents.send('game-update', message, section);
             console.log("Message sent.");
         } else {
             console.error("Failed to send message: win or webContents is not defined.");

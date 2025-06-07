@@ -8,13 +8,19 @@ const func = async () => {
     console.log(response); // prints out 'pong'
 };
 
-ipcRenderer.on('edit-file', (event, filePath) => {
-    console.log(`Opening file: ${filePath} in editor.`);
+ipcRenderer.on('set-game-layout', (event, layoutHtml) => {
+    console.log("Handler set-game-layout aktivován, data:",
+        layoutHtml ? `délka: ${layoutHtml.length}` : "undefined");
+    const gameContent = document.getElementById('game-content');
+    if (gameContent) {
+        gameContent.innerHTML = layoutHtml;
+    } else {
+        console.error('Element with id "game-content" not found');
+    }
 });
 
-ipcRenderer.on('set-game-directory', (yamlFilePath) => {
-    console.log('Updating game directory:', yamlFilePath);
-    ipcRenderer.send('set-game-directory', yamlFilePath);
+ipcRenderer.on('edit-file', (event, filePath) => {
+    console.log(`Opening file: ${filePath} in editor.`);
 });
 
 ipcRenderer.on('set-language', (translations, lang) => {

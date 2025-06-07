@@ -13,3 +13,7 @@ contextBridge.exposeInMainWorld('electron', {
         on: (channel, func) => ipcRenderer.on(channel, (event, ...args) => func(...args))
     }
 });
+
+contextBridge.exposeInMainWorld('api', {
+    setGameDirectorySync: (yamlFilePath) => ipcRenderer.sendSync('set-game-directory', yamlFilePath)
+});

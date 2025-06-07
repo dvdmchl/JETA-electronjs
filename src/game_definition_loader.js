@@ -1,4 +1,4 @@
-const { dialog, ipcRenderer} = require('electron');
+const {dialog, ipcRenderer} = require('electron');
 const Ajv = require("ajv");
 const fs = require("fs");
 const yaml = require("js-yaml");
@@ -11,7 +11,7 @@ require("ajv-formats")(ajv);
 
 const validate = ajv.compile(schema);
 
-function loadGameFile(filePath, win) {
+async function loadGameFile(filePath, win) {
     try {
         const fileData = fs.readFileSync(filePath, "utf-8");
         console.log("File data read successfully.");
@@ -26,8 +26,14 @@ function loadGameFile(filePath, win) {
             return null;
         }
         console.log("Game file is valid!");
-        win.webContents.send('set-game-directory', filePath);  // Aktualizace složky v main procesu
-        return  new GameData(inputData);
+        // win.webContents.send('set-game-directory', filePath);  // Aktualizace složky v main procesu
+        const result = await window.api.setGameDirectory(filePath);
+        if (result) {
+            console.log('Adresář hry úspěšně nastaven');
+        } else {
+            console.error('Chyba při nastavování adresáře hry');
+        }
+        return new GameData(inputData);
     } catch (error) {
         console.error("Error loading game file:", error.message);
         return null;
@@ -35,4 +41,4 @@ function loadGameFile(filePath, win) {
 }
 
 
-module.exports = { loadGameFile };
+module.exports = {loadGameFile};

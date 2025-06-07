@@ -4,8 +4,40 @@ const { createWindow } = require('./src/jeta_ui.js');
 const path = require("path");
 const fs = require("fs");
 const net = require("electron").net;
+const yaml = require('js-yaml');
 
 let currentGameDir = null; // Dynamická základní složka pro YAML
+
+function loadGameLayout(yamlFilePath, mainWindow) {
+    try {
+        const yamlContent = fs.readFileSync(yamlFilePath, 'utf8');
+        const yamlData = yaml.load(yamlContent);
+
+        let layoutPath;
+
+        // Zkontroluje, zda YAML definuje vlastní layout
+        if (yamlData.layout && yamlData.layout.path) {
+            const yamlDir = path.dirname(yamlFilePath);
+            layoutPath = path.join(yamlDir, yamlData.layout.path);
+        } else {
+            // Použije výchozí layout
+            layoutPath = path.join(__dirname, 'resources', 'layout_default.html');
+        }
+
+        if (fs.existsSync(layoutPath)) {
+            const layoutContent = fs.readFileSync(layoutPath, 'utf8');
+            mainWindow.webContents.send('set-game-layout', layoutContent);
+            console.log(`Layout loaded from: ${layoutPath}`);
+            return true;
+        } else {
+            console.error(`Soubor layoutu nenalezen: ${layoutPath}`);
+            return false;
+        }
+    } catch (error) {
+        console.error('Chyba při načítání layoutu:', error);
+        return false;
+    }
+}
 
 // Funkce pro registraci `game://` protokolu
 function setupGameProtocol() {
@@ -54,8 +86,11 @@ app.whenReady().then(() => {
 });
 
 // Aktualizace cesty podle YAML souboru z renderer procesu
-ipcMain.on('set-game-directory', (event, yamlFilePath) => {
-    updateGameDirectory(yamlFilePath);
+ipcMain.handle('set-game-directory', async (event, yamlFilePath) => {
+    const senderWindow = BrowserWindow.fromWebContents(event.sender);
+    const layoutLoaded = await loadGameLayout(yamlFilePath, senderWindow);
+    await updateGameDirectory(yamlFilePath);
+    return layoutLoaded;
 });
 
 app.on('window-all-closed', () => {

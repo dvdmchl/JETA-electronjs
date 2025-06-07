@@ -22,6 +22,7 @@ ipcMain.on('game-action', (event, {action, param}) => {
             break;
         case 'use':
             game.use(param);
+            game.look(); // Look after using an item
             break;
         case 'take':
             game.take(param);
@@ -37,8 +38,7 @@ ipcMain.on('game-action', (event, {action, param}) => {
     }
     if (!game.data.getValue("game_end", false)) {
         game.listCommands();
-    }
-    else {
+    } else {
         game.listEndings();
     }
 });
@@ -58,9 +58,9 @@ class GameEngine {
 
     start() {
         console.log("Starting game...");
-        this.sendUpdate(`${this.data.title}`, 'location');
+        this.sendUpdate(`${this.data.title}`, 'game-title');
         (this.data.intro || []).forEach(introPage => {
-            this.sendUpdate(introPage.page, 'location');
+            this.sendUpdate(introPage.page, 'game-location');
         });
     }
 
@@ -75,7 +75,7 @@ class GameEngine {
         if (!loc) return this.sendUpdate("Neznámá lokace.");
 
         let d = this.data.getDescription(loc);
-        this.sendUpdate(d);
+        this.sendUpdate(d, 'game-location');
 
     }
 
@@ -103,7 +103,7 @@ class GameEngine {
         this.sendUpdate("Prozkoumáváš " + foundItem.name + ".");
 
         let descr = this.data.getDescription(foundItem);
-        this.sendUpdate(descr);
+        this.sendUpdate(descr,);
 
         // increase onSee count
         let variablePath = foundItem.id + ":onSee:count";
@@ -160,6 +160,7 @@ class GameEngine {
         }
         // Vezmeme
         found.owner = "player";
+        this.sendUpdate("Vzal jsi to.");
         // OnTake?
         if (found.onTake) {
             for (let action of found.onTake) {
@@ -169,8 +170,6 @@ class GameEngine {
                 }
                 this.sendUpdate(action.description);
             }
-        } else {
-            this.sendUpdate("Vzal jsi to.");
         }
     }
 
@@ -304,16 +303,14 @@ class GameEngine {
         let goHrefRow = createDirectionsHrefRow(connectionsForLoc, this.data.locations);
 
         if (itemsHrefRow || goHrefRow) {
-            this.sendUpdate("<b>Příkazy:</b>");
-            this.sendUpdate(lookHref);
-            this.sendUpdate(talkHrefRow);
-            this.sendUpdate(itemsHrefRow);
-            this.sendUpdate(useHrefRow);
-            this.sendUpdate(takeHrefRow);
-            this.sendUpdate(dropHrefRow);
-            this.sendUpdate(goHrefRow);
+            this.sendUpdate(lookHref, 'game-commands');
+            this.sendUpdate(talkHrefRow, 'game-characters');
+            this.sendUpdate(itemsHrefRow, 'game-items');
+            this.sendUpdate(useHrefRow, 'game-use');
+            this.sendUpdate(takeHrefRow, 'game-take');
+            this.sendUpdate(dropHrefRow, 'game-drop');
+            this.sendUpdate(goHrefRow, 'game-go');
         }
-        this.sendUpdate("<hr>")
     }
 
     sendUpdate(message, section) {

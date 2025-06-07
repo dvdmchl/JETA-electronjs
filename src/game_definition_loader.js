@@ -3,6 +3,8 @@ const Ajv = require("ajv");
 const fs = require("fs");
 const yaml = require("js-yaml");
 const GameData = require("./game_data");
+const { loadGameLayout } = require('./game_layout');
+const { updateGameDirectory } = require('./game_dir');
 
 const schema = require("../resources/game_definition_schema.json");
 
@@ -26,11 +28,10 @@ async function loadGameFile(filePath, win) {
             return null;
         }
         console.log("Game file is valid!");
-        const result = await window.api.setGameDirectory(filePath);
-        if (result) {
-            console.log('Adresář hry úspěšně nastaven');
-        } else {
-            console.error('Chyba při nastavování adresáře hry');
+        const layoutLoaded = loadGameLayout(filePath, win);
+        updateGameDirectory(filePath);
+        if (!layoutLoaded) {
+            console.error('Chyba při načítání layoutu');
         }
         return new GameData(inputData);
     } catch (error) {

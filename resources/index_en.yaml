@@ -10,3 +10,17 @@ intro:
             <p id="description">Javascript Engine for Text Adventures</p>
             <img src="../assets/index_img_lg.png">
             <p id="info"></p>'
+
+locations:
+  - id: "index"
+    name: "Index"
+    descriptions:
+      - default: "Index of JETA games"
+    connections:
+      - direction: "Index"
+        target: "index"
+
+characters:
+  - id: "player"
+    name: "Venda"
+    location: "index"

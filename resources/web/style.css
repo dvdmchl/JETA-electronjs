@@ -4,11 +4,16 @@
 
 html, body {
     height: 100%;
-    overflow: hidden;
+    overflow: auto;
 }
 
 #game-output {
     overflow-y: auto;
     scroll-behavior: smooth;
     max-height: 300px;
+}
+
+/*make it footer*/
+#info {
+    margin-top: auto;
 }

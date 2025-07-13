@@ -20,7 +20,8 @@
     "reload": "Reload",
     "help": "Help!",
     "about": "About Game",
-    "language": "Language"
+    "language": "Language",
+    "debug": "Debug"
   },
   "dialog": {
     "saveGameState": "Save game state"

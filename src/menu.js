@@ -5,6 +5,7 @@ const i18next = require('./i18n');
 const {exec} = require('child_process');
 const {loadGameFile} = require('./game_definition_loader');
 const {play} = require('./game_engine');
+const { createDebugWindow } = require("./debug_window");
 
 
 
@@ -200,6 +201,12 @@ function createMenu(currentLanguage, store, win) {
                     click: () => {
                         console.log('Opening DevTools'); // Debugging line
                         win.webContents.openDevTools();
+                    }
+                },
+                {
+                    label: i18next.t('menu.debug'),
+                    click: () => {
+                        createDebugWindow(win);
                     }
                 },
                 {type: 'separator'},

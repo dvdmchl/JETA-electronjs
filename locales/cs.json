@@ -22,6 +22,9 @@
     "about": "O Hře",
     "language": "Jazyk"
   },
+  "dialog": {
+    "saveGameState": "Uložit pozici"
+  },
   "inputDialog": {
     "title": "Nová definice hry",
     "header": "Nová definice hry",

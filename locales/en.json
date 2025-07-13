@@ -22,6 +22,9 @@
     "about": "About Game",
     "language": "Language"
   },
+  "dialog": {
+    "saveGameState": "Save game state"
+  },
   "inputDialog": {
     "title": "New Game Definition",
     "header": "New Game Definition",

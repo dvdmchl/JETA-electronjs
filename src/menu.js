@@ -48,6 +48,7 @@ function createLanguageMenu(currentLanguage, store, win) {
 }
 
 function createMenu(currentLanguage, store, win) {
+    const encryptionActive = !!(win && win.webContents.encryption);
     return Menu.buildFromTemplate([
         {
             label: i18next.t('menu.file'),
@@ -57,9 +58,11 @@ function createMenu(currentLanguage, store, win) {
                     accelerator: 'Ctrl+O',
                     click: async () => {
                         try {
-                            const {canceled, filePaths} = await dialog.showOpenDialog(win, {
+                            const { canceled, filePaths } = await dialog.showOpenDialog(win, {
                                 properties: ['openFile'],
-                                filters: [{name: 'YAML Files', extensions: ['yaml']}],
+                                filters: [
+                                    { name: 'Game Files', extensions: ['yaml', 'json', 'enc', 'jenc'] }
+                                ]
                             });
 
                             if (!canceled && filePaths.length > 0) {
@@ -70,12 +73,14 @@ function createMenu(currentLanguage, store, win) {
                                     console.log('Game data loaded');
                                     win.webContents.send('clear-output');
                                     play(gameData, win);
+                                    updateMenu(currentLanguage, store, win);
                                 }
                                 fs.watchFile(gameFilePath, async (curr, prev) => {
                                     if (curr.mtime !== prev.mtime) {
                                         const gameData = await loadGameFile(gameFilePath, win);
                                         if (gameData) {
                                             console.log('Reloaded game data:', gameData);
+                                            updateMenu(currentLanguage, store, win);
                                         }
                                     }
                                 });
@@ -108,7 +113,15 @@ function createMenu(currentLanguage, store, win) {
                         if (!canceled && filePath) {
                             const gameInstance = win.webContents.gameInstance;
                             if (gameInstance && gameInstance.data && gameInstance.data.toJSON) {
-                                fs.writeFileSync(filePath, gameInstance.data.toJSON());
+                                const json = gameInstance.data.toJSON();
+                                if (win.webContents.encryption) {
+                                    const { encryptData } = require('./encryption');
+                                    const m = win.webContents.encryption.method;
+                                    const enc = encryptData(json, m);
+                                    fs.writeFileSync(filePath, m + '\n' + enc);
+                                } else {
+                                    fs.writeFileSync(filePath, json);
+                                }
                             }
                         }
                     }
@@ -166,6 +179,7 @@ function createMenu(currentLanguage, store, win) {
                                     const gameData = await loadGameFile(filePath, win);
                                     if (gameData) {
                                         console.log('Reloaded game data:', gameData);
+                                        updateMenu(currentLanguage, store, win);
                                     }
                                 }
                             });
@@ -193,20 +207,48 @@ function createMenu(currentLanguage, store, win) {
                 },
                 {
                     label: i18next.t('menu.encryptGame'),
+                    click: async () => {
+                        const { canceled, filePaths } = await dialog.showOpenDialog(win, {
+                            properties: ['openFile'],
+                            filters: [{ name: 'JSON Files', extensions: ['json'] }]
+                        });
+                        if (canceled || filePaths.length === 0) return;
+                        const inputPath = filePaths[0];
+
+                        const { response } = await dialog.showMessageBox(win, {
+                            type: 'question',
+                            buttons: ['AES', 'XOR', 'Cancel'],
+                            defaultId: 0,
+                            cancelId: 2,
+                            message: 'Select encryption method'
+                        });
+                        if (response === 2) return;
+                        const method = response === 0 ? 'aes' : 'xor';
+
+                        const data = fs.readFileSync(inputPath, 'utf8');
+                        const { encryptData } = require('./encryption');
+                        const encrypted = encryptData(data, method);
+                        const outputPath = inputPath + '.enc';
+                        fs.writeFileSync(outputPath, method + '\n' + encrypted);
+                        dialog.showMessageBox(win, { message: `Encrypted file saved to ${outputPath}` });
+                    }
                 },
                 {type: 'separator'},
                 {
                     label: i18next.t('menu.openDevTools'),
                     accelerator: 'Ctrl+Shift+I',
+                    enabled: !encryptionActive,
                     click: () => {
-                        console.log('Opening DevTools'); // Debugging line
+                        if (encryptionActive) return;
+                        console.log('Opening DevTools');
                         win.webContents.openDevTools();
                     }
                 },
                 {
                     label: i18next.t('menu.debug'),
+                    enabled: !encryptionActive,
                     click: () => {
-                        createDebugWindow(win);
+                        if (!encryptionActive) createDebugWindow(win);
                     }
                 },
                 {type: 'separator'},

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Debug</title>
+  <style>
+    body { font-family: sans-serif; margin: 0; padding: 10px; }
+    textarea { width: 100%; height: calc(100vh - 50px); font-family: monospace; }
+    button { margin-top: 5px; }
+  </style>
+</head>
+<body>
+  <textarea id="json"></textarea>
+  <button id="save">Save</button>
+  <script>
+    const { ipcRenderer } = require('electron');
+    ipcRenderer.send('debug-request-state');
+    ipcRenderer.on('debug-state', (event, state) => {
+      document.getElementById('json').value = state;
+    });
+    document.getElementById('save').addEventListener('click', () => {
+      const text = document.getElementById('json').value;
+      ipcRenderer.send('debug-save-state', text);
+    });
+  </script>
+</body>
+</html>

@@ -1,4 +1,5 @@
 const {ipcMain} = require('electron');
+const { sendDebugState } = require("./debug_window");
 
 ipcMain.on('game-action', (event, {action, param}) => {
     console.log(`Action received: ${action}, Parameter: ${param}`);
@@ -337,6 +338,7 @@ class GameEngine {
         if (this.win && this.win.webContents) {
             this.win.webContents.send('game-update', message, section);
             console.log("Message sent.");
+        sendDebugState(this);
         } else {
             console.error("Failed to send message: win or webContents is not defined.");
         }

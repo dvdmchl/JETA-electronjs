@@ -20,7 +20,8 @@
     "reload": "Obnovit",
     "help": "Pomoc!",
     "about": "O Hře",
-    "language": "Jazyk"
+    "language": "Jazyk",
+    "debug": "Debug"
   },
   "dialog": {
     "saveGameState": "Uložit pozici"

@@ -431,6 +431,10 @@ class GameData {
         let end = this.getObjectById(gameEndId);
         return this.getDescription(end);
     }
+
+    toJSON() {
+        return JSON.stringify(this.#data, null, 2);
+    }
 }
 
 module.exports = GameData;

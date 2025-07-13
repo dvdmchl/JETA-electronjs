@@ -97,6 +97,20 @@ function createMenu(currentLanguage, store, win) {
                 {
                     label: i18next.t('menu.saveGameState'),
                     accelerator: 'Ctrl+S'
+                    ,
+                    click: async () => {
+                        const { canceled, filePath } = await dialog.showSaveDialog(win, {
+                            title: i18next.t('dialog.saveGameState'),
+                            defaultPath: path.join(app.getPath('documents'), 'jeta_state.json'),
+                            filters: [{ name: 'JSON Files', extensions: ['json'] }]
+                        });
+                        if (!canceled && filePath) {
+                            const gameInstance = win.webContents.gameInstance;
+                            if (gameInstance && gameInstance.data && gameInstance.data.toJSON) {
+                                fs.writeFileSync(filePath, gameInstance.data.toJSON());
+                            }
+                        }
+                    }
                 },
                 {type: 'separator'},
                 {

@@ -142,6 +142,19 @@ describe('GameData', () => {
         expect(gameData.parseCondition('plný_šálek')).toBe(true);
     });
 
+    test('parseSet supports arithmetic expressions', () => {
+        gameData.setValue('counter', 1);
+        gameData.parseSet('counter = counter + 1');
+        expect(gameData.getValue('counter')).toBe(2);
+
+        gameData.parseSet('counter = counter - 1');
+        expect(gameData.getValue('counter')).toBe(1);
+
+        gameData.setValue('šálek-čaje:onSee:count', 0);
+        gameData.parseSet('šálek-čaje:onSee:count = šálek-čaje:onSee:count + 1');
+        expect(gameData.getValue('šálek-čaje:onSee:count')).toBe(1);
+    });
+
     test('Set and avaluate onSee:count', () => {
         gameData.setValue('šálek-čaje:onSee:count', 0);
         var t = gameData.getValue('šálek-čaje:onSee:count');

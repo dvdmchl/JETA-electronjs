@@ -35,25 +35,31 @@ const createWindow = async () => {
     // Change language and update menu
     i18next.changeLanguage(currentLanguage, async (err, t) => {
         if (err) return console.error('Error changing language:', err);
-        win.loadFile(`./resources/web/index.html`);
-        win.once('ready-to-show', () => {
-            win.show();
+
+        win.webContents.once('did-finish-load', async () => {
             win.webContents.send('set-language', t('index', {returnObjects: true}), currentLanguage);
+
+            menu = createMenu(currentLanguage, store, win);
+            Menu.setApplicationMenu(menu);
+
+            const indexName = `index_${currentLanguage}.yaml`;
+            const indexGameFilePath = path.join(__dirname, '../resources', indexName);
+            console.log('Loading game data from:', indexGameFilePath);
+            const gameData = await loadGameFile(indexGameFilePath, win);
+            if (gameData) {
+                console.log('Game data loaded successfully.');
+                play(gameData, win);
+                console.log('Game started.');
+            } else {
+                console.error('Failed to load game data.');
+            }
         });
 
-        menu = createMenu(currentLanguage, store, win);
-        Menu.setApplicationMenu(menu);
-        let indexName = 'index' + '_' + currentLanguage + '.yaml';
-        let indexGameFilePath = path.join(__dirname, '../resources/' + indexName);
-        console.log('Loading game data from:', indexGameFilePath);
-        const gameData = await loadGameFile(indexGameFilePath, win);
-        if (gameData) {
-            console.log('Game data loaded successfully.');
-            play(gameData, win);
-            console.log('Game started.');
-        } else {
-            console.error('Failed to load game data.');
-        }
+        await win.loadFile(path.join(__dirname, '../resources/web/index.html'));
+
+        win.once('ready-to-show', () => {
+            win.show();
+        });
     });
 
     console.log('DevMode:', devMode);

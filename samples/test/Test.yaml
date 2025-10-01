@@ -204,17 +204,33 @@ characters:
       - condition: "!dveře_otevřeny"
         description: "<p>Někdo je asi za dveřmi, ale nevím kdo. Možná by pomohlo otevřít dveře.</p>"
     onTalk:
-      - condition: "!dveře_otevřeny"
+      - id: "door_closed"
+        condition: "!dveře_otevřeny"
         description: "<p>Nemůžu mluvit s někým přes dveře to se přece nesluší na vychovaného mladého člověka.</p>"
-      - condition: "dveře_otevřeny"
-        description: "<p>Dobrý den pane co pro vás mohu udělat?!<br>
-         Dobrý den pane mám tu pro vás dopis od Ammm...Kamaráda Honzy. <br>
-         No ahá vy jste ten nový poštmistr co u nás měl od ledna nastoupit že? <br>
-         Nu dá se to tak brát, i když tu jsem jen na záskok ale díky za optání. <br> 
-         Není zač nashledanou! <br>
-         Nashledanou!<br>
-         Vrzz Cvak  Nu to jsem zvědav co v tom dopise vlasně je <br>
-         Trhh AHÁ to je Pozvánka pro vás na moji další hru!!!</p>"
+      - id: "door_greeting"
+        condition: "dveře_otevřeny"
+        description: "<p>Dobrý den pane co pro vás mohu udělat?</p>"
+        responses:
+          - id: "deliver_letter"
+            text: "Předat dopis"
+            next: "door_after_letter"
+          - id: "ask_job"
+            text: "Zeptat se na práci"
+            next: "door_job"
+          - id: "say_goodbye"
+            text: "Rozloučit se"
+            next: "door_farewell"
+      - id: "door_job"
+        description: "<p>Nu dá se to tak brát, i když tu jsem jen na záskok ale díky za optání.</p>"
+        responses:
+          - id: "job_back"
+            text: "Vrátit se k dopisu"
+            next: "door_greeting"
+      - id: "door_farewell"
+        description: "<p>Není zač, nashledanou!</p>"
+        set: "dveře_otevřeny = false"
+      - id: "door_after_letter"
+        description: "<p>Vrzz... Nu to jsem zvědav, co v tom dopise vlastně je. Trh! Ahá, to je pozvánka na moji další hru!</p>"
         set: "dveře_otevřeny = false; game_end = true; game_end_id=end_game_1"
 
 variables:

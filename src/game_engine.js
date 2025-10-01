@@ -11,6 +11,8 @@ ipcMain.on('game-action', (event, {action, param}) => {
 
     const game = event.sender.gameInstance;
 
+    let skipLook = false;
+
     switch (action) {
         case 'see':
             game.see(param);
@@ -33,10 +35,16 @@ ipcMain.on('game-action', (event, {action, param}) => {
         case 'talk':
             game.talk(param);
             break;
+        case 'dialog-choice':
+            skipLook = true;
+            game.handleDialogChoice(param);
+            break;
         default:
             console.error(`Unknown action: ${action}`);
     }
-    game.look();
+    if (!skipLook) {
+        game.look();
+    }
     if (!game.data.getValue("game_end", false)) {
         game.listCommands();
     } else {
@@ -54,6 +62,7 @@ class GameEngine {
         this.data = data;
         this.win = win;
         this.endGame = false;
+        this.activeDialogues = new Map();
     }
 
 
@@ -249,32 +258,174 @@ class GameEngine {
         }
     }
 
-    talk(characterName) {
-        // Najdu postavu
-        let ch = Object.values(this.data.characters).find(c => c.name.toLowerCase() === characterName.toLowerCase());
+    talk(characterIdentifier) {
+        const ch = this.findCharacter(characterIdentifier);
         if (!ch) {
             this.sendUpdate("Takovou postavu tu nevidím.");
             return;
         }
-        // onTalk
-        if (!ch.onTalk) {
+
+        if (!ch.onTalk || !ch.onTalk.length) {
             this.sendUpdate("Tahle postava nemá co říct.");
             return;
         }
-        let spoke = false;
-        for (let t of ch.onTalk) {
-            if (t.condition) {
-                if (!this.data.parseCondition(t.condition, this)) continue;
+
+        const activeEntryId = this.activeDialogues.get(ch.id);
+        if (activeEntryId) {
+            const activeEntry = this.data.getDialogueEntry(ch.id, activeEntryId);
+            if (activeEntry) {
+                const activeResult = this.presentDialogueEntry(ch, activeEntry);
+                if (activeResult.hasResponses) {
+                    return;
+                }
             }
-            this.sendUpdate(t.description);
-            if (t.set) {
-                this.data.parseSet(t.set, this);
-            }
-            spoke = true;
+            this.activeDialogues.delete(ch.id);
         }
+
+        let spoke = false;
+        for (let entry of ch.onTalk) {
+            if (entry.condition && !this.data.parseCondition(entry.condition)) {
+                continue;
+            }
+
+            const result = this.presentDialogueEntry(ch, entry);
+            if (result.spoke) {
+                spoke = true;
+            }
+
+            if (result.hasResponses) {
+                spoke = true;
+                return;
+            }
+        }
+
         if (!spoke) {
             this.sendUpdate("Nepodařilo se navázat rozhovor.");
         }
+    }
+
+    handleDialogChoice(payload) {
+        if (!payload || typeof payload !== 'object') {
+            this.sendUpdate("Tahle odpověď není dostupná.");
+            return;
+        }
+
+        const {characterId, choiceId, entryId} = payload;
+        const character = this.data.getCharacterById(characterId) || this.findCharacter(characterId);
+        if (!character) {
+            this.sendUpdate("Takovou postavu tu nevidím.");
+            return;
+        }
+
+        const currentEntryId = entryId || this.activeDialogues.get(character.id);
+        if (!currentEntryId) {
+            this.sendUpdate("Žádný rozhovor není aktivní.");
+            return;
+        }
+
+        const entry = this.data.getDialogueEntry(character.id, currentEntryId);
+        if (!entry || !entry.responses) {
+            this.activeDialogues.delete(character.id);
+            this.sendUpdate("Tahle replika není dostupná.");
+            return;
+        }
+
+        const response = entry.responses.find(r => r.id === choiceId);
+        if (!response) {
+            this.sendUpdate("Takovou odpověď nemáš.");
+            return;
+        }
+
+        if (response.condition && !this.data.parseCondition(response.condition)) {
+            this.sendUpdate("Tahle odpověď není dostupná.");
+            return;
+        }
+
+        if (response.text) {
+            this.sendUpdate(`<p class="dialogue-choice">${escapeHtml(response.text)}</p>`);
+        }
+
+        if (response.set) {
+            this.data.parseSet(response.set);
+        }
+
+        if (response.next) {
+            const nextEntry = this.data.getDialogueEntry(character.id, response.next);
+            if (nextEntry) {
+                const result = this.presentDialogueEntry(character, nextEntry);
+                if (!result.hasResponses) {
+                    this.activeDialogues.delete(character.id);
+                }
+                return;
+            }
+            this.sendUpdate("Chybí navazující replika v rozhovoru.");
+        }
+
+        this.activeDialogues.delete(character.id);
+    }
+
+    presentDialogueEntry(character, entry) {
+        if (entry.condition && !this.data.parseCondition(entry.condition)) {
+            this.activeDialogues.delete(character.id);
+            return {spoke: false, hasResponses: false};
+        }
+
+        let spoke = false;
+        if (entry.description) {
+            this.sendUpdate(entry.description);
+            spoke = true;
+        }
+
+        if (entry.set) {
+            this.data.parseSet(entry.set);
+            spoke = true;
+        }
+
+        let hasResponses = false;
+        if (entry.responses && entry.responses.length) {
+            if (!entry.id) {
+                this.activeDialogues.delete(character.id);
+            } else {
+                const options = this.data.getDialogueOptions(character.id, entry.id);
+                if (options.length) {
+                    const markup = this.renderDialogueOptions(character.id, entry.id, options);
+                    this.sendUpdate(markup);
+                    this.activeDialogues.set(character.id, entry.id);
+                    hasResponses = true;
+                    if (!spoke) {
+                        spoke = true;
+                    }
+                } else {
+                    this.activeDialogues.delete(character.id);
+                }
+            }
+        } else {
+            this.activeDialogues.delete(character.id);
+        }
+
+        return {spoke, hasResponses};
+    }
+
+    renderDialogueOptions(characterId, entryId, options) {
+        const encodedCharacter = encodeDataAttribute(characterId);
+        const encodedEntry = encodeDataAttribute(entryId);
+        const links = options.map(option => {
+            const encodedChoice = encodeDataAttribute(option.id);
+            return `<a href="#" class="game-action dialog-option" data-action="dialog-choice" data-character="${encodedCharacter}" data-entry="${encodedEntry}" data-choice="${encodedChoice}">${escapeHtml(option.text)}</a>`;
+        }).join(' | ');
+        return `<div class="dialogue-options" data-character="${encodedCharacter}" data-entry="${encodedEntry}">${links}</div>`;
+    }
+
+    findCharacter(identifier) {
+        if (!identifier) {
+            return null;
+        }
+        const value = identifier.toString().toLowerCase();
+        return Object.values(this.data.characters).find(c => {
+            const byId = (c.id || '').toLowerCase() === value;
+            const byName = (c.name || '').toLowerCase() === value;
+            return byId || byName;
+        }) || null;
     }
 
     listEndings() {
@@ -352,6 +503,26 @@ function getAccusativeName(entity) {
     return entity.name_accusative || entity.name || "";
 }
 
+function encodeDataAttribute(value) {
+    if (value === null || value === undefined) {
+        return '';
+    }
+    return encodeURIComponent(value.toString());
+}
+
+function escapeHtml(value) {
+    if (value === null || value === undefined) {
+        return '';
+    }
+    return value
+        .toString()
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
 function createTalkHrefRow(charactersInLoc) {
     if (!charactersInLoc || charactersInLoc.length === 0) return "";
     let seeHrefRow = "";
@@ -361,7 +532,7 @@ function createTalkHrefRow(charactersInLoc) {
         if (seeHrefRow !== "") seeHrefRow += " | ";
         seeHrefRow += `<a href="#" class="game-action" data-action="see" data-param="${character.id}">${displayName}</a>`;
         if (talkHrefRow !== "") talkHrefRow += " | ";
-        talkHrefRow += `<a href="#" class="game-action" data-action="talk" data-param="${character.name}">${displayName}</a>`;
+        talkHrefRow += `<a href="#" class="game-action" data-action="talk" data-param="${character.id}">${displayName}</a>`;
     });
     return '<span>Prozkoumat:</span>' + seeHrefRow + '<br><span>Oslovit: </span>' + talkHrefRow;
 }

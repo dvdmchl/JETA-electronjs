@@ -79,11 +79,71 @@ document.addEventListener('click', (event) => {
         event.preventDefault();
 
         const action = target.getAttribute('data-action');
-        const param = target.getAttribute('data-param');
+        if (!action) {
+            return;
+        }
+
+        let payload = { action, param: undefined };
+
+        if (action === 'dialog-choice') {
+            const decodeData = (value) => {
+                try {
+                    return decodeURIComponent(value);
+                } catch (error) {
+                    console.warn('Failed to decode dialog choice value:', value, error);
+                    return value;
+                }
+            };
+
+            const characterRaw = target.getAttribute('data-character') || '';
+            const choiceRaw = target.getAttribute('data-choice') || '';
+            const entryRaw = target.getAttribute('data-entry') || '';
+
+            const detail = {
+                characterId: decodeData(characterRaw),
+                choiceId: decodeData(choiceRaw)
+            };
+            const entryId = entryRaw ? decodeData(entryRaw) : '';
+            if (entryId) {
+                detail.entryId = entryId;
+            }
+
+            document.dispatchEvent(new CustomEvent('dialog-choice', {
+                detail: {
+                    target,
+                    choice: detail
+                }
+            }));
+
+            payload.param = detail;
+        } else {
+            const param = target.getAttribute('data-param');
+            if (param !== null) {
+                payload.param = param;
+            }
+        }
 
         // Pošli akci zpět do hlavního procesu
-        window.electron.ipcRenderer.send('game-action', { action, param });
+        window.electron.ipcRenderer.send('game-action', payload);
     }
+});
+
+document.addEventListener('dialog-choice', (event) => {
+    const clicked = event.detail?.target;
+    if (!clicked) {
+        return;
+    }
+
+    const container = clicked.closest('.dialogue-options');
+    const links = container
+        ? container.querySelectorAll('a[data-action="dialog-choice"]')
+        : [clicked];
+
+    links.forEach(link => {
+        link.classList.remove('game-action');
+        link.classList.add('game-action-disabled');
+        link.setAttribute('aria-disabled', 'true');
+    });
 });
 
 func();

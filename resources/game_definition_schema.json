@@ -86,7 +86,34 @@
           "name": { "type": "string" },
           "name_accusative": { "type": "string" },
           "description": { "type": "string" },
-          "location": { "type": "string" }
+          "location": { "type": "string" },
+          "onTalk": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["description"],
+              "properties": {
+                "id": { "type": "string" },
+                "description": { "type": "string" },
+                "condition": { "type": "string" },
+                "set": { "type": "string" },
+                "responses": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": ["id", "text"],
+                    "properties": {
+                      "id": { "type": "string" },
+                      "text": { "type": "string" },
+                      "condition": { "type": "string" },
+                      "set": { "type": "string" },
+                      "next": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }

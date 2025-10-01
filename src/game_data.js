@@ -8,20 +8,23 @@ class GameData {
     #characters;
     #vars;
     #player;
-    #endings
+    #endings;
+    #dialoguesByCharacter;
 
     constructor(inputData) {
         this.#data = inputData;
         this.validate();
         this.init();
         this.#title = this.#data.metadata.title;
-        this.#intro = this.#data.intro;
-        this.#locations = this.#data.locations;
-        this.#items = this.#data.items;
-        this.#characters = this.#data.characters;
-        this.#vars = this.#data.variables;
+        this.#intro = this.#data.intro || [];
+        this.#locations = this.#data.locations || [];
+        this.#items = this.#data.items || [];
+        this.#characters = this.#data.characters || [];
+        this.#vars = this.#data.variables || [];
         this.#player = Object.values(this.#data.characters || []).find(c => c.id === "player");
-        this.#endings = this.#data.endings;
+        this.#endings = this.#data.endings || [];
+        this.#dialoguesByCharacter = new Map();
+        this.indexDialogues();
     }
 
     get title() {
@@ -85,6 +88,8 @@ class GameData {
         if (this.#data.variables) {
             this.#data.variables.forEach(v => checkId(v.id));
         }
+
+        this.validateDialogues();
     }
 
     init() {
@@ -98,6 +103,108 @@ class GameData {
         // variables - upravit boolean hodnoty
         this.normalizeVars(this.#data.variables);
 
+    }
+
+    validateDialogues() {
+        const characters = this.#data.characters || [];
+        characters.forEach(character => {
+            const entries = character.onTalk || [];
+            const entryIds = new Set();
+
+            entries.forEach(entry => {
+                if (entry.id) {
+                    if (entryIds.has(entry.id)) {
+                        throw new Error(`Duplicate dialogue id "${entry.id}" for character "${character.id}"`);
+                    }
+                    entryIds.add(entry.id);
+                } else if (entry.responses && entry.responses.length) {
+                    throw new Error(`Dialogue with responses for character "${character.id}" is missing an id.`);
+                }
+            });
+
+            entries.forEach(entry => {
+                if (!entry.responses) {
+                    return;
+                }
+
+                const responseIds = new Set();
+                entry.responses.forEach(response => {
+                    if (!response.id) {
+                        throw new Error(`Response without id in dialogue "${entry.id || 'unknown'}" for character "${character.id}"`);
+                    }
+                    if (responseIds.has(response.id)) {
+                        throw new Error(`Duplicate response id "${response.id}" in dialogue "${entry.id}" for character "${character.id}"`);
+                    }
+                    responseIds.add(response.id);
+
+                    if (response.next && !entryIds.has(response.next)) {
+                        throw new Error(`Response "${response.id}" of character "${character.id}" references unknown dialogue "${response.next}".`);
+                    }
+                });
+            });
+        });
+    }
+
+    indexDialogues() {
+        this.#dialoguesByCharacter.clear();
+        (this.#characters || []).forEach(character => {
+            const entries = character.onTalk || [];
+            if (!entries.length) {
+                return;
+            }
+            const map = new Map();
+            entries.forEach(entry => {
+                if (entry.id) {
+                    map.set(entry.id, entry);
+                }
+            });
+            if (map.size) {
+                this.#dialoguesByCharacter.set(character.id, map);
+            }
+        });
+    }
+
+    getCharacterById(id) {
+        if (!id) {
+            return null;
+        }
+        return (this.#characters || []).find(c => c.id === id) || null;
+    }
+
+    getDialogueEntry(characterId, entryId) {
+        if (!characterId || !entryId) {
+            return null;
+        }
+        const map = this.#dialoguesByCharacter.get(characterId);
+        if (!map) {
+            return null;
+        }
+        return map.get(entryId) || null;
+    }
+
+    getDialogueOptions(characterId, entryId) {
+        const entry = this.getDialogueEntry(characterId, entryId);
+        if (!entry || !Array.isArray(entry.responses)) {
+            return [];
+        }
+        return entry.responses
+            .filter(response => {
+                if (response.condition) {
+                    try {
+                        return this.parseCondition(response.condition);
+                    } catch (error) {
+                        console.error(`Failed to evaluate condition for response "${response.id}":`, error);
+                        return false;
+                    }
+                }
+                return true;
+            })
+            .map(response => ({
+                id: response.id,
+                text: response.text,
+                set: response.set,
+                next: response.next
+            }));
     }
 
     normalizeVars(variables) {

@@ -212,7 +212,7 @@ characters:
         description: "<p>Nemůžu mluvit s někým přes dveře to se přece nesluší na vychovaného mladého člověka.</p>"
       - id: "door_greeting"
         condition: "dveře_otevřeny"
-        description: "<p>Dobrý den pane co pro vás mohu udělat?</p><br><p class=\"char_reply\">Mám tu pro vás dopis.</p>"
+        description: "<p>Dobrý den pane co pro vás mohu udělat?</p><p class=\"char_reply\">Mám tu pro vás dopis.</p>"
         responses:
           - id: "deliver_letter"
             text: "Převzít dopis"

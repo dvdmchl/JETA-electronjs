@@ -22,6 +22,7 @@
         "properties": {
           "id": { "type": "string" },
           "name": { "type": "string" },
+          "name_accusative": { "type": "string" },
           "descriptions": { "type": "array" },
           "connections": {
             "type": "array",
@@ -30,7 +31,8 @@
               "required": ["direction", "target"],
               "properties": {
                 "direction": { "type": "string" },
-                "target": { "type": "string" }
+                "target": { "type": "string" },
+                "genitive": { "type": "string" }
               }
             }
           }
@@ -45,6 +47,7 @@
         "properties": {
           "id": { "type": "string" },
           "name": { "type": "string" },
+          "name_accusative": { "type": "string" },
           "descriptions": { "type": "array" },
           "location": { "type": "string" }
         }
@@ -82,6 +85,7 @@
         "properties": {
           "id": { "type": "string" },
           "name": { "type": "string" },
+          "name_accusative": { "type": "string" },
           "description": { "type": "string" },
           "location": { "type": "string" }
         }

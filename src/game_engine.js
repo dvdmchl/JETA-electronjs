@@ -119,7 +119,8 @@ class GameEngine {
             return;
         }
 
-        this.sendUpdate("Prozkoumáváš " + foundItem.name + ".");
+        const displayName = getAccusativeName(foundItem);
+        this.sendUpdate("Prozkoumáváš " + displayName + ".");
 
         let descr = this.data.getDescription(foundItem);
         this.sendUpdate(descr,);
@@ -150,13 +151,18 @@ class GameEngine {
             this.sendUpdate("Neznámá lokace.");
             return;
         }
-        const conn = (loc.connections || []).find(c => c.direction.toLowerCase() === where.toLowerCase());
+        const conn = (loc.connections || []).find(c => {
+            const directionMatch = c.direction && c.direction.toLowerCase() === where.toLowerCase();
+            const targetMatch = c.target && c.target.toLowerCase() === where.toLowerCase();
+            return directionMatch || targetMatch;
+        });
         if (!conn) {
             this.sendUpdate("Tam se jít nedá.");
             return;
         }
         // Změníme location
-        this.sendUpdate("Přesouváš se do " + conn.direction + ".");
+        const destinationLabel = getGenitiveLabel(conn);
+        this.sendUpdate("Přesouváš se do " + destinationLabel + ".");
         this.data.player.location = conn.target;
         this.look();
     }
@@ -320,7 +326,7 @@ class GameEngine {
 
         // go
         let connectionsForLoc = (loc.connections || []);
-        let goHrefRow = createDirectionsHrefRow(connectionsForLoc, this.data.locations);
+        let goHrefRow = createDirectionsHrefRow(connectionsForLoc);
 
         if (itemsHrefRow || goHrefRow) {
             this.sendUpdate(lookHref, 'game-commands');
@@ -347,15 +353,26 @@ class GameEngine {
 
 }
 
+function getAccusativeName(entity) {
+    if (!entity) return "";
+    return entity.name_accusative || entity.name || "";
+}
+
+function getGenitiveLabel(connection) {
+    if (!connection) return "";
+    return connection.genitive || connection.direction || "";
+}
+
 function createTalkHrefRow(charactersInLoc) {
     if (!charactersInLoc || charactersInLoc.length === 0) return "";
     let seeHrefRow = "";
     let talkHrefRow = "";
     charactersInLoc.forEach(character => {
+        const displayName = getAccusativeName(character);
         if (seeHrefRow !== "") seeHrefRow += " | ";
-        seeHrefRow += `<a href="#" class="game-action" data-action="see" data-param="${character.id}">${character.name}</a>`;
+        seeHrefRow += `<a href="#" class="game-action" data-action="see" data-param="${character.id}">${displayName}</a>`;
         if (talkHrefRow !== "") talkHrefRow += " | ";
-        talkHrefRow += `<a href="#" class="game-action" data-action="talk" data-param="${character.name}">${character.name}</a>`;
+        talkHrefRow += `<a href="#" class="game-action" data-action="talk" data-param="${character.name}">${displayName}</a>`;
     });
     return '<span>Prozkoumat:</span>' + seeHrefRow + '<br><span>Oslovit: </span>' + talkHrefRow;
 }
@@ -365,12 +382,14 @@ function createItemsHrefRow(items, itemsInInventory) {
     let itemsHrefRow = "";
     items.forEach(item => {
         if (itemsHrefRow !== "") itemsHrefRow += " | ";
-        itemsHrefRow += `<a href="#" class="game-action" data-action="see" data-param="${item.id}">${item.name}</a>`;
+        const displayName = getAccusativeName(item);
+        itemsHrefRow += `<a href="#" class="game-action" data-action="see" data-param="${item.id}">${displayName}</a>`;
     });
     itemsHrefRow += " Inventář: ";
     itemsInInventory.forEach(item => {
         if (itemsHrefRow !== "") itemsHrefRow += " | ";
-        itemsHrefRow += `<a href="#" class="game-action" data-action="see" data-param="${item.id}">${item.name}</a>`;
+        const displayName = getAccusativeName(item);
+        itemsHrefRow += `<a href="#" class="game-action" data-action="see" data-param="${item.id}">${displayName}</a>`;
     });
     return '<span>Prozkoumat: </span>' + itemsHrefRow;
 }
@@ -380,7 +399,8 @@ function createUseHrefRow(itemsForLocAndInventory) {
     let useHrefRow = "";
     itemsForLocAndInventory.forEach(item => {
         if (useHrefRow !== "") useHrefRow += " | ";
-        useHrefRow += `<a href="#" class="game-action" data-action="use" data-param="${item.id}">${item.name}</a>`;
+        const displayName = getAccusativeName(item);
+        useHrefRow += `<a href="#" class="game-action" data-action="use" data-param="${item.id}">${displayName}</a>`;
     });
     return '<span>Použít: </span>' + useHrefRow;
 }
@@ -390,7 +410,8 @@ function createTakeHrefRow(items) {
     let takeHrefRow = "";
     items.forEach(item => {
         if (takeHrefRow !== "") takeHrefRow += " | ";
-        takeHrefRow += `<a href="#" class="game-action" data-action="take" data-param="${item.name}">${item.name}</a>`;
+        const displayName = getAccusativeName(item);
+        takeHrefRow += `<a href="#" class="game-action" data-action="take" data-param="${item.name}">${displayName}</a>`;
     });
     return '<span>Vzít: </span>' + takeHrefRow;
 }
@@ -400,18 +421,19 @@ function createDropHrefRow(items) {
     let dropHrefRow = "";
     items.forEach(item => {
         if (dropHrefRow !== "") dropHrefRow += " | ";
-        dropHrefRow += `<a href="#" class="game-action" data-action="drop" data-param="${item.name}">${item.name}</a>`;
+        const displayName = getAccusativeName(item);
+        dropHrefRow += `<a href="#" class="game-action" data-action="drop" data-param="${item.name}">${displayName}</a>`;
     });
     return '<span>Položit: </span>' + dropHrefRow;
 }
 
-function createDirectionsHrefRow(directions, locations) {
+function createDirectionsHrefRow(directions) {
     if (!directions || directions.length === 0) return "";
     let locationsHrefRow = "";
     directions.forEach(direction => {
-        let locId = Object.values(locations).find(l => l.id === direction.target).id;
         if (locationsHrefRow !== "") locationsHrefRow += " | ";
-        locationsHrefRow += `<a href="#" class="game-action" data-action="go" data-param="${locId}">${direction.direction}</a>`;
+        const displayLabel = getGenitiveLabel(direction);
+        locationsHrefRow += `<a href="#" class="game-action" data-action="go" data-param="${direction.target}">${displayLabel}</a>`;
     });
     return '<span>Jít: </span>' + locationsHrefRow;
 }

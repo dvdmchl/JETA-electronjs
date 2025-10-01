@@ -67,6 +67,38 @@ ipcRenderer.on('game-update', (data, section) => {
     }
 });
 
+ipcRenderer.on('game-section-visibility', (event, sectionId, visible) => {
+    if (!sectionId) {
+        return;
+    }
+
+    const element = document.getElementById(sectionId);
+    if (!element) {
+        console.warn(`Element with id "${sectionId}" not found for visibility toggle.`);
+        return;
+    }
+
+    const targets = [element];
+    const cardContainer = element.closest('.card');
+    if (cardContainer && !targets.includes(cardContainer)) {
+        targets.push(cardContainer);
+    }
+
+    const isVisible = !(visible === false || visible === 'false');
+    targets.forEach(targetEl => {
+        if (!targetEl) {
+            return;
+        }
+        targetEl.style.display = isVisible ? '' : 'none';
+    });
+
+    if (!isVisible) {
+        element.setAttribute('aria-hidden', 'true');
+    } else {
+        element.removeAttribute('aria-hidden');
+    }
+});
+
 ipcRenderer.on('game-command', (event, command) => {
     console.log('Received game-command:', command); // Debugging line
 });

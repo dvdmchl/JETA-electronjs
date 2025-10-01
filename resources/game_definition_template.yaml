@@ -41,3 +41,26 @@ characters:
   - id: "player"
     name: "Player"
     location: "Loc1"
+
+variables:
+  # System variables controlling layout visibility
+  - id: "game-title-show"
+    value: true
+  - id: "game-location-show"
+    value: true
+  - id: "game-commands-show"
+    value: true
+  - id: "game-characters-show"
+    value: true
+  - id: "game-items-show"
+    value: true
+  - id: "game-use-show"
+    value: true
+  - id: "game-take-show"
+    value: true
+  - id: "game-drop-show"
+    value: true
+  - id: "game-go-show"
+    value: true
+  - id: "game-output-show"
+    value: true

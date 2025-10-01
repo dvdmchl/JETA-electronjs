@@ -1,3 +1,5 @@
+const { LAYOUT_SECTIONS } = require('./layout_sections');
+
 class GameData {
 
     #data;
@@ -102,6 +104,7 @@ class GameData {
 
         // variables - upravit boolean hodnoty
         this.normalizeVars(this.#data.variables);
+        this.ensureSystemVariables();
 
     }
 
@@ -219,6 +222,22 @@ class GameData {
                 v.value = false;
             }
             // ostatní nechat být
+        });
+    }
+
+    ensureSystemVariables() {
+        if (!Array.isArray(this.#data.variables)) {
+            this.#data.variables = [];
+        }
+
+        LAYOUT_SECTIONS.forEach(({variableId, defaultVisible}) => {
+            let variable = this.#data.variables.find(v => v.id === variableId);
+            if (!variable) {
+                variable = {id: variableId, value: defaultVisible};
+                this.#data.variables.push(variable);
+            } else if (variable.value === undefined) {
+                variable.value = defaultVisible;
+            }
         });
     }
 

@@ -1,5 +1,6 @@
 const {ipcMain} = require('electron');
 const {sendDebugState} = require("./debug_window");
+const { LAYOUT_SECTIONS } = require('./layout_sections');
 
 ipcMain.on('game-action', (event, {action, param}) => {
     console.log(`Action received: ${action}, Parameter: ${param}`);
@@ -79,6 +80,7 @@ class GameEngine {
         });
         data = data + "<hr>" + this.getLookText();
         this.sendUpdate(data, 'game-location');
+        this.updateLayoutVisibility();
     }
 
     // Vypíše popis aktuální lokace + viditelné věci a postavy
@@ -433,6 +435,7 @@ class GameEngine {
         if (endDescription) {
             this.sendUpdate(endDescription, 'game-location');
         }
+        this.updateLayoutVisibility();
     }
 
     listCommands() {
@@ -482,6 +485,7 @@ class GameEngine {
             this.sendUpdate(dropHrefRow, 'game-drop');
             this.sendUpdate(goHrefRow, 'game-go');
         }
+        this.updateLayoutVisibility();
     }
 
     sendUpdate(message, section) {
@@ -493,6 +497,25 @@ class GameEngine {
         } else {
             console.error("Failed to send message: win or webContents is not defined.");
         }
+    }
+
+    updateLayoutVisibility() {
+        if (!this.win || !this.win.webContents) {
+            return;
+        }
+
+        LAYOUT_SECTIONS.forEach(({id, variableId, defaultVisible}) => {
+            const rawValue = this.data.getValue(variableId, defaultVisible);
+            const isVisible = !(rawValue === false || rawValue === 'false');
+            this.setSectionVisibility(id, isVisible);
+        });
+    }
+
+    setSectionVisibility(sectionId, isVisible) {
+        if (!this.win || !this.win.webContents) {
+            return;
+        }
+        this.win.webContents.send('game-section-visibility', sectionId, Boolean(isVisible));
     }
 
 

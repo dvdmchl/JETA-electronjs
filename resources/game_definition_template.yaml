@@ -62,5 +62,7 @@ variables:
     value: true
   - id: "game-go-show"
     value: true
+  - id: "game-log-title-show"
+    value: true
   - id: "game-output-show"
     value: true

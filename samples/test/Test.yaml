@@ -16,9 +16,11 @@ endings:
   - id: "end_game_1"
     descriptions:
       - default: "<img src='game://ENDGAME.jpg' alt='ENDGAME'>"
+        set: "game-characters-show = false; game-items-show = false; game-commands-show = false; game-location-show = false; game-take-show = false; game-use-show = false"
   - id: "end_game_2"
     descriptions:
       - default: "No pán je pryč a dopis jsem si nepřečetl, to je ale smůla, no nic snad se ještě někdy potkáme."
+        set: "game-characters-show = false; game-items-show = false; game-commands-show = false; game-location-show = false; game-take-show = false; game-use-show = false"
 
 locations:
   - id: "kuchyně"
@@ -240,6 +242,9 @@ characters:
         set: "dveře_otevřeny = false; game_end = true; game_end_id=end_game_1"
 
 variables:
+  - id: "game-commands-show"
+    value: "false"
+
   - id: "světlo"
     value: "false"
 

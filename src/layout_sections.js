@@ -8,7 +8,8 @@ const LAYOUT_SECTIONS = [
     { id: 'game-take', variableId: 'game-take-show', defaultVisible: true },
     { id: 'game-drop', variableId: 'game-drop-show', defaultVisible: true },
     { id: 'game-go', variableId: 'game-go-show', defaultVisible: true },
-    { id: 'game-output', variableId: 'game-output-show', defaultVisible: true }
+    { id: 'game-output', variableId: 'game-output-show', defaultVisible: true },
+    { id: 'game-log-title', variableId: 'game-log-title-show', defaultVisible: false }
 ];
 
 module.exports = {

@@ -67,7 +67,7 @@ ipcRenderer.on('game-update', (data, section) => {
     }
 });
 
-ipcRenderer.on('game-section-visibility', (event, sectionId, visible) => {
+ipcRenderer.on('game-section-visibility', (sectionId, visible) => {
     if (!sectionId) {
         return;
     }

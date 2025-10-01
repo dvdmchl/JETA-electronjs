@@ -7,6 +7,45 @@ metadata:
 
 intro:
   - page: '<h1 id="header">JETA</h1>
-            <p id="description">Javascript engine pro textové adventury</p>
-            <img src="../assets/index_img_lg.png" style="max-width: 100%; max-height: 50vh; height: auto; width: auto;">
+            <p id="description">Javascript Engine for Text Adventures</p>
+            <img style="height: 100%; width: 100%; object-fit: contain" src="../assets/index_img_lg.png">
             <p id="info"></p>'
+
+locations:
+  - id: "index"
+    name: "Index"
+    descriptions:
+      - default: ""
+    connections:
+      - direction: "Index"
+        target: "index"
+
+characters:
+  - id: "player"
+    name: "Venda"
+    location: "index"
+
+variables:
+  # System variables controlling layout visibility
+  - id: "game-title-show"
+    value: true
+  - id: "game-location-show"
+    value: true
+  - id: "game-commands-show"
+    value: false
+  - id: "game-characters-show"
+    value: false
+  - id: "game-items-show"
+    value: false
+  - id: "game-use-show"
+    value: false
+  - id: "game-take-show"
+    value: false
+  - id: "game-drop-show"
+    value: false
+  - id: "game-go-show"
+    value: false
+  - id: "game-log-title-show"
+    value: false
+  - id: "game-output-show"
+    value: false

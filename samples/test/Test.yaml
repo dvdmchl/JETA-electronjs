@@ -22,7 +22,7 @@ locations:
       - condition: "šálek-čaje:owner = kuchyně"
         description: "<p>Jen malý šálek čaje na stole.</p>"
     connections:
-      - direction: "Předsíň"
+      - direction: "Předsíně"
         target: "předsíň"
       - direction: "Ložnice"
         target: "ložnice"
@@ -160,6 +160,7 @@ items:
 
   - id: "žvýkačka"
     name: "Žvýkačka"
+    name_accusative: "Žvýkačku"
     movable: "false"
     owner: "player"
     descriptions:
@@ -185,10 +186,12 @@ items:
 characters:
   - id: "player"
     name: "Venda"
+    name_accusative: "Vendu"
     location: "kuchyně"
 
   - id: "osoba"
     name: "Osoba"
+    name_accusative: "Osobu"
     location: "předsíň"
     visible: "false"
     descriptions:

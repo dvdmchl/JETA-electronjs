@@ -1,0 +1,258 @@
+metadata:
+  title: "Tux"
+  language: "cs"
+intro:
+  - page: |
+      Tučňák Tux nikdy nepoznal svobodu. Narodil se v ZOO v jednom menším městě.
+      Celý svůj dosavadní život prožil na jediném místě - v Zimním království,
+      jak se jedna z tamních expozic nazývá, při bezstarostných hrách s mladší
+      sestřičkou Tuxie.
+      Jenže ty šťastné dny jsou minulostí! Tuxie zmizela!
+      Jednou ráno ji zřízenci strčili do pytle a odnesli ji neznámo kam. Někteří
+      říkali, že si ji vybrala nějaká firma, aby vystupovala v reklamách na cosi,
+      co se snad jmenuje "operační systém". Lachtani zase na Tuxe pokřikovali,
+      že jeho sestřička skončila v konzervě jako žrádlo pro psy.
+  - page: |
+      Tux dospěl k tomu, že jediná možnost, jak zjistit skutečný osud Tuxie, je
+      dostat se do kanceláře ředitele ZOO. Tam přece musí být nějaké dokumenty!
+      Tux rozjel akci. Nejprve ukradl jednomu děcku žvýkačku a ucpal zámek, takže
+      zřízenec nemohl večer pavilon uzamknout. Tux počkal, až v ZOO zůstane jen
+      hlídač, neškodný ochmelka, a vyrazil ven.
+      Tux už už otevřel nezamčené dveře, když tu se náhle ozval drsný hlas:
+      "Pracky nahoru a žádný vylomeniny, frajere!"
+      Současně Tux ucítil na zádech hlaveň pistole. Jeho ploutve doslova vystřelily vzhůru.
+  - page: |
+      Ale počkat, počkat, tady něco nehraje. Ten hlas, to je přece... Béďa!
+      "Jasně, kámo. Méďa Béďa s.r.o. Kdo jsi myslel, že to je? Policie? Heh!"
+      Tux se otočil a spatřil ledního medvěda, kterému všichni tučňáci mají dovoleno
+      říkat Bedřich a jediní Tux a Tuxie dokonce Béďa. Lachtani ho musejí oslovovat "pane"
+      a stát při tom v pozoru. Béďa má v ruce černou plastikovou pistoli, kterou zřejmě uzmul
+      nějakému dětskému návštěvníku.
+      "To jsou ale slabomyslné vtipy!"
+      "Heh. Ale fungujou! Kam se hrneš, kámo? Už je ti to tu malý?"
+      Tux svěřil Béďovi svůj záměr, vloupat se do ředitelovy kanceláře, najít
+      dokumenty svědčící o dalším osudu Tuxie a vydat se jí hledat. Béďa v úspěch
+      tučňákovy mise nevěřil ani v nejmenším, ale nechal si svou skepsi pro sebe.
+      "Tak hodně štěstí, Tuxi." – "Díky."
+      Béďa si v tu chvíli uvědomil, že už dlouho nepřipomenul lachtanům, jaké je jejich místo
+      na společenském žebříčku a rozhodl se to napravit. Když Tux procházel dveřmi, už je Béďa naháněl...
+variables:
+  - id: "papousek"
+    value: "0"
+  - id: "buraky"
+    value: "0"
+  - id: "klakson"
+    value: "0"
+  - id: "kelimek"
+    value: "0"
+  - id: "mince"
+    value: "0"
+  - id: "penezenka"
+    value: "0"
+  - id: "sipka"
+    value: "0"
+  - id: "kafe"
+    value: "0"
+  - id: "pistole"
+    value: "0"
+  - id: "stetoskop"
+    value: "0"
+  - id: "pacidlo"
+    value: "0"
+  - id: "kostky"
+    value: "0"
+  - id: "kelimeksolejem"
+    value: "0"
+  - id: "pistolesesipkou"
+    value: "0"
+  - id: "kolotoc"
+    value: "0"
+  - id: "skluzavka"
+    value: "0"
+  - id: "zirafa"
+    value: "0"
+  - id: "klokan"
+    value: "0"
+  - id: "medved"
+    value: "0"
+  - id: "kancelarotevrena"
+    value: "0"
+  - id: "dotaznamedveda"
+    value: "0"
+  - id: "KdeJsem"
+    value: "0"
+locations:
+  - id: "UPapoucha"
+    name: "U Papoucha"
+    descriptions:
+      - default: "Tučňák Tux se ocitl v kanceláři ředitele ZOO. V rohu stojí těžký ocelový sejf. Uprostřed místnosti je mohutný stůl a u stropu visí klícka se spícím papouškem."
+    connections:
+      - direction: "ven_z_kanceláře"
+        target: "PredKancelari"
+  - id: "ZimniKralovstvi"
+    name: "Zimní království"
+    descriptions:
+      - default: "Tučňák Tux je zpět v Zimním království, kde si hrají lachtani a medvěd Béďa je nutí k trikům."
+    connections:
+      - direction: "před_Zimní_království"
+        target: "PredKralovstvim"
+  - id: "Hriste"
+    name: "Hřiště"
+    descriptions:
+      - default: "Poblíž občerstvení je malé dětské hřiště se skluzavkou a kolotočem."
+    connections:
+      - direction: "občerstvení"
+        target: "Obcerstveni"
+      - direction: "antilopy"
+        target: "Strom"
+  - id: "Automat"
+    name: "Automat"
+    descriptions:
+      - default: "Na hlavním rozcestí stojí obrovský automat na kávu. U paty automatu se povaluje kelímek."
+    connections:
+      - direction: "opice"
+        target: "Opice"
+      - direction: "voliéry"
+        target: "Klokan"
+      - direction: "žirafy"
+        target: "Zirafy"
+      - direction: "antilopy"
+        target: "Strom"
+  - id: "Zirafy"
+    name: "Žirafy"
+    descriptions:
+      - default: "U výběhu se dlouhokrké žirafy procházejí. Žiletka poskakuje jako smyslů zbavená."
+    connections:
+      - direction: "občerstvení"
+        target: "Obcerstveni"
+      - direction: "rozcestí"
+        target: "Automat"
+  - id: "Opice"
+    name: "Opice"
+    descriptions:
+      - default: "Mezi klecemi s opicemi vyniká zloděj Šimpi. Za mříží leží ukradená peněženka." 
+    connections:
+      - direction: "rozcestí"
+        target: "Automat"
+      - direction: "před_Zimní_království"
+        target: "PredKralovstvim"
+  - id: "Obcerstveni"
+    name: "Občerstvení"
+    descriptions:
+      - default: "U stánku s občerstvením je cítit přepálený tuk. Vedle stojí plechová káď s olejem."
+    connections:
+      - direction: "hřiště"
+        target: "Hriste"
+      - direction: "žirafy"
+        target: "Zirafy"
+  - id: "Klokan"
+    name: "Klokan"
+    descriptions:
+      - default: "Mezi voliérami zkoumá klokan Tonda své nepojízdné motorové kolo."
+    connections:
+      - direction: "rozcestí"
+        target: "Automat"
+      - direction: "před_Zimní_království"
+        target: "PredKralovstvim"
+  - id: "PredKancelari"
+    name: "Před kanceláří"
+    descriptions:
+      - default: "Před dveřmi kanceláře je rohožka a květináč s fíkusem."
+    connections:
+      - direction: "do_kanceláře"
+        target: "UPapoucha"
+      - direction: "před_Zimní_království"
+        target: "PredKralovstvim"
+  - id: "PredKralovstvim"
+    name: "Před Zimním královstvím"
+    descriptions:
+      - default: "Tux je před vchodem do expozice poblíž hlavního vchodu do ZOO."
+    connections:
+      - direction: "opice"
+        target: "Opice"
+      - direction: "voliéry"
+        target: "Klokan"
+      - direction: "Zimní_království"
+        target: "ZimniKralovstvi"
+      - direction: "kancelář"
+        target: "PredKancelari"
+  - id: "Strom"
+    name: "Strom u antilop"
+    descriptions:
+      - default: "U výběhu antilop roste prastarý platan, pod nímž někdy visí klokan Tonda."
+    connections:
+      - direction: "rozcestí"
+        target: "Automat"
+      - direction: "hřiště"
+        target: "Hriste"
+items:
+  - id: "skorapky"
+    name: "Skořápky"
+    location: "UPapoucha"
+    descriptions:
+      - default: "Pár skořápek od burských oříšků leží pod klíckou."
+    onTake:
+      - default: "FUJ! Uklízet bordel na podlaze není práce hodná tučňáka Tuxe!"
+    onExamine:
+      - default: "Tux špičkou nohy rozhrnul skořápky. \"Ten mizera papoušek si zase dával pěkně do zobáku!\""
+  - id: "sejf"
+    name: "Sejf"
+    location: "UPapoucha"
+    descriptions:
+      - default: "Těžký ocelový sejf opatřený otočným číselníkem."
+    onTake:
+      - default: "Jsem sice drsný Tux, ale tohle fakt neunesu!"
+    onExamine:
+      - default: "To neotevřu, ani kdybych se na hlavu postavil!"
+  - id: "penezenka"
+    name: "Peněženka"
+    location: "Opice"
+    descriptions:
+      - default: "Uloupená peněženka leží těsně za mříží."
+    onTake:
+      - default: "Chceš peněženku, pikolíku? Dones buráky, bude tvoje!"
+    onExamine:
+      - default: "Nejprve se musím peněženky zmocnit, abych ji mohl pořádně prozkoumat!"
+  - id: "kad_s_olejem"
+    name: "Káď s olejem"
+    location: "Obcerstveni"
+    descriptions:
+      - default: "Plechová káď po okraj naplněná nahnědlým olejem."
+    onTake:
+      - default: "Jsem sice drsný Tux, ale tohle fakt neunesu!"
+    onUse:
+      - default: "To se v tom mám vykoupat, nebo co?!"
+    onExamine:
+      - default: "Fuj! Už nikdy nesním byť jedinou smaženou hranolku!"
+  - id: "motorove_kolo"
+    name: "Motorové kolo"
+    location: "Klokan"
+    descriptions:
+      - default: "Nepojízdné motokolo klokana Tondy."
+    onTake:
+      - default: "Motorové kolo samozřejmě neunesu."
+    onUse:
+      - default: "Motorové kolo je momentálně nepojízdné."
+  - id: "klakson"
+    name: "Klakson"
+    location: "Strom"
+    descriptions:
+      - default: "Klakson připevněný kdysi na motokolo klokana Tondy."
+    onTake:
+      - default: "Tux se sehnul a zmocnil se klaksonu." 
+  - id: "pistole_se_sipkou"
+    name: "Pistole se šipkou"
+    location: "player"
+    descriptions:
+      - default: "Plastiková pistole nabitá uspávací šipkou."
+    onUse:
+      - default: "Tux trpělivě vyčkal, zamířil a vystřelil uspávací šipku."
+    onExamine:
+      - default: "Moc nevěřím, že to bude fungovat. Ale zázraky se dějí. Občas."
+characters:
+  - id: "player"
+    name: "Tux"
+    location: "PredKralovstvim"
+  - id: "beda"
+    name: "Béďa"
+    location: "ZimniKralovstvi"

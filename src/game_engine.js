@@ -1,5 +1,5 @@
 const {ipcMain} = require('electron');
-const { sendDebugState } = require("./debug_window");
+const {sendDebugState} = require("./debug_window");
 
 ipcMain.on('game-action', (event, {action, param}) => {
     console.log(`Action received: ${action}, Parameter: ${param}`);
@@ -64,8 +64,7 @@ class GameEngine {
         (this.data.intro || []).forEach(introPage => {
             if (!data) {
                 data = introPage.page;
-            }
-            else {
+            } else {
                 data = data + "<hr>" + introPage.page;
             }
         });
@@ -86,7 +85,7 @@ class GameEngine {
             return "";
         }
         const loc = this.data.getPlayerLocation();
-        if (!loc)  {
+        if (!loc) {
             this.sendUpdate("Neznámá lokace.");
             return "";
         }
@@ -151,18 +150,13 @@ class GameEngine {
             this.sendUpdate("Neznámá lokace.");
             return;
         }
-        const conn = (loc.connections || []).find(c => {
-            const directionMatch = c.direction && c.direction.toLowerCase() === where.toLowerCase();
-            const targetMatch = c.target && c.target.toLowerCase() === where.toLowerCase();
-            return directionMatch || targetMatch;
-        });
+        const conn = (loc.connections || []).find(c => c.direction.toLowerCase() === where.toLowerCase());
         if (!conn) {
             this.sendUpdate("Tam se jít nedá.");
             return;
         }
         // Změníme location
-        const destinationLabel = getGenitiveLabel(conn);
-        this.sendUpdate("Přesouváš se do " + destinationLabel + ".");
+        this.sendUpdate("Přesouváš se do " + conn.direction + ".");
         this.data.player.location = conn.target;
         this.look();
     }
@@ -326,7 +320,7 @@ class GameEngine {
 
         // go
         let connectionsForLoc = (loc.connections || []);
-        let goHrefRow = createDirectionsHrefRow(connectionsForLoc);
+        let goHrefRow = createDirectionsHrefRow(connectionsForLoc, this.data.locations);
 
         if (itemsHrefRow || goHrefRow) {
             this.sendUpdate(lookHref, 'game-commands');
@@ -344,7 +338,7 @@ class GameEngine {
         if (this.win && this.win.webContents) {
             this.win.webContents.send('game-update', message, section);
             console.log("Message sent.");
-        sendDebugState(this);
+            sendDebugState(this);
         } else {
             console.error("Failed to send message: win or webContents is not defined.");
         }
@@ -356,11 +350,6 @@ class GameEngine {
 function getAccusativeName(entity) {
     if (!entity) return "";
     return entity.name_accusative || entity.name || "";
-}
-
-function getGenitiveLabel(connection) {
-    if (!connection) return "";
-    return connection.genitive || connection.direction || "";
 }
 
 function createTalkHrefRow(charactersInLoc) {
@@ -427,13 +416,13 @@ function createDropHrefRow(items) {
     return '<span>Položit: </span>' + dropHrefRow;
 }
 
-function createDirectionsHrefRow(directions) {
+function createDirectionsHrefRow(directions, locations) {
     if (!directions || directions.length === 0) return "";
     let locationsHrefRow = "";
     directions.forEach(direction => {
+        let locId = Object.values(locations).find(l => l.id === direction.target).id;
         if (locationsHrefRow !== "") locationsHrefRow += " | ";
-        const displayLabel = getGenitiveLabel(direction);
-        locationsHrefRow += `<a href="#" class="game-action" data-action="go" data-param="${direction.target}">${displayLabel}</a>`;
+        locationsHrefRow += `<a href="#" class="game-action" data-action="go" data-param="${locId}">${direction.direction}</a>`;
     });
     return '<span>Jít: </span>' + locationsHrefRow;
 }

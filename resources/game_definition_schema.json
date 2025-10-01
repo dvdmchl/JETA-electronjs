@@ -31,8 +31,7 @@
               "required": ["direction", "target"],
               "properties": {
                 "direction": { "type": "string" },
-                "target": { "type": "string" },
-                "genitive": { "type": "string" }
+                "target": { "type": "string" }
               }
             }
           }

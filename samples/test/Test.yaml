@@ -5,6 +5,9 @@ metadata:
   description: "Remake of Vendova první textovka 2024-11-27"
   language: "cs"
 
+layout:
+  path: 'test_layout.html'
+
 intro:
   - page: "<p>Dnes ráno jsem se probudil a po snídani, když jsem si zrovna chtěl vypít svůj ranní šálek čaje, někdo zazvonil na dveře: Mám se bát a čekat něco špatného, nebo co? Jen kdybych věděl, kde mám ty svoje klíče, včera večer jsem si je někam dal, ale kam...   to už si asi nevzpomenu.</p>"
   - page: "<p>Musím je co nejrychleji najít a otevřít člověku, který tam chudák venku stojí a celý mrzne, měl bych si pospíšit nechci nechat toho někoho čekat.</p>"
@@ -22,7 +25,7 @@ locations:
       - condition: "šálek-čaje:owner = kuchyně"
         description: "<p>Jen malý šálek čaje na stole.</p>"
     connections:
-      - direction: "Předsíně"
+      - direction: "Předsíň"
         target: "předsíň"
       - direction: "Ložnice"
         target: "ložnice"

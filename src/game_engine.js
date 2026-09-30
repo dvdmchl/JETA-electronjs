@@ -147,7 +147,8 @@ class GameEngine {
             this.sendUpdate("Neznámá lokace.");
             return;
         }
-        const conn = (loc.connections || []).find(c => c.direction.toLowerCase() === where.toLowerCase() || c.target.toLowerCase() === where.toLowerCase());
+        const conn = this.getAvailableConnections(loc)
+            .find(c => c.direction.toLowerCase() === where.toLowerCase() || c.target.toLowerCase() === where.toLowerCase());
         if (!conn) {
             this.sendUpdate("Tam se jít nedá.");
             return;
@@ -170,12 +171,14 @@ class GameEngine {
             this.sendUpdate("Tady nic takového neleží.");
             return;
         }
-        // Musí být movable
+        const action = this.selectAction(found.onTake);
+        // Immovable scenery may define an onTake response without changing ownership.
         if (!found.movable) {
-            this.sendUpdate("To vzít nejde.");
+            if (!this.executeAction(found.onTake, action)) {
+                this.sendUpdate("To vzít nejde.");
+            }
             return;
         }
-        const action = this.selectAction(found.onTake);
         found.owner = "player";
         this.sendUpdate("Vzal jsi to.");
         this.executeAction(found.onTake, action);
@@ -225,6 +228,11 @@ class GameEngine {
         if (action.description) this.sendUpdate(action.description);
         if (action.set) this.data.parseSet(action.set);
         return true;
+    }
+
+    getAvailableConnections(location) {
+        return (location.connections || [])
+            .filter(connection => !connection.condition || this.data.parseCondition(connection.condition));
     }
 
     talk(characterIdentifier) {
@@ -426,7 +434,7 @@ class GameEngine {
         let itemsHrefRow = createItemsHrefRow(itemsInLoc, itemsInInventory);
 
         // take
-        let itemsInLocAndTakeable = itemsInLoc.filter(i => (i.owner === loc.id) && i.movable);
+        let itemsInLocAndTakeable = itemsInLoc.filter(i => i.movable || this.selectAction(i.onTake));
         let takeHrefRow = createTakeHrefRow(itemsInLocAndTakeable);
 
         // use
@@ -440,7 +448,7 @@ class GameEngine {
         let dropHrefRow = createDropHrefRow(itemsInInventoryAndDropable);
 
         // go
-        let connectionsForLoc = (loc.connections || []);
+        let connectionsForLoc = this.getAvailableConnections(loc);
         let goHrefRow = createDirectionsHrefRow(connectionsForLoc, this.data.locations);
 
         this.sendUpdate(lookHref, 'game-commands');

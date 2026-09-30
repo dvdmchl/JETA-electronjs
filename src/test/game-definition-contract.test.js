@@ -59,6 +59,14 @@ describe('game-definition contract', () => {
         expect(() => prepareGameDefinition(input)).toThrow(/additional properties/);
     });
 
+    test('schema accepts conditional connections', () => {
+        const input = definition();
+        input.locations.push({id: 'hall', name: 'Hall', descriptions: [], connections: []});
+        input.locations[0].connections.push({direction: 'Hall', target: 'hall', condition: 'door_open'});
+        input.variables.push({id: 'door_open', value: false});
+        expect(() => prepareGameDefinition(input)).not.toThrow();
+    });
+
     test('legacy item location only supplies a missing owner and legacy action default is retained', () => {
         const input = definition();
         input.items.push({id: 'key', name: 'Key', descriptions: [], owner: 'player', location: 'room', onTake: [{default: '<p>Taken</p>'}]});
@@ -68,8 +76,8 @@ describe('game-definition contract', () => {
         expect(input.items[0].onTake[0].description).toBe('<p>Taken</p>');
     });
 
-    test('template, resource indexes, and functional Test sample form a valid corpus', () => {
-        const files = ['resources/game_definition_template.yaml', 'resources/index_en.yaml', 'resources/index_cs.yaml', 'samples/test/Test.yaml'];
+    test('template, resource indexes, and functional samples form a valid corpus', () => {
+        const files = ['resources/game_definition_template.yaml', 'resources/index_en.yaml', 'resources/index_cs.yaml', 'samples/test/Test.yaml', 'samples/Tux/Tux.yaml'];
         files.forEach(relativePath => {
             const {inputData} = parseGameFile(path.resolve(relativePath));
             expect(() => new GameData(prepareGameDefinition(inputData))).not.toThrow();

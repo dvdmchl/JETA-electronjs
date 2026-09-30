@@ -23,6 +23,7 @@ locations:
     connections:
       - direction: "Hall"
         target: "hall"
+        condition: "key:owner = player"
 
   - id: "hall"
     name: "Hall"

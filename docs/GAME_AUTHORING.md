@@ -133,13 +133,13 @@ locations:
     connections:
       - direction: "Hall"
         target: "hall"
+        condition: "door_open"
 ```
 
-`direction` is the clickable label. `target` is the destination ID. Connections
-are one-way: add a reverse connection explicitly when the player must be able to
-return. Conditional or locked connections are not currently supported. Model a
-locked door as an item action, or reveal the destination through another supported
-mechanic rather than inventing fields the engine does not read.
+`direction` is the clickable label. `target` is the destination ID. An optional
+`condition` uses the normal condition grammar; the connection is listed and can be
+used only while that condition is true. Connections are one-way: add a reverse
+connection explicitly when the player must be able to return.
 
 Each location must have a `descriptions` array and a `connections` array, even when
 the latter is empty.
@@ -178,7 +178,7 @@ entry is a fallback. Every hook supports `condition`, `description`, and `set`:
 | Hook | Runtime behavior |
 | --- | --- |
 | `onUse` | Evaluates, shows `description`, then applies `set`. |
-| `onTake` | Evaluates before ownership changes, moves the item to `player`, then shows `description` and applies `set`. |
+| `onTake` | Evaluates before ownership changes. A movable item moves to `player`, then shows `description` and applies `set`. An immovable item stays in place but may use this hook for a refusal or other response. |
 | `onDrop` | Evaluates before ownership changes, moves the item to the current location, then shows `description` and applies `set`. |
 | `onSee` | Runs after the object description and after incrementing `<item-id>:onSee:count`, then shows `description` and applies `set`. |
 

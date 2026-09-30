@@ -1,68 +1,63 @@
 metadata:
-  title: "Name of the game"
+  title: "New JETA Game"
   author: ""
-  version: "0.0.1"
-  description: "game description"
+  version: "0.1.0"
+  description: "A short description of the game."
+  language: "en"
+
+intro:
+  - page: "<p>Write the opening of the story here.</p>"
+
+endings:
+  - id: "victory"
+    descriptions:
+      - default: "<p>You unlocked the door. The end.</p>"
 
 locations:
-  - id: "loc1"
-    name: "Location 1"
-    description: "Description of location 1"
+  - id: "room"
+    name: "Room"
+    descriptions:
+      - default: "<p>You are in a small room.</p>"
+      - condition: "key:owner = player"
+        description: "<p>You are carrying the brass key.</p>"
     connections:
-      - direction: "north"
-        target: "Loc2"
-    events:
-      - id: "unlock_door"
-        outcome:
-          text: "Door to Loc2 opened"
-          unlock_location: "Loc2"
-    npcs:
-      - id: "Npc1"
-        name: "Npc1"
-        description: "Description of Npc1"
-        dialogue:
-          - condition: "item_owned:amulet_of_loc2"
-            text: "You have the amulet? Ok, you can pass."
-          - default: "You can't pass!"
-        combat:
-          hp: 50
-          attack: 10
-          defense: 5
+      - direction: "Hall"
+        target: "hall"
+
+  - id: "hall"
+    name: "Hall"
+    descriptions:
+      - default: "<p>A locked door stands at the end of the hall.</p>"
+    connections:
+      - direction: "Room"
+        target: "room"
 
 items:
-  - id: "amulet_of_loc2"
-    name: "Amulet of Loc2"
-    description: "Amulet that allows you to pass to Loc2"
-    location: "Loc1"
+  - id: "key"
+    name: "Brass key"
+    name_accusative: "Brass key"
+    owner: "room"
+    movable: "true"
+    descriptions:
+      - default: "<p>A small brass key.</p>"
+    onTake:
+      - description: "<p>You take the key.</p>"
 
-quests:
+  - id: "door"
+    name: "Locked door"
+    owner: "hall"
+    movable: "false"
+    descriptions:
+      - default: "<p>The door is locked.</p>"
+    onUse:
+      - condition: "player:location = hall && key:owner = player"
+        description: "<p>The key turns and the door opens.</p>"
+        set: "game_end = true; game_end_id = victory"
+      - description: "<p>You need a key.</p>"
 
 characters:
   - id: "player"
     name: "Player"
-    location: "Loc1"
+    location: "room"
 
-variables:
-  # System variables controlling layout visibility
-  - id: "game-title-show"
-    value: true
-  - id: "game-location-show"
-    value: true
-  - id: "game-commands-show"
-    value: true
-  - id: "game-characters-show"
-    value: true
-  - id: "game-items-show"
-    value: true
-  - id: "game-use-show"
-    value: true
-  - id: "game-take-show"
-    value: true
-  - id: "game-drop-show"
-    value: true
-  - id: "game-go-show"
-    value: true
-  - id: "game-log-title-show"
-    value: true
-  - id: "game-output-show"
-    value: true
+variables: []

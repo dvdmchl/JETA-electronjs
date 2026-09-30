@@ -84,6 +84,10 @@ than silently choosing a broader design.
 
 ## Game-Definition and State Contracts
 
+- Before creating or editing a game definition, read `docs/GAME_AUTHORING.md`,
+  `resources/game_definition_template.yaml`, the JSON schema, and the relevant
+  sample. Follow the guide's AI workflow and validation checklist; do not infer
+  support for a field merely because the permissive schema accepts it.
 - Treat game files, custom layouts, dialogue text, state files, and file paths as
   untrusted input.
 - Validate game definitions before constructing `GameData`. Keep parsing,

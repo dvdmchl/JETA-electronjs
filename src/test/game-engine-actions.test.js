@@ -158,6 +158,7 @@ describe('GameEngine actions and endings', () => {
         engine.go('Hriste');
         engine.use('kolotoc');
         engine.take('trubka');
+        expect(engine.getLookText()).not.toContain('povaluje zahnutá ulomená trubka');
         engine.take('kostky');
         engine.go('Obcerstveni');
         engine.use('kelimek');
@@ -186,6 +187,12 @@ describe('GameEngine actions and endings', () => {
         engine.use('buraky');
         engine.go('Automat');
         engine.use('kostky');
+        engine.listCommands();
+        const latestSection = section => sent.filter(message => message[2] === section).at(-1)[1];
+        expect(engine.getLookText()).toContain('schůdky z kostek');
+        expect(latestSection('game-items')).not.toContain('dřevěné kostky');
+        expect(latestSection('game-use')).not.toContain('dřevěné kostky');
+        expect(latestSection('game-take')).not.toContain('dřevěné kostky');
         engine.use('mince');
         engine.go('Klokan');
         engine.go('PredKralovstvim');

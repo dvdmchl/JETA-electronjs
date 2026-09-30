@@ -114,7 +114,7 @@ locations:
           <p>Poblíž občerstvení nechal ředitel ZOO vystavět malé dětské hřiště.
           Je tu přehnaně strmá skluzavka, vratký kolotoč a ohrádka s
           pestrobarevnými dřevěnými kostkami.</p>
-      - condition: "kolotoc_rozbity"
+      - condition: "kolotoc_rozbity && trubka:owner = Hriste"
         description: |
           <p>Poté, co se Tux projel na kolotoči, bude třeba ho rekonstruovat.
           Kolotoč, nikoliv Tuxe. Na zemi se povaluje zahnutá ulomená trubka.</p>
@@ -359,7 +359,7 @@ items:
         description: |
           <p>Tux postavil vedle automatu schůdky z kostek až ke slotu pro mince.
           Moc hezké. Asi by se měl vrhnout na studium architektury.</p>
-        set: "kostky:owner = Automat; kostky:movable = false"
+        set: "kostky:owner = Automat; kostky:movable = false; kostky:visible = false"
       - condition: "kostky:owner = Hriste"
         description: "<p>Nemám čas ani chuť si tu s kostkami hrát!</p>"
       - description: "<p>Nechápu, jak bych zrovna tady mohl kostky použít.</p>"

@@ -102,6 +102,7 @@ class GameEngine {
     see(itemId) {
 
         let foundItem = Object.values(this.data.items).find(i => i.id === itemId);
+        const isItem = Boolean(foundItem);
         if (!foundItem) {
             // try to find character
             foundItem = Object.values(this.data.characters).find(c => c.id === itemId);
@@ -129,10 +130,12 @@ class GameEngine {
         let descr = this.data.getDescription(foundItem);
         this.sendUpdate(descr,);
 
-        // increase onSee count
-        let variablePath = foundItem.id + ":onSee:count";
-        this.data.setValue(variablePath, this.data.getValue(variablePath, 0) + 1);
-        this.executeAction(foundItem.onSee);
+        if (isItem) {
+            if (!Array.isArray(foundItem.onSee)) foundItem.onSee = [];
+            const variablePath = foundItem.id + ":onSee:count";
+            this.data.setValue(variablePath, this.data.getValue(variablePath, 0) + 1);
+            this.executeAction(foundItem.onSee);
+        }
     }
 
     // Přesun hráče
@@ -212,7 +215,8 @@ class GameEngine {
     }
 
     selectAction(actions) {
-        return (actions || []).find(action => !action.condition || this.data.parseCondition(action.condition)) || null;
+        if (!Array.isArray(actions)) return null;
+        return actions.find(action => !action.condition || this.data.parseCondition(action.condition)) || null;
     }
 
     executeAction(actions, selectedAction) {
@@ -411,7 +415,7 @@ class GameEngine {
 
         // talk to
         let charactersInLoc = Object.values(this.data.characters)
-            .filter(c => c.location === loc.id && c.visible);
+            .filter(c => c.id !== 'player' && c.location === loc.id && c.visible);
         let talkHrefRow = createTalkHrefRow(charactersInLoc);
 
         // see
@@ -439,15 +443,13 @@ class GameEngine {
         let connectionsForLoc = (loc.connections || []);
         let goHrefRow = createDirectionsHrefRow(connectionsForLoc, this.data.locations);
 
-        if (itemsHrefRow || goHrefRow) {
-            this.sendUpdate(lookHref, 'game-commands');
-            this.sendUpdate(talkHrefRow, 'game-characters');
-            this.sendUpdate(itemsHrefRow, 'game-items');
-            this.sendUpdate(useHrefRow, 'game-use');
-            this.sendUpdate(takeHrefRow, 'game-take');
-            this.sendUpdate(dropHrefRow, 'game-drop');
-            this.sendUpdate(goHrefRow, 'game-go');
-        }
+        this.sendUpdate(lookHref, 'game-commands');
+        this.sendUpdate(talkHrefRow, 'game-characters');
+        this.sendUpdate(itemsHrefRow, 'game-items');
+        this.sendUpdate(useHrefRow, 'game-use');
+        this.sendUpdate(takeHrefRow, 'game-take');
+        this.sendUpdate(dropHrefRow, 'game-drop');
+        this.sendUpdate(goHrefRow, 'game-go');
         this.updateLayoutVisibility();
     }
 

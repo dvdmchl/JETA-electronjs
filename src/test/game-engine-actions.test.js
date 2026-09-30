@@ -29,6 +29,30 @@ describe('GameEngine actions and endings', () => {
         expect(location[1]).not.toContain('undefined');
     });
 
+    test('command list excludes the player while keeping visible NPCs', () => {
+        const {engine, sent} = createGame({
+            characters: [
+                {id: 'player', name: 'Player', location: 'room'},
+                {id: 'npc', name: 'NPC', location: 'room'}
+            ]
+        });
+        engine.listCommands();
+        const characters = sent.find(message => message[0] === 'game-update' && message[2] === 'game-characters');
+        expect(characters[1]).toContain('NPC');
+        expect(characters[1]).not.toContain('Player');
+    });
+
+    test('examining a character without onSee does not execute item hooks or throw', () => {
+        const {engine} = createGame({
+            characters: [
+                {id: 'player', name: 'Player', location: 'room'},
+                {id: 'npc', name: 'NPC', location: 'room', descriptions: [{default: '<p>NPC</p>'}]}
+            ]
+        });
+        expect(() => engine.see('npc')).not.toThrow();
+        expect(engine.data.getCharacterById('npc').onSee).toBeUndefined();
+    });
+
     test('all item hooks use first-match description and assignment semantics', () => {
         const item = {
             id: 'key', name: 'Key', owner: 'room', descriptions: [{default: '<p>Key</p>'}],

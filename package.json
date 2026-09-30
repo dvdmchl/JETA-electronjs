@@ -5,7 +5,13 @@
   "main": "main.js",
   "scripts": {
     "start": "electron --inspect=5858 .",
-    "test": "jest"
+    "test": "jest",
+    "test:ci": "jest --runInBand"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "<rootDir>/out/"
+    ]
   },
   "author": "dvdmchl",
   "license": "MIT",

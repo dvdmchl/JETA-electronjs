@@ -19,6 +19,24 @@ npm run start
 
 ```
 
+## Development
+
+Use Node.js 20 LTS (see `.nvmrc`). Electron 33's installer is not compatible with
+Node.js 24 in this project. Install the locked dependencies and run the source test
+suite:
+
+```sh
+npm ci
+npm test
+```
+
+Use `npm run test:ci` for the deterministic test command used by GitHub Actions.
+
+AI-assisted contributions use [`AGENTS.md`](AGENTS.md) as the canonical repository
+guidance. Codex reads that file directly; Gemini CLI reads [`GEMINI.md`](GEMINI.md),
+which imports the same guidance so both tools follow one source of truth. In Gemini
+CLI, use `/memory show` after opening the repository to verify the loaded context.
+
 ## Game Definition Files
 
 Games are described in YAML files. A template is located in

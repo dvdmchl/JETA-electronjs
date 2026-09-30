@@ -1,11 +1,15 @@
 const { app, BrowserWindow, ipcMain, protocol } = require('electron');
 const { createWindow } = require('./src/jeta_ui.js');
 const { getGameDirectory } = require('./src/game_dir');
+const {resolveGameAssetPath} = require('./src/game_protocol');
 
-const path = require("path");
 const {pathToFileURL} = require('url');
 const fs = require("fs");
 const net = require("electron").net;
+
+protocol.registerSchemesAsPrivileged([
+    {scheme: 'game', privileges: {standard: true, secure: true, supportFetchAPI: true}}
+]);
 
 // Dynamická základní složka pro YAML je spravována v game_dir.js
 
@@ -23,19 +27,13 @@ function setupGameProtocol() {
             return new Response("Game directory not set", { status: 500 });
         }
 
-        const urlPath = decodeURIComponent(request.url.substring("game://".length).split(/[?#]/, 1)[0]);
-        const basePath = path.resolve(currentDir);
-        const filePath = path.resolve(basePath, urlPath);
-        if (filePath !== basePath && !filePath.startsWith(basePath + path.sep)) {
-            return new Response("Invalid game asset path", {status: 403});
-        }
-
         try {
+            const filePath = resolveGameAssetPath(currentDir, request.url);
             await fs.promises.access(filePath, fs.constants.F_OK);
             return net.fetch(pathToFileURL(filePath).href);
         } catch (err) {
-            console.error("File not found:", filePath);
-            return new Response("File not found", { status: 404 });
+            console.error("Game asset could not be loaded:", err.message);
+            return new Response("Game asset could not be loaded", {status: 404});
         }
     });
 

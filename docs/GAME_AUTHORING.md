@@ -111,11 +111,11 @@ Narrative fields use a safe markup whitelist. Paragraphs, headings, emphasis, li
 blocks, and images are preserved. Scripts, event-handler/style attributes, unknown
 tags, and non-local image sources are escaped or removed.
 
-Put local assets beside the game definition and address them with `game://`:
+Put local assets beside the game definition and address them with `game:///`:
 
 ```yaml
 descriptions:
-  - default: "<img src='game://images/map.png' alt='Map'>"
+  - default: "<img src='game:///images/map.png' alt='Map'>"
 ```
 
 Use forward slashes in asset URLs. The path is resolved from the directory that

@@ -15,7 +15,7 @@ intro:
 endings:
   - id: "end_game_1"
     descriptions:
-      - default: "<img src='game://ENDGAME.jpg' alt='ENDGAME'>"
+      - default: "<img src='game:///ENDGAME.jpg' alt='ENDGAME'>"
         set: "game-characters-show = false; game-items-show = false; game-commands-show = false; game-location-show = false; game-take-show = false; game-use-show = false"
   - id: "end_game_2"
     descriptions:

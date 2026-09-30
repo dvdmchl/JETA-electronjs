@@ -8,15 +8,14 @@ app.whenReady().then(async () => {
     const gameDirectory = path.resolve(__dirname, '../samples/test');
     protocol.handle('game', request => createGameAssetResponse(gameDirectory, request.url));
     const win = new BrowserWindow({show: false});
-    await win.loadURL('data:text/html,<img id="asset" src="game://local/ENDGAME.jpg">');
+    await win.loadFile(path.resolve(__dirname, '../resources/web/index.html'));
     const result = await win.webContents.executeJavaScript(`new Promise(resolve => {
-        const image = document.getElementById('asset');
-        const finish = () => resolve({complete: image.complete, width: image.naturalWidth});
-        if (image.complete) finish();
-        else {
-            image.addEventListener('load', finish, {once: true});
-            image.addEventListener('error', finish, {once: true});
-        }
+        const image = document.createElement('img');
+        image.id = 'asset';
+        image.addEventListener('load', () => resolve({event: 'load', complete: image.complete, width: image.naturalWidth}), {once: true});
+        image.addEventListener('error', () => resolve({event: 'error', complete: image.complete, width: image.naturalWidth}), {once: true});
+        image.src = 'game://local/ENDGAME.jpg';
+        document.body.replaceChildren(image);
     })`);
     console.log(JSON.stringify(result));
     app.exit(result.complete && result.width > 0 ? 0 : 1);

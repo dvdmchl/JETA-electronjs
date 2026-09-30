@@ -329,6 +329,7 @@ set: "game_end = true; game_end_id = victory; game-commands-show = false"
 Both variables are required: `game_end` stops the normal command list and
 `game_end_id` selects the text. A `set` on the selected ending description is
 applied exactly once when the ending is presented and may hide layout sections.
+Do not hide `game-location-show` when the ending text or image is rendered there.
 
 ## Layout visibility and custom layouts
 

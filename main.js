@@ -1,15 +1,9 @@
 const { app, BrowserWindow, ipcMain, protocol } = require('electron');
 const { createWindow } = require('./src/jeta_ui.js');
 const { getGameDirectory } = require('./src/game_dir');
-const {resolveGameAssetPath} = require('./src/game_protocol');
+const {createGameAssetResponse, registerGameScheme} = require('./src/game_protocol');
 
-const {pathToFileURL} = require('url');
-const fs = require("fs");
-const net = require("electron").net;
-
-protocol.registerSchemesAsPrivileged([
-    {scheme: 'game', privileges: {standard: true, secure: true, supportFetchAPI: true}}
-]);
+registerGameScheme(protocol);
 
 // Dynamická základní složka pro YAML je spravována v game_dir.js
 
@@ -28,9 +22,7 @@ function setupGameProtocol() {
         }
 
         try {
-            const filePath = resolveGameAssetPath(currentDir, request.url);
-            await fs.promises.access(filePath, fs.constants.F_OK);
-            return net.fetch(pathToFileURL(filePath).href);
+            return await createGameAssetResponse(currentDir, request.url);
         } catch (err) {
             console.error("Game asset could not be loaded:", err.message);
             return new Response("Game asset could not be loaded", {status: 404});

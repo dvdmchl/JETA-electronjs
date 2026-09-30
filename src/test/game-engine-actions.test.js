@@ -102,6 +102,6 @@ describe('GameEngine actions and endings', () => {
         expect(data.getValue('game_end')).toBe(true);
         expect(data.getValue('game_end_id')).toBe('end_game_1');
         expect(data.getValue('game-location-show')).toBe(false);
-        expect(sent.flat().join(' ')).toContain('game:///ENDGAME.jpg');
+        expect(sent.flat().join(' ')).toContain('game://local/ENDGAME.jpg');
     });
 });

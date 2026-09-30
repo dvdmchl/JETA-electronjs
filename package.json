@@ -6,7 +6,8 @@
   "scripts": {
     "start": "electron --inspect=5858 .",
     "test": "jest",
-    "test:ci": "jest --runInBand"
+    "test:ci": "jest --runInBand",
+    "test:protocol": "electron scripts/electron-game-protocol-smoke.js"
   },
   "jest": {
     "testPathIgnorePatterns": [

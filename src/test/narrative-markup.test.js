@@ -2,8 +2,8 @@ const {sanitizeNarrativeMarkup} = require('../narrative_markup');
 
 describe('safe narrative markup', () => {
     test('preserves documented formatting and local game assets', () => {
-        expect(sanitizeNarrativeMarkup('<p><strong>Safe</strong><img src="game:///images/map.png" alt="Map"></p>'))
-            .toBe('<p><strong>Safe</strong><img src="game:///images/map.png" alt="Map"></p>');
+        expect(sanitizeNarrativeMarkup('<p><strong>Safe</strong><img src="game://local/images/map.png" alt="Map"></p>'))
+            .toBe('<p><strong>Safe</strong><img src="game://local/images/map.png" alt="Map"></p>');
     });
 
     test('neutralizes executable markup and external assets', () => {

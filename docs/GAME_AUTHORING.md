@@ -2,8 +2,8 @@
 
 This guide is the canonical practical reference for people and AI assistants that
 create JETA games. It describes the behavior implemented by the current engine.
-The JSON schema validates the base shape, but it does not describe every runtime
-field, so do not use the schema as the only authoring reference.
+The JSON schema describes the supported fields. The loader also performs semantic
+checks for unique IDs and valid references, but play-testing remains essential.
 
 Use these files together:
 
@@ -19,8 +19,7 @@ Use these files together:
    `resources/game_definition_template.yaml` into a new folder.
 3. Keep the YAML file and its images or custom layout in the same game folder.
 4. Open the definition with **File > Load game definition** (`Ctrl+O`).
-5. Reopen the game definition after an edit to restart from its initial state, then
-   play every affected route.
+5. Saving an opened definition reloads it as a fresh game. Play every affected route.
 
 YAML files are UTF-8. Use spaces, never tabs. Quote text containing `:`, `#`, `{`,
 `}`, or leading punctuation when in doubt. A block scalar is convenient for long
@@ -34,18 +33,14 @@ intro:
 
 ## Smallest useful game
 
-A playable game needs metadata, at least one intro page, at least one location, and
-a character whose ID is exactly `player`. The player's `location` must reference an
-existing location ID. Keep at least one intro page even when it is empty; the
-current startup renderer otherwise prefixes the first location with `undefined`.
+A playable game needs metadata, at least one location, and exactly one character
+whose ID is `player`. The player's `location` must reference an existing location
+ID. `intro` is optional; when omitted or empty, startup begins with the location.
 
 ```yaml
 metadata:
   title: "One Room"
   language: "en"
-
-intro:
-  - page: ""
 
 locations:
   - id: "room"
@@ -112,10 +107,9 @@ description whose condition is true. It does not append every matching condition
 description. Put more specific conditions before broader ones. A default entry is
 optional; without one, the base text is empty.
 
-Narrative fields are rendered as HTML. Basic markup such as `<p>`, `<strong>`, and
-`<img>` is therefore supported. Only load game definitions from trusted authors:
-game HTML is not a safe sandbox. Do not include scripts, event-handler attributes,
-remote embeds, or sensitive data.
+Narrative fields use a safe markup whitelist. Paragraphs, headings, emphasis, lists,
+blocks, and images are preserved. Scripts, event-handler/style attributes, unknown
+tags, and non-local image sources are escaped or removed.
 
 Put local assets beside the game definition and address them with `game://`:
 
@@ -172,26 +166,21 @@ Item fields used by the runtime are:
 - `visible` controls whether the item appears in command lists.
 - `movable` controls whether it can be taken and dropped.
 
-When omitted, item `visible` and `movable` default to true. Due to current legacy
-normalization, write explicit item values as quoted strings, exactly `"true"` or
-`"false"`. An unquoted YAML boolean on these two item fields is interpreted
-incorrectly by the current runtime.
-
-Characters are different: use real, unquoted YAML booleans for character
-`visible`. An NPC intended to appear at startup therefore needs `visible: true`.
-The player does not need a visibility field.
+When omitted, item `visible` and `movable` default to true. Use native YAML booleans.
+Legacy strings `"true"` and `"false"` remain accepted and normalize to booleans.
+Character `visible` follows the same rules and also defaults to true.
 
 ## Item actions
 
-An action is selected by its optional `condition`. An entry without a condition is
-a fallback. Supported hooks do not all behave identically:
+Each hook runs the first entry whose optional `condition` matches. An unconditional
+entry is a fallback. Every hook supports `condition`, `description`, and `set`:
 
 | Hook | Runtime behavior |
 | --- | --- |
-| `onUse` | Runs the first matching entry, shows `description`, applies `set`, then stops. |
-| `onTake` | The item is moved to `player` first; shows descriptions of all matching entries. It does not apply `set`. |
-| `onDrop` | The item is moved to the current location first; shows descriptions of all matching entries. It does not apply `set`. |
-| `onSee` | Runs after the description and after incrementing `<item-id>:onSee:count`; applies `set` for all matching entries. It does not show the action's `description`. |
+| `onUse` | Evaluates, shows `description`, then applies `set`. |
+| `onTake` | Evaluates before ownership changes, moves the item to `player`, then shows `description` and applies `set`. |
+| `onDrop` | Evaluates before ownership changes, moves the item to the current location, then shows `description` and applies `set`. |
+| `onSee` | Runs after the object description and after incrementing `<item-id>:onSee:count`, then shows `description` and applies `set`. |
 
 Example:
 
@@ -205,14 +194,12 @@ onUse:
   - description: "<p>You cannot use the key here.</p>"
 ```
 
-For `onUse`, order cases from most specific to least specific because only the
-first match runs. An unconditional fallback action has `description` and no
-`condition`. The `default` key belongs to `descriptions` arrays; action handlers do
-not read it.
+Order cases from most specific to least specific because only the first match runs.
+An unconditional fallback has `description` and no `condition`. Legacy action
+entries using `default` are accepted and normalized to `description`.
 
 Do not use fields such as `events`, `npcs`, `dialogue`, `combat`, `quests`, or
-`onExamine`. They may pass the permissive schema but the current engine does not
-execute them.
+`onExamine`. The schema rejects these unsupported gameplay fields.
 
 ## Variables and conditions
 
@@ -340,9 +327,8 @@ set: "game_end = true; game_end_id = victory; game-commands-show = false"
 ```
 
 Both variables are required: `game_end` stops the normal command list and
-`game_end_id` selects the text. A `set` placed inside an ending description is not
-executed by the current engine. If the ending must hide layout sections, include
-those assignments in the action or dialogue that starts the ending.
+`game_end_id` selects the text. A `set` on the selected ending description is
+applied exactly once when the ending is presented and may hide layout sections.
 
 ## Layout visibility and custom layouts
 
@@ -381,12 +367,11 @@ Before considering a game complete:
 1. Parse the YAML and validate it with
    `resources/game_definition_schema.json`.
 2. Confirm that all IDs are globally unique and every reference resolves.
-3. Confirm there is an intro page, exactly one `player`, and a valid starting
-   location.
+3. Confirm there is exactly one `player` and a valid starting location.
 4. Confirm every location has `descriptions` and `connections` arrays.
 5. Confirm every playable item uses `owner`, not only `location`.
-6. Confirm explicit item `visible`/`movable` values are quoted strings, while NPC
-   `visible` values are YAML booleans.
+6. Confirm visibility and movement values are native YAML booleans (legacy boolean
+   strings are compatibility-only).
 7. Confirm all variables read by conditions are initialized before the read.
 8. Review action ordering, especially the first-match behavior of `onUse` and
    conditional descriptions.
@@ -395,8 +380,8 @@ Before considering a game complete:
     revisits to changed locations, and dialogue branches.
 11. Check that every image and custom layout loads from the game folder.
 
-Schema success alone is not proof that the engine supports a field or that a
-reference is valid. Runtime play-testing is required.
+Schema and semantic validation establish the supported contract and references;
+runtime play-testing is still required to verify story behavior.
 
 ## Instructions for AI game generation
 

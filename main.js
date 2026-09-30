@@ -1,9 +1,9 @@
 const { app, BrowserWindow, ipcMain, protocol } = require('electron');
 const { createWindow } = require('./src/jeta_ui.js');
-const { loadGameLayout } = require('./src/game_layout');
-const { updateGameDirectory, getGameDirectory } = require('./src/game_dir');
+const { getGameDirectory } = require('./src/game_dir');
 
 const path = require("path");
+const {pathToFileURL} = require('url');
 const fs = require("fs");
 const net = require("electron").net;
 
@@ -23,12 +23,16 @@ function setupGameProtocol() {
             return new Response("Game directory not set", { status: 500 });
         }
 
-        const urlPath = new URL(request.url).href.substring("game://".length);
-        const filePath = path.join(currentDir, urlPath);
+        const urlPath = decodeURIComponent(request.url.substring("game://".length).split(/[?#]/, 1)[0]);
+        const basePath = path.resolve(currentDir);
+        const filePath = path.resolve(basePath, urlPath);
+        if (filePath !== basePath && !filePath.startsWith(basePath + path.sep)) {
+            return new Response("Invalid game asset path", {status: 403});
+        }
 
         try {
             await fs.promises.access(filePath, fs.constants.F_OK);
-            return net.fetch(`file://${filePath}`);
+            return net.fetch(pathToFileURL(filePath).href);
         } catch (err) {
             console.error("File not found:", filePath);
             return new Response("File not found", { status: 404 });
@@ -49,14 +53,6 @@ app.whenReady().then(() => {
             createWindow();
         }
     });
-});
-
-// Aktualizace cesty podle YAML souboru z renderer procesu
-ipcMain.handle('set-game-directory', async (event, yamlFilePath) => {
-    const senderWindow = BrowserWindow.fromWebContents(event.sender);
-    const layoutLoaded = loadGameLayout(yamlFilePath, senderWindow);
-    updateGameDirectory(yamlFilePath);
-    return layoutLoaded;
 });
 
 app.on('window-all-closed', () => {

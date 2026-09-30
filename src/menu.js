@@ -7,6 +7,27 @@ const {loadGameFile} = require('./game_definition_loader');
 const {play} = require('./game_engine');
 const { createDebugWindow } = require("./debug_window");
 
+let currentGameFilePath = null;
+let watchedGameFilePath = null;
+
+async function loadAndPlayGame(filePath, win, onLoaded) {
+    const gameData = await loadGameFile(filePath, win);
+    if (!gameData) return false;
+    win.webContents.send('clear-output');
+    play(gameData, win);
+    currentGameFilePath = filePath;
+    updateWindowTitle(win, filePath);
+    if (onLoaded) onLoaded();
+    return true;
+}
+
+function watchAndReloadGame(filePath, win, onLoaded) {
+    if (watchedGameFilePath) fs.unwatchFile(watchedGameFilePath);
+    watchedGameFilePath = filePath;
+    fs.watchFile(filePath, async (curr, prev) => {
+        if (curr.mtimeMs !== prev.mtimeMs) await loadAndPlayGame(filePath, win, onLoaded);
+    });
+}
 
 
 function updateMenu(currentLanguage, store, win) {
@@ -66,26 +87,11 @@ function createMenu(currentLanguage, store, win) {
                             });
 
                             if (!canceled && filePaths.length > 0) {
-                                let gameFilePath = filePaths[0];
-                                const gameData = await loadGameFile(gameFilePath, win);
-
-                                if (gameData) {
-                                    console.log('Game data loaded');
-                                    win.webContents.send('clear-output');
-                                    play(gameData, win);
-                                    updateMenu(currentLanguage, store, win);
+                                const gameFilePath = filePaths[0];
+                                const onLoaded = () => updateMenu(currentLanguage, store, win);
+                                if (await loadAndPlayGame(gameFilePath, win, onLoaded)) {
+                                    watchAndReloadGame(gameFilePath, win, onLoaded);
                                 }
-                                fs.watchFile(gameFilePath, async (curr, prev) => {
-                                    if (curr.mtime !== prev.mtime) {
-                                        const gameData = await loadGameFile(gameFilePath, win);
-                                        if (gameData) {
-                                            console.log('Reloaded game data:', gameData);
-                                            updateMenu(currentLanguage, store, win);
-                                        }
-                                    }
-                                });
-
-                                updateWindowTitle(win, gameFilePath);
 
                             } else {
                                 console.log('No file selected');
@@ -174,15 +180,7 @@ function createMenu(currentLanguage, store, win) {
                                 }
                             });
 
-                            fs.watchFile(filePath, async (curr, prev) => {
-                                if (curr.mtime !== prev.mtime) {
-                                    const gameData = await loadGameFile(filePath, win);
-                                    if (gameData) {
-                                        console.log('Reloaded game data:', gameData);
-                                        updateMenu(currentLanguage, store, win);
-                                    }
-                                }
-                            });
+                            watchAndReloadGame(filePath, win, () => updateMenu(currentLanguage, store, win));
                         }
                     }
                 },
@@ -192,16 +190,16 @@ function createMenu(currentLanguage, store, win) {
                     id: 'editGameDefinition',
                     enabled: false,
                     click: () => {
-                        if (gameFilePath) {
-                            exec(`start "" "${gameFilePath}"`, (error) => {
+                        if (currentGameFilePath) {
+                            exec(`start "" "${currentGameFilePath}"`, (error) => {
                                 if (error) {
                                     console.error(`Error opening file: ${error.message}`);
                                 } else {
-                                    console.log(`File ${gameFilePath} opened successfully.`);
+                                    console.log(`File ${currentGameFilePath} opened successfully.`);
                                 }
                             });
 
-                            updateWindowTitle(win, filePath);
+                            updateWindowTitle(win, currentGameFilePath);
                         }
                     }
                 },
@@ -269,4 +267,4 @@ function createMenu(currentLanguage, store, win) {
     ]);
 }
 
-module.exports = {createMenu};
+module.exports = {createMenu, loadAndPlayGame, watchAndReloadGame};

@@ -1,10 +1,7 @@
-const {loadGameFile} = require("./game_definition_loader");
-const {play} = require("./game_engine");
-
 const {BrowserWindow, Menu} = require('electron');
 const path = require('path');
 const i18next = require('./i18n');
-const {createMenu} = require('./menu');
+const {createMenu, loadAndPlayGame} = require('./menu');
 
 let win;
 let menu;
@@ -45,12 +42,7 @@ const createWindow = async () => {
             const indexName = `index_${currentLanguage}.yaml`;
             const indexGameFilePath = path.join(__dirname, '../resources', indexName);
             console.log('Loading game data from:', indexGameFilePath);
-            const gameData = await loadGameFile(indexGameFilePath, win);
-            if (gameData) {
-                console.log('Game data loaded successfully.');
-                play(gameData, win);
-                console.log('Game started.');
-            } else {
+            if (!await loadAndPlayGame(indexGameFilePath, win)) {
                 console.error('Failed to load game data.');
             }
         });

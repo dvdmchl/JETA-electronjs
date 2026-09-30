@@ -52,5 +52,6 @@ dialogue, endings, assets, custom layouts, validation, and a dedicated AI workfl
 Start from `resources/game_definition_template.yaml`. The most complete working
 example is `samples/test/Test.yaml`; its neighboring assets and `test_layout.html`
 show how a game can be packaged in one folder. The JSON schema at
-`resources/game_definition_schema.json` validates the base structure but does not
-describe every runtime field, so schema validation must be followed by play-testing.
+`resources/game_definition_schema.json` describes every supported runtime field.
+Loading also checks unique IDs and references; validation and play-testing are both
+part of authoring.

@@ -69,9 +69,9 @@ items:
         description: "<p>Šálek čaje, který právě držím v ruce je prázdný a chladný, už jsem ho vypil a měl bych ho položit na stůl.</p>"
       - condition: "!šálek-čaje:owner = player && !plný_šálek"
         description: "<p>Prázdný šálek.</p>"
-    movable: "true"
+    movable: true
     onTake:
-      - default: "<p>Vzal jsem šálek čaje do ruky.</p>"
+      - description: "<p>Vzal jsem šálek čaje do ruky.</p>"
     onDrop:
       - condition: "šálek-čaje:owner = player && player:location = kuchyně"
         description: "<p>Šálek čaje jsem položil na stůl.</p>"
@@ -93,7 +93,7 @@ items:
         description: "<p>Teď se koukám na vypínač ale co je na něm tak zvláštního? Vždyť jenom rozsvicí a zhasíná světlo.</p>"
       - condition: "světlo && vypínač:onSee:count > 2"
         description: "<p>Co máš pořád s tím světlem? Už mě s ním vážně otravuješ!</p>"
-    movable: "false"
+    movable: false
     onUse:
       - condition: "player:location = ložnice && !světlo"
         description: "<p>Zapnul jsem světlo.</p>"
@@ -105,7 +105,7 @@ items:
 
   - id: "skříň"
     name: "Skříň"
-    movable: "false"
+    movable: false
     descriptions:
       - default: ""
       - condition: "světlo = false"
@@ -121,7 +121,7 @@ items:
 
   - id: "klíče"
     name: "Klíče"
-    movable: "true"
+    movable: true
     owner: "skříň"
     descriptions:
       - default: "<p>Klíče od bytu.</p>"
@@ -138,14 +138,14 @@ items:
 
   - id: "botník"
     name: "Botník"
-    movable: "false"
+    movable: false
     owner: "předsíň"
     descriptions:
       - default: "<p>Není tu nic zajímavého o čem by se stálo bavit , jen boty!</p>"
 
   - id: "dveře"
     name: "Dveře"
-    movable: "false"
+    movable: false
     owner: "předsíň"
     descriptions:
       - default: "<p>Jsou to obyčejné dveře ze smrku.</p>"
@@ -169,7 +169,7 @@ items:
   - id: "žvýkačka"
     name: "Žvýkačka"
     name_accusative: "Žvýkačku"
-    movable: "false"
+    movable: false
     owner: "player"
     descriptions:
       - default: "<p>A hele, v kapse mi zbyla ještě jedna žvýkačka tak tomuhle neodolám a hned si ji dám Mlask Mňam..</p>"
@@ -183,7 +183,7 @@ items:
 
   - id: "papírek"
     name: "Papírek"
-    visible: "false"
+    visible: false
     owner: "player"
     descriptions:
       - default: "<p>Papírek od žvýkačky.'</p>"
@@ -201,7 +201,7 @@ characters:
     name: "Osoba"
     name_accusative: "Osobu"
     location: "předsíň"
-    visible: "false"
+    visible: false
     descriptions:
       - default: ""
       - condition: "dveře_otevřeny"
@@ -243,19 +243,19 @@ characters:
 
 variables:
   - id: "game-commands-show"
-    value: "false"
+    value: false
 
   - id: "světlo"
-    value: "false"
+    value: false
 
   - id: "dveře_odemčeny"
-    value: "false"
+    value: false
 
   - id: "dveře_otevřeny"
-    value: "false"
+    value: false
 
   - id: "plný_šálek"
-    value: "true"
+    value: true
 
   - id: "klíče_objeveny"
-    value: "false"
+    value: false

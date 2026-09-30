@@ -8,7 +8,7 @@ metadata:
 intro:
   - page: '<h1 id="header">JETA</h1>
             <p id="description">Javascript Engine for Text Adventures</p>
-            <img style="height: 100%; width: 100%; object-fit: contain" src="../assets/index_img_lg.png">
+            <img src="game://assets/index_img_lg.png" alt="JETA">
             <p id="info"></p>'
 
 locations:

@@ -151,7 +151,12 @@ document.addEventListener('click', (event) => {
         } else {
             const param = target.getAttribute('data-param');
             if (param !== null) {
-                payload.param = param;
+                try {
+                    payload.param = decodeURIComponent(param);
+                } catch (error) {
+                    console.warn('Failed to decode action parameter:', param, error);
+                    payload.param = param;
+                }
             }
         }
 

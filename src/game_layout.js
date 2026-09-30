@@ -1,16 +1,16 @@
 const fs = require('fs');
 const path = require('path');
-const yaml = require('js-yaml');
-
-function loadGameLayout(yamlFilePath, mainWindow) {
+function loadGameLayout(gameDefinition, definitionFilePath, mainWindow) {
     try {
-        const yamlContent = fs.readFileSync(yamlFilePath, 'utf8');
-        const yamlData = yaml.load(yamlContent);
-
         let layoutPath;
-        if (yamlData.layout && yamlData.layout.path) {
-            const yamlDir = path.dirname(yamlFilePath);
-            layoutPath = path.join(yamlDir, yamlData.layout.path);
+        if (gameDefinition.layout && gameDefinition.layout.path) {
+            const definitionDir = path.dirname(definitionFilePath);
+            layoutPath = path.resolve(definitionDir, gameDefinition.layout.path);
+            const definitionRoot = path.resolve(definitionDir);
+            if (layoutPath !== definitionRoot && !layoutPath.startsWith(definitionRoot + path.sep)) {
+                console.error(`Layout path escapes the game directory: ${gameDefinition.layout.path}`);
+                return false;
+            }
         } else {
             layoutPath = path.join(__dirname, '../resources', 'layout_default.html');
         }

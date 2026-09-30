@@ -70,15 +70,9 @@ class GameEngine {
     start() {
         console.log("Starting game...");
         this.sendUpdate(`${this.data.title}`, 'game-title');
-        let data;
-        (this.data.intro || []).forEach(introPage => {
-            if (!data) {
-                data = introPage.page;
-            } else {
-                data = data + "<hr>" + introPage.page;
-            }
-        });
-        data = data + "<hr>" + this.getLookText();
+        const intro = (this.data.intro || []).map(page => page.page).filter(Boolean);
+        const location = this.getLookText();
+        const data = [...intro, location].filter(Boolean).join('<hr>');
         this.sendUpdate(data, 'game-location');
         this.updateLayoutVisibility();
     }
@@ -138,18 +132,7 @@ class GameEngine {
         // increase onSee count
         let variablePath = foundItem.id + ":onSee:count";
         this.data.setValue(variablePath, this.data.getValue(variablePath, 0) + 1);
-        // onSee and ittearble?
-        if (foundItem.onSee && foundItem.onSee.length > 0) {
-            for (let action of foundItem.onSee) {
-                // Pokud má condition, vyhodnotíme
-                if (action.condition) {
-                    if (!this.data.parseCondition(action.condition, this)) continue;
-                }
-                if (action.set) {
-                    this.data.parseSet(action.set);
-                }
-            }
-        }
+        this.executeAction(foundItem.onSee);
     }
 
     // Přesun hráče
@@ -161,7 +144,7 @@ class GameEngine {
             this.sendUpdate("Neznámá lokace.");
             return;
         }
-        const conn = (loc.connections || []).find(c => c.direction.toLowerCase() === where.toLowerCase());
+        const conn = (loc.connections || []).find(c => c.direction.toLowerCase() === where.toLowerCase() || c.target.toLowerCase() === where.toLowerCase());
         if (!conn) {
             this.sendUpdate("Tam se jít nedá.");
             return;
@@ -174,7 +157,7 @@ class GameEngine {
 
     take(itemName) {
         // Najdi item podle jména nebo id
-        let found = Object.values(this.data.items).find(i => i.name.toLowerCase() === itemName.toLowerCase());
+        let found = Object.values(this.data.items).find(i => i.id.toLowerCase() === itemName.toLowerCase() || i.name.toLowerCase() === itemName.toLowerCase());
         if (!found) {
             this.sendUpdate("Takový předmět tu není.");
             return;
@@ -189,41 +172,24 @@ class GameEngine {
             this.sendUpdate("To vzít nejde.");
             return;
         }
-        // Vezmeme
+        const action = this.selectAction(found.onTake);
         found.owner = "player";
         this.sendUpdate("Vzal jsi to.");
-        // OnTake?
-        if (found.onTake) {
-            for (let action of found.onTake) {
-                // Pokud má condition, vyhodnotíme
-                if (action.condition) {
-                    if (!this.data.parseCondition(action.condition, this)) continue;
-                }
-                this.sendUpdate(action.description);
-            }
-        }
+        this.executeAction(found.onTake, action);
     }
 
     drop(itemName) {
         // Najdi item, který držíme
         let found = Object.values(this.data.items).find(
-            i => i.name.toLowerCase() === itemName.toLowerCase() && i.owner === "player"
+            i => (i.id.toLowerCase() === itemName.toLowerCase() || i.name.toLowerCase() === itemName.toLowerCase()) && i.owner === "player"
         );
         if (!found) {
             this.sendUpdate("Takový předmět u sebe nemáš.");
             return;
         }
-        // Položíme do lokace
+        const action = this.selectAction(found.onDrop);
         found.owner = this.data.player.location;
-        // onDrop?
-        if (found.onDrop) {
-            for (let action of found.onDrop) {
-                if (action.condition && !this.data.parseCondition(action.condition, this)) {
-                    continue;
-                }
-                this.sendUpdate(action.description);
-            }
-        } else {
+        if (!this.executeAction(found.onDrop, action)) {
             this.sendUpdate("Položil jsi to.");
         }
     }
@@ -240,24 +206,21 @@ class GameEngine {
             this.sendUpdate("Nenapadá mě, jak to použít.");
             return;
         }
-        // Projedeme akce
-        let usedSomething = false;
-        for (let action of found.onUse) {
-            if (action.condition) {
-                if (!this.data.parseCondition(action.condition, this)) continue;
-            }
-
-            this.sendUpdate(action.description);
-            if (action.set) {
-                this.data.parseSet(action.set, this);
-            }
-            usedSomething = true;
-            // Jakmile je splněna jedna akce, končíme
-            break;
-        }
-        if (!usedSomething) {
+        if (!this.executeAction(found.onUse)) {
             this.sendUpdate("Nic se nestalo.");
         }
+    }
+
+    selectAction(actions) {
+        return (actions || []).find(action => !action.condition || this.data.parseCondition(action.condition)) || null;
+    }
+
+    executeAction(actions, selectedAction) {
+        const action = selectedAction === undefined ? this.selectAction(actions) : selectedAction;
+        if (!action) return false;
+        if (action.description) this.sendUpdate(action.description);
+        if (action.set) this.data.parseSet(action.set);
+        return true;
     }
 
     talk(characterIdentifier) {
@@ -431,7 +394,7 @@ class GameEngine {
     }
 
     listEndings() {
-        let endDescription = this.data.getEndDescription();
+        let endDescription = this.data.applyEnding();
         if (endDescription) {
             this.sendUpdate(endDescription, 'game-location');
         }
@@ -553,9 +516,9 @@ function createTalkHrefRow(charactersInLoc) {
     charactersInLoc.forEach(character => {
         const displayName = getAccusativeName(character);
         if (seeHrefRow !== "") seeHrefRow += " | ";
-        seeHrefRow += `<a href="#" class="game-action" data-action="see" data-param="${character.id}">${displayName}</a>`;
+        seeHrefRow += `<a href="#" class="game-action" data-action="see" data-param="${encodeDataAttribute(character.id)}">${escapeHtml(displayName)}</a>`;
         if (talkHrefRow !== "") talkHrefRow += " | ";
-        talkHrefRow += `<a href="#" class="game-action" data-action="talk" data-param="${character.id}">${displayName}</a>`;
+        talkHrefRow += `<a href="#" class="game-action" data-action="talk" data-param="${encodeDataAttribute(character.id)}">${escapeHtml(displayName)}</a>`;
     });
     return '<span>Prozkoumat:</span>' + seeHrefRow + '<br><span>Oslovit: </span>' + talkHrefRow;
 }
@@ -566,13 +529,13 @@ function createItemsHrefRow(items, itemsInInventory) {
     items.forEach(item => {
         if (itemsHrefRow !== "") itemsHrefRow += " | ";
         const displayName = getAccusativeName(item);
-        itemsHrefRow += `<a href="#" class="game-action" data-action="see" data-param="${item.id}">${displayName}</a>`;
+        itemsHrefRow += `<a href="#" class="game-action" data-action="see" data-param="${encodeDataAttribute(item.id)}">${escapeHtml(displayName)}</a>`;
     });
     itemsHrefRow += " Inventář: ";
     itemsInInventory.forEach(item => {
         if (itemsHrefRow !== "") itemsHrefRow += " | ";
         const displayName = getAccusativeName(item);
-        itemsHrefRow += `<a href="#" class="game-action" data-action="see" data-param="${item.id}">${displayName}</a>`;
+        itemsHrefRow += `<a href="#" class="game-action" data-action="see" data-param="${encodeDataAttribute(item.id)}">${escapeHtml(displayName)}</a>`;
     });
     return '<span>Prozkoumat: </span>' + itemsHrefRow;
 }
@@ -583,7 +546,7 @@ function createUseHrefRow(itemsForLocAndInventory) {
     itemsForLocAndInventory.forEach(item => {
         if (useHrefRow !== "") useHrefRow += " | ";
         const displayName = getAccusativeName(item);
-        useHrefRow += `<a href="#" class="game-action" data-action="use" data-param="${item.id}">${displayName}</a>`;
+        useHrefRow += `<a href="#" class="game-action" data-action="use" data-param="${encodeDataAttribute(item.id)}">${escapeHtml(displayName)}</a>`;
     });
     return '<span>Použít: </span>' + useHrefRow;
 }
@@ -594,7 +557,7 @@ function createTakeHrefRow(items) {
     items.forEach(item => {
         if (takeHrefRow !== "") takeHrefRow += " | ";
         const displayName = getAccusativeName(item);
-        takeHrefRow += `<a href="#" class="game-action" data-action="take" data-param="${item.name}">${displayName}</a>`;
+        takeHrefRow += `<a href="#" class="game-action" data-action="take" data-param="${encodeDataAttribute(item.id)}">${escapeHtml(displayName)}</a>`;
     });
     return '<span>Vzít: </span>' + takeHrefRow;
 }
@@ -605,7 +568,7 @@ function createDropHrefRow(items) {
     items.forEach(item => {
         if (dropHrefRow !== "") dropHrefRow += " | ";
         const displayName = getAccusativeName(item);
-        dropHrefRow += `<a href="#" class="game-action" data-action="drop" data-param="${item.name}">${displayName}</a>`;
+        dropHrefRow += `<a href="#" class="game-action" data-action="drop" data-param="${encodeDataAttribute(item.id)}">${escapeHtml(displayName)}</a>`;
     });
     return '<span>Položit: </span>' + dropHrefRow;
 }
@@ -616,7 +579,7 @@ function createDirectionsHrefRow(directions, locations) {
     directions.forEach(direction => {
         let locId = Object.values(locations).find(l => l.id === direction.target).id;
         if (locationsHrefRow !== "") locationsHrefRow += " | ";
-        locationsHrefRow += `<a href="#" class="game-action" data-action="go" data-param="${locId}">${direction.direction}</a>`;
+        locationsHrefRow += `<a href="#" class="game-action" data-action="go" data-param="${encodeDataAttribute(locId)}">${escapeHtml(direction.direction)}</a>`;
     });
     return '<span>Jít: </span>' + locationsHrefRow;
 }
@@ -633,4 +596,4 @@ function play(gameData, win) {
     console.log("Game play method finished.");
 }
 
-module.exports = {play};
+module.exports = {play, GameEngine, escapeHtml};

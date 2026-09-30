@@ -1,4 +1,5 @@
 const { LAYOUT_SECTIONS } = require('./layout_sections');
+const {normalizeGameDefinition, validateGameDefinitionSemantics} = require('./game_definition_contract');
 
 class GameData {
 
@@ -12,11 +13,12 @@ class GameData {
     #player;
     #endings;
     #dialoguesByCharacter;
+    #appliedEndingId;
 
     constructor(inputData) {
         this.#data = inputData;
-        this.validate();
         this.init();
+        this.validate();
         this.#title = this.#data.metadata.title;
         this.#intro = this.#data.intro || [];
         this.#locations = this.#data.locations || [];
@@ -26,6 +28,7 @@ class GameData {
         this.#player = Object.values(this.#data.characters || []).find(c => c.id === "player");
         this.#endings = this.#data.endings || [];
         this.#dialoguesByCharacter = new Map();
+        this.#appliedEndingId = null;
         this.indexDialogues();
     }
 
@@ -66,86 +69,13 @@ class GameData {
     }
 
     validate() {
-        // all IDs must be unique
-        let ids = new Set();
-        let checkId = (id) => {
-            if (ids.has(id)) {
-                throw new Error(`Duplicate ID: ${id}`);
-            }
-            ids.add(id);
-        };
-        // check IDs in data
-        if (this.#data.locations) {
-            this.#data.locations.forEach(l => checkId(l.id));
-        }
-
-        if (this.#data.items) {
-            this.#data.items.forEach(i => checkId(i.id));
-        }
-
-        if (this.#data.characters) {
-            this.#data.characters.forEach(c => checkId(c.id));
-        }
-
-        if (this.#data.variables) {
-            this.#data.variables.forEach(v => checkId(v.id));
-        }
-
-        this.validateDialogues();
+        validateGameDefinitionSemantics(this.#data);
     }
 
     init() {
-        // upravit game data
-        // locations zatím neupravovat
-
-        // items - normalizovat owner, visible, movable
-        this.normalizeItems(this.#data.items);
-        // characters - zatím neupravovat
-
-        // variables - upravit boolean hodnoty
-        this.normalizeVars(this.#data.variables);
+        normalizeGameDefinition(this.#data);
         this.ensureSystemVariables();
 
-    }
-
-    validateDialogues() {
-        const characters = this.#data.characters || [];
-        characters.forEach(character => {
-            const entries = character.onTalk || [];
-            const entryIds = new Set();
-
-            entries.forEach(entry => {
-                if (entry.id) {
-                    if (entryIds.has(entry.id)) {
-                        throw new Error(`Duplicate dialogue id "${entry.id}" for character "${character.id}"`);
-                    }
-                    entryIds.add(entry.id);
-                } else if (entry.responses && entry.responses.length) {
-                    throw new Error(`Dialogue with responses for character "${character.id}" is missing an id.`);
-                }
-            });
-
-            entries.forEach(entry => {
-                if (!entry.responses) {
-                    return;
-                }
-
-                const responseIds = new Set();
-                entry.responses.forEach(response => {
-                    if (!response.id) {
-                        throw new Error(`Response without id in dialogue "${entry.id || 'unknown'}" for character "${character.id}"`);
-                    }
-                    if (responseIds.has(response.id)) {
-                        throw new Error(`Duplicate response id "${response.id}" in dialogue "${entry.id}" for character "${character.id}"`);
-                    }
-                    responseIds.add(response.id);
-
-                    if (response.next && !entryIds.has(response.next)) {
-                        throw new Error(`Response "${response.id}" of character "${character.id}" references unknown dialogue "${response.next}".`);
-                    }
-                });
-            });
-        });
     }
 
     indexDialogues() {
@@ -210,21 +140,6 @@ class GameData {
             }));
     }
 
-    normalizeVars(variables) {
-        if (!variables) {
-            this.#data.variables = [];
-            return;
-        }
-        variables.forEach(v => {
-            if (v.value === "true") {
-                v.value = true;
-            } else if (v.value === "false") {
-                v.value = false;
-            }
-            // ostatní nechat být
-        });
-    }
-
     ensureSystemVariables() {
         if (!Array.isArray(this.#data.variables)) {
             this.#data.variables = [];
@@ -241,32 +156,11 @@ class GameData {
         });
     }
 
-    normalizeItems(items) {
-        if (!items) {
-            this.#data.items = [];
-            return;
-        }
-        items.forEach(item => {
-            // Normalizace owner
-            if (item.owner === undefined) {
-                item.owner = null;
-            }
-            // Normalizace visible
-            if (item.visible === undefined) {
-                item.visible = true;
-            } else {
-                item.visible = item.visible === "true";
-            }
-            // Normalizace movable
-            if (item.movable === undefined) {
-                item.movable = true;
-            } else {
-                item.movable = item.movable === "true";
-            }
-        });
+    getDescription(gameObject) {
+        return this.getDescriptionEntry(gameObject).text;
     }
 
-    getDescription(gameObject) {
+    getDescriptionEntry(gameObject) {
         // Najdi v poli descriptions tu, která sedí k condition, jinak vem default
         // Tj. popořadě projdeme a pokud je definována condition, testneme parseCondition
         // Pokud sedí, vrátíme description
@@ -283,11 +177,12 @@ class GameData {
         for (let d of descrArray) {
             if (d.condition) {
                 if (this.parseCondition(d.condition)) {
-                    return defaultDescr + d.description;
+                    return {text: defaultDescr + d.description, entry: d};
                 }
             }
         }
-        return defaultDescr || "";
+        const defaultEntry = descrArray.find(d => d.default !== undefined);
+        return {text: defaultDescr || "", entry: defaultEntry || null};
     }
 
     parseCondition(cond) {
@@ -807,7 +702,23 @@ class GameData {
         let gameEndId = this.getValue("game_end_id", null);
         if (!gameEndId) return null;
         let end = this.getObjectById(gameEndId);
+        if (!end) return null;
         return this.getDescription(end);
+    }
+
+    applyEnding() {
+        const gameEndId = this.getValue("game_end_id", null);
+        if (!gameEndId) return null;
+        const ending = this.getObjectById(gameEndId);
+        if (!ending) return null;
+        const selected = this.getDescriptionEntry(ending);
+        if (this.#appliedEndingId !== gameEndId) {
+            this.#appliedEndingId = gameEndId;
+            if (selected.entry && selected.entry.set) {
+                this.parseSet(selected.entry.set);
+            }
+        }
+        return selected.text;
     }
 
     toJSON() {

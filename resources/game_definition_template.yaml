@@ -37,7 +37,7 @@ items:
     name: "Brass key"
     name_accusative: "Brass key"
     owner: "room"
-    movable: "true"
+    movable: true
     descriptions:
       - default: "<p>A small brass key.</p>"
     onTake:
@@ -46,7 +46,7 @@ items:
   - id: "door"
     name: "Locked door"
     owner: "hall"
-    movable: "false"
+    movable: false
     descriptions:
       - default: "<p>The door is locked.</p>"
     onUse:

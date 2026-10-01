@@ -1,0 +1,99 @@
+name: Windows installer
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Existing release tag to receive this build (package version must match)
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: windows-release-${{ inputs.release_tag || github.event.release.tag_name }}
+  cancel-in-progress: false
+
+jobs:
+  installer:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    env:
+      RELEASE_TAG: ${{ inputs.release_tag || github.event.release.tag_name }}
+      GH_TOKEN: ${{ github.token }}
+      CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+    steps:
+      - name: Check out build source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name || github.sha }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Verify release version and prevent asset replacement
+        shell: pwsh
+        run: |
+          $version = (Get-Content package.json -Raw | ConvertFrom-Json).version
+          if ($env:RELEASE_TAG -cne "v$version") { throw 'Release tag and package version differ.' }
+          $release = gh release view $env:RELEASE_TAG --repo $env:GITHUB_REPOSITORY --json isDraft,assets | ConvertFrom-Json
+          if ($LASTEXITCODE -ne 0 -or $release.isDraft) { throw 'A published release is required.' }
+          $assetNames = @("JETA-$version-Setup-x64.exe", "JETA-$version-Setup-x64.exe.sha256", "JETA-$version-build.json")
+          if ($release.assets.name | Where-Object { $_ -in $assetNames }) {
+            throw 'Release assets already exist. Inspect them before retrying; do not overwrite them.'
+          }
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm run test:ci
+
+      - name: Build installer
+        run: npm run dist:win
+
+      - name: Verify installation, startup, and uninstallation
+        shell: pwsh
+        run: |
+          $version = (Get-Content package.json -Raw | ConvertFrom-Json).version
+          ./src/test/windows-installer-smoke.ps1 -InstallerPath "out/release/JETA-$version-Setup-x64.exe"
+
+      - name: Record checksum and build provenance
+        shell: pwsh
+        run: |
+          $version = (Get-Content package.json -Raw | ConvertFrom-Json).version
+          $installer = "JETA-$version-Setup-x64.exe"
+          $hash = (Get-FileHash "out/release/$installer" -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$hash  $installer" | Set-Content "out/release/$installer.sha256" -Encoding utf8
+          @{
+            version = $version
+            releaseTag = $env:RELEASE_TAG
+            buildCommit = (git rev-parse HEAD)
+            workflowRun = "https://github.com/$env:GITHUB_REPOSITORY/actions/runs/$env:GITHUB_RUN_ID"
+            sha256 = $hash
+          } | ConvertTo-Json | Set-Content "out/release/JETA-$version-build.json" -Encoding utf8
+
+      - name: Preserve installer artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-installer
+          path: |
+            out/release/*.exe
+            out/release/*.sha256
+            out/release/*-build.json
+          if-no-files-found: error
+
+      - name: Attach verified installer to release
+        shell: pwsh
+        run: |
+          $version = (Get-Content package.json -Raw | ConvertFrom-Json).version
+          gh release upload $env:RELEASE_TAG "out/release/JETA-$version-Setup-x64.exe" "out/release/JETA-$version-Setup-x64.exe.sha256" "out/release/JETA-$version-build.json" --repo $env:GITHUB_REPOSITORY
+          if ($LASTEXITCODE -ne 0) { throw 'Release upload failed; inspect remote assets before retrying.' }

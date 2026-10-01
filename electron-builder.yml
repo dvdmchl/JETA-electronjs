@@ -1,0 +1,29 @@
+appId: io.github.dvdmchl.jeta
+productName: JETA
+directories:
+  output: out/release
+files:
+  - main.js
+  - src/**/*.js
+  - '!src/test/**'
+  - resources/**
+  - locales/**
+  - package.json
+extraFiles:
+  - from: samples
+    to: samples
+  - from: docs/GAME_AUTHORING.md
+    to: GAME_AUTHORING.md
+win:
+  target:
+    - target: nsis
+      arch: x64
+  artifactName: JETA-${version}-Setup-${arch}.${ext}
+nsis:
+  oneClick: false
+  perMachine: false
+  allowElevation: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: false
+  createStartMenuShortcut: true
+  runAfterFinish: false

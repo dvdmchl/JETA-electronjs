@@ -48,9 +48,32 @@ Use the project AI skill [`jeta-release`](.agents/skills/jeta-release/SKILL.md)
 by asking Codex to use `$jeta-release` to release a specified version. It covers
 version synchronization, tests, CI, tags, and GitHub publication.
 
-Releases currently provide source archives, with no bundled installers. Download
-and extract a release archive, install Node.js 20 LTS, then run `npm ci` and
-`npm start` from the extracted directory.
+Windows x64 users can download `JETA-<version>-Setup-x64.exe` from the
+[GitHub releases](https://github.com/dvdmchl/JETA-electronjs/releases). The installer
+bundles Electron and all runtime dependencies, installs for the current user,
+and adds a Start menu shortcut. Node.js is not required. Sample games are in the
+installation's `samples` folder; copy a sample to a writable folder before editing.
+Uninstall JETA through Windows Settings. Installers are currently unsigned, so
+Windows may show an unknown-publisher or SmartScreen prompt. Automatic application
+updates are not configured.
+
+Source archives remain available for other platforms and development. Extract
+an archive, install Node.js 20 LTS, then run `npm ci` and `npm start`.
+
+To build the Windows installer locally on Windows with Node.js 20, run `npm ci`
+and `npm run dist:win`. Output is written to `out/release/`. Verify installation,
+startup, and uninstallation with:
+
+```powershell
+./src/test/windows-installer-smoke.ps1 -InstallerPath ./out/release/JETA-1.0.0-Setup-x64.exe
+```
+
+The **Windows installer** GitHub Actions workflow builds and tests newly published
+releases, then attaches the installer, SHA-256 checksum, and build provenance JSON.
+For an existing release, run the workflow manually on the desired build commit
+with `release_tag` set to its tag. The package version must match; existing assets
+are never overwritten. When supplementing an older tag with packaging changes,
+document the build commit in the release notes as well as the provenance JSON.
 
 ## Game Definition Files
 

@@ -55,3 +55,11 @@ show how a game can be packaged in one folder. The JSON schema at
 `resources/game_definition_schema.json` describes every supported runtime field.
 Loading also checks unique IDs and references; validation and play-testing are both
 part of authoring.
+
+For a complete Czech/English adventure with a dark fantasy layout, open
+`samples/stiny_azerothu/stiny_azerothu.yaml`. It includes a delivery quest, branching
+dialogue, an elemental rune puzzle, and three endings. See the
+[sample guide](samples/stiny_azerothu/README.md) for scope and a spoiler walkthrough.
+Use **File > Game language** to switch game text while keeping your progress.
+Game translations are optional and independent of **Edit > Language**, which
+selects the application language. See the authoring guide for text-only translations.

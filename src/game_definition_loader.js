@@ -10,6 +10,7 @@ const {decryptData} = require('./encryption');
 const {normalizeGameDefinition, validateGameDefinitionSemantics} = require('./game_definition_contract');
 const {sanitizeGameDefinitionNarrative} = require('./narrative_markup');
 const schema = require('../resources/game_definition_schema.json');
+const {validateTranslations, sanitizeTranslations} = require('./game_translations');
 
 const ajv = new Ajv({allErrors: true, allowUnionTypes: true});
 require('ajv-formats')(ajv);
@@ -37,7 +38,9 @@ function prepareGameDefinition(inputData) {
     }
     normalizeGameDefinition(inputData);
     validateGameDefinitionSemantics(inputData);
+    validateTranslations(inputData);
     sanitizeGameDefinitionNarrative(inputData);
+    sanitizeTranslations(inputData);
     return inputData;
 }
 

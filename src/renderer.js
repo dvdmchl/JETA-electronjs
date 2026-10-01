@@ -41,6 +41,30 @@ ipcRenderer.on('clear-output', () => {
     }
 });
 
+ipcRenderer.on('game-language', (language, texts) => {
+    const content = document.getElementById('game-content');
+    if (!content || typeof language !== 'string' || !texts || typeof texts !== 'object') return;
+    content.lang = language;
+    content.querySelectorAll('.dialog-option.game-action').forEach(element => element.classList.remove('game-action'));
+    content.querySelectorAll('[data-game-text]').forEach(element => {
+        const key = element.getAttribute('data-game-text');
+        if (Object.prototype.hasOwnProperty.call(texts, key) && typeof texts[key] === 'string') {
+            element.textContent = texts[key];
+        }
+    });
+    for (const [selector, attribute, target] of [
+        ['[data-game-label]', 'data-game-label', 'aria-label'],
+        ['[data-game-empty]', 'data-game-empty', 'data-empty-text']
+    ]) {
+        content.querySelectorAll(selector).forEach(element => {
+            const key = element.getAttribute(attribute);
+            if (Object.prototype.hasOwnProperty.call(texts, key) && typeof texts[key] === 'string') {
+                element.setAttribute(target, texts[key]);
+            }
+        });
+    }
+});
+
 ipcRenderer.on('game-update', (data, section) => {
     if (!data && !section) {
         return;

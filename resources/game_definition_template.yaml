@@ -5,6 +5,13 @@ metadata:
   description: "A short description of the game."
   language: "en"
 
+# Optional presentation-only translations. Paths use zero-based array indexes.
+# translations:
+#   cs:
+#     /metadata/title: "Nová hra JETA"
+#     /locations/0/name: "Místnost"
+#     /locations/0/descriptions/0/default: "<p>Jsi v malé místnosti.</p>"
+
 intro:
   - page: "<p>Write the opening of the story here.</p>"
 

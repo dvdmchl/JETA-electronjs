@@ -21,7 +21,8 @@
     "help": "Help!",
     "about": "About Game",
     "language": "Language",
-    "debug": "Debug"
+    "debug": "Debug",
+    "gameLanguage": "Game language"
   },
   "dialog": {
     "saveGameState": "Save game state"
@@ -32,5 +33,39 @@
     "placeholder": "Enter game name",
     "okButton": "OK",
     "cancelButton": "Cancel"
+  },
+  "game": {
+    "noPlayer": "There is no player character defined.",
+    "unknownLocation": "Unknown location.",
+    "missingItem": "There is no such item here.",
+    "notVisible": "You cannot see that.",
+    "notHere": "There is nothing like that here.",
+    "cannotGo": "You cannot go there.",
+    "nothingToTake": "There is nothing like that to take here.",
+    "cannotTake": "You cannot take that.",
+    "taken": "You took it.",
+    "notCarrying": "You are not carrying that item.",
+    "dropped": "You put it down.",
+    "unknownItem": "There is no such item.",
+    "cannotUse": "You cannot think of a way to use it.",
+    "nothingHappened": "Nothing happened.",
+    "missingCharacter": "You cannot see that character here.",
+    "nothingToSay": "This character has nothing to say.",
+    "cannotTalk": "You could not start a conversation.",
+    "unavailableChoice": "That response is not available.",
+    "noDialogue": "There is no active conversation.",
+    "unavailableEntry": "That dialogue entry is not available.",
+    "unknownChoice": "There is no such response.",
+    "missingNext": "The next dialogue entry is missing.",
+    "examining": "You examine {{name}}.",
+    "moving": "You go: {{direction}}.",
+    "look": "look around",
+    "examine": "Examine:",
+    "talk": "Talk to:",
+    "inventory": "Inventory:",
+    "use": "Use:",
+    "take": "Take:",
+    "drop": "Drop:",
+    "go": "Go:"
   }
 }

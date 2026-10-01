@@ -1,5 +1,6 @@
 const { LAYOUT_SECTIONS } = require('./layout_sections');
 const {normalizeGameDefinition, validateGameDefinitionSemantics} = require('./game_definition_contract');
+const {getTranslatableFields, validateTranslations, sanitizeTranslations} = require('./game_translations');
 
 class GameData {
 
@@ -30,10 +31,43 @@ class GameData {
         this.#dialoguesByCharacter = new Map();
         this.#appliedEndingId = null;
         this.indexDialogues();
+        if (this.#data.translations) {
+            validateTranslations(this.#data);
+            sanitizeTranslations(this.#data);
+            const currentTexts = Object.fromEntries([...getTranslatableFields(this.#data)].map(([pointer, field]) => [pointer, field.object[field.key]]));
+            this.#data.translations[this.language] = {...currentTexts, ...this.#data.translations[this.language]};
+            for (const language of Object.keys(this.#data.translations)) {
+                this.#data.translations[language] = {...currentTexts, ...this.#data.translations[language]};
+            }
+            this.setLanguage(this.language);
+        }
     }
 
     get title() {
         return this.#title;
+    }
+
+    get language() {
+        return this.#data.metadata.language;
+    }
+
+    get availableLanguages() {
+        return [...new Set([this.language, ...Object.keys(this.#data.translations || {})])];
+    }
+
+    get layoutTexts() {
+        return this.#data.layout?.texts || {};
+    }
+
+    setLanguage(language) {
+        if (!this.availableLanguages.includes(language)) throw new Error(`Unavailable game language "${language}".`);
+        const fields = getTranslatableFields(this.#data);
+        for (const [pointer, text] of Object.entries(this.#data.translations?.[language] || {})) {
+            const field = fields.get(pointer);
+            field.object[field.key] = text;
+        }
+        this.#data.metadata.language = language;
+        this.#title = this.#data.metadata.title;
     }
 
     get intro() {

@@ -57,8 +57,50 @@ characters:
 
 `metadata.title` and `metadata.language` are required by the schema. `author`,
 `version`, and `description` are optional metadata strings. The language value is
-metadata for the game; it does not currently select the language of the engine's
-hard-coded action messages.
+the initial language of the game. Engine action labels and messages use Czech or
+English according to this value; other language codes fall back to Czech.
+The application's **Edit > Language** setting remains independent of game text.
+
+## Optional game translations
+
+Keep gameplay logic in one definition and translate only presentation fields with
+an optional `translations` map. Each language maps existing text paths to strings:
+
+```yaml
+translations:
+  cs:
+    /metadata/title: "Jedna místnost"
+    /locations/0/name: "Místnost"
+    /locations/0/descriptions/0/default: "<p>Jsi v tiché místnosti.</p>"
+```
+
+Paths use `/` separators and zero-based array indexes. Supported targets are
+metadata `title`, `author`, and `description`; intro `page`; object `name` and
+`name_accusative`; description `default` and `description`; connection `direction`;
+action and dialogue `description`; response `text`; and `/layout/texts/<key>`.
+Targets must already exist. IDs, conditions, assignments, visibility, ownership,
+variables, and language metadata cannot be translated. Missing translations fall
+back to the original text. Review translation paths whenever you reorder arrays.
+Translated narrative uses the same safe markup rules as the base narrative.
+Use IDs and variables in gameplay conditions, rather than properties whose text
+changes with the language. Games declaring translations need a base language code
+such as `cs`, `en`, or `en-US`.
+
+When translations exist, **File > Game language** switches the current game without
+restarting it. Location, inventory, variables, counters, active dialogue and ending
+state remain in place. Active choices are redisplayed without executing dialogue
+assignments again. Existing journal entries retain their original language.
+The introduction is translated while it is still displayed; later switches show
+the current location. Saved game data includes the selected language and complete
+text maps so it can be switched back after restoration. Loading the original
+definition again starts fresh in `metadata.language`.
+
+Custom layouts can declare plain text labels under `layout.texts` and bind them with
+`data-game-text="key"`, accessible labels with `data-game-label="key"`, or empty-log
+hints with `data-game-empty="key"` (read `data-empty-text` in CSS). JETA updates these
+using text content or attributes, not HTML, and sets the game container's `lang`.
+Keep these bindings outside engine target elements whose content gets replaced.
+See `samples/stiny_azerothu/` for a complete Czech/English game and shared layout.
 
 ## IDs and references
 

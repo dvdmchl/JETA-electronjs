@@ -21,7 +21,8 @@
     "help": "Pomoc!",
     "about": "O Hře",
     "language": "Jazyk",
-    "debug": "Debug"
+    "debug": "Debug",
+    "gameLanguage": "Jazyk hry"
   },
   "dialog": {
     "saveGameState": "Uložit pozici"
@@ -32,5 +33,39 @@
     "placeholder": "Zadejte název hry",
     "okButton": "OK",
     "cancelButton": "Zrušit"
+  },
+  "game": {
+    "noPlayer": "Není definována postava hráče.",
+    "unknownLocation": "Neznámá lokace.",
+    "missingItem": "Takový předmět tu není.",
+    "notVisible": "To nevidíš.",
+    "notHere": "Tady nic takového není.",
+    "cannotGo": "Tam se jít nedá.",
+    "nothingToTake": "Tady nic takového neleží.",
+    "cannotTake": "To vzít nejde.",
+    "taken": "Vzal jsi to.",
+    "notCarrying": "Takový předmět u sebe nemáš.",
+    "dropped": "Položil jsi to.",
+    "unknownItem": "Takový předmět neznám.",
+    "cannotUse": "Nenapadá mě, jak to použít.",
+    "nothingHappened": "Nic se nestalo.",
+    "missingCharacter": "Takovou postavu tu nevidím.",
+    "nothingToSay": "Tahle postava nemá co říct.",
+    "cannotTalk": "Nepodařilo se navázat rozhovor.",
+    "unavailableChoice": "Tahle odpověď není dostupná.",
+    "noDialogue": "Žádný rozhovor není aktivní.",
+    "unavailableEntry": "Tahle replika není dostupná.",
+    "unknownChoice": "Takovou odpověď nemáš.",
+    "missingNext": "Chybí navazující replika v rozhovoru.",
+    "examining": "Prozkoumáváš {{name}}.",
+    "moving": "Přesouváš se do {{direction}}.",
+    "look": "rozhlédnout se",
+    "examine": "Prozkoumat:",
+    "talk": "Oslovit:",
+    "inventory": "Inventář:",
+    "use": "Použít:",
+    "take": "Vzít:",
+    "drop": "Položit:",
+    "go": "Jít:"
   }
 }

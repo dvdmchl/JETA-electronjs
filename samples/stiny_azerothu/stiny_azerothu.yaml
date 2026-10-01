@@ -1,69 +1,551 @@
 metadata:
   title: "Stíny Azerothu"
   author: "Tým vývojářů"
-  version: "1.0.1"
-  description: "Dobrodružství ve světě Warcraftu s hlubokými příběhovými větvemi a morálními rozhodnutími."
+  version: "1.1.0"
+  description: "Mlžný háj, zapomenutý chrám a rozhodnutí, které žádná frakce neudělá za tebe."
+  language: "cs"
+
+layout:
+  path: "layout.html"
+  texts:
+    eyebrow: "Kronika jednoho posla"
+    subtitle: "Žádná přísaha tě nezbaví poslední volby."
+    story: "Příběh a aktuální místo"
+    log: "Deník událostí"
+    logLabel: "Činy a rozhovory"
+    actions: "Herní akce"
+    look: "Rozhlédnout se"
+    characters: "Lidé a hlasy"
+    items: "Okolí a výbava"
+    use: "Použít"
+    take: "Vzít"
+    drop: "Položit"
+    go: "Vydat se dál"
+    emptyLog: "Tady se zapisují tvoje činy a rozhovory. Začni oslovením Thralla."
+    footer: "Stíny Azerothu · Krátké dobrodružství ze světa Warcraftu · Cíl připomene cestovní deník v nabídce Použít."
+
+intro:
+  - page: |
+      <p>Po Třetí válce zůstaly v Azerothu rány, které žádné příměří nezahojilo.
+      V mlze Tirisfalu se znovu ozývá jméno Zar'thalis. Démon nemá tělo,
+      ale někdo už hledá artefakt, který mu ho může vrátit.</p>
+      <p>Thrall tě vyslal zjistit, co se skrývá pod starým chrámem.
+      Nejsi voják ani vyvolený. Jsi posel, který ještě může rozhodnout, komu uvěří.</p>
+      <p><em>Oslov Thralla. Prozkoumávej okolí, mluv s postavami a používej svůj cestovní deník pro připomenutí cíle.</em></p>
 
 locations:
   - id: "tirisfal_grove"
     name: "Tirisfalský háj"
-    description: "Les plný mlhy a šeptajících hlasů, který skrývá staré runy a ruiny chrámu Nathrezimu."
+    descriptions:
+      - default: |
+          <h2>Tirisfalský háj</h2>
+          <p>Mlha visí mezi černými kmeny. Za rozbitým kamenným obloukem stojí
+          nemrtvá hlídka; u runové brány probleskuje duch dávného písaře.
+          Thrall čeká u vyhaslého ohniště. Z přístaviště pod kopcem odplouvá loď do Booty Bay.</p>
+      - condition: "temple_open && patrol_passage && map_to_temple:owner = player"
+        description: "<p>Runy svítí a hlídka ustoupila. Mapa ti ukazuje bezpečnou cestu do chrámu.</p>"
+      - condition: "temple_open"
+        description: "<p>Kamenná brána je otevřená. K cestě dál potřebuješ mapu a svolení hlídky.</p>"
     connections:
-      - direction: "jih"
+      - direction: "Lodí do Booty Bay"
         target: "booty_bay"
-    events:
-      - id: "unlock_temple"
-        trigger: "solve_puzzle"
-        puzzle:
-          type: "runes"
-          hint: "Když voda hasí plameny a vítr žene zem."
-          solution: ["water", "fire", "wind", "earth"]
-        outcome:
-          text: "Chrám se otevřel a odhalil prastaré runy."
-          unlock_location: "nathrezim_temple"
-    npcs:
-      - id: "forsaken_patrol"
-        name: "Nemrtvá hlídka"
-        description: "Hlídka nemrtvých, která brání vstupu do chrámu."
-        dialogue:
-          - condition: "item_owned:amulet_of_peace"
-            text: "Máš amulet? Dobře, necháme tě projít."
-          - default: "Cizince, sem nesmíš!"
-        combat:
-          hp: 50
-          attack: 10
-          defense: 5
+      - direction: "Do chrámu Nathrezimu"
+        target: "nathrezim_temple"
+        condition: "temple_open && patrol_passage && map_to_temple:owner = player"
+
+  - id: "booty_bay"
+    name: "Booty Bay"
+    descriptions:
+      - default: |
+          <h2>Booty Bay</h2>
+          <p>Slaná voda pleská do pilířů mola. Goblin Rix počítá mince pod lucernou
+          a hlídá vodotěsný balík. Na jeho stole leží mapa se znakem chrámu Nathrezimu.</p>
+      - condition: "reward_received"
+        description: "<p>Rixův dluh je vyrovnaný. Loď do Tirisfalu čeká na příliv.</p>"
+      - condition: "package_delivered"
+        description: "<p>Kurýr už poslal potvrzení. Rix ti dluží slíbenou odměnu.</p>"
+      - condition: "package_received"
+        description: "<p>Stezka z přístavu vede ke kurýrovi ve Stranglethornu.</p>"
+    connections:
+      - direction: "Lodí do Tirisfalského háje"
+        target: "tirisfal_grove"
+      - direction: "Stezkou do Stranglethornu"
+        target: "stranglethorn_vale"
+
+  - id: "stranglethorn_vale"
+    name: "Stranglethorn Vale"
+    descriptions:
+      - default: |
+          <h2>Stranglethorn Vale</h2>
+          <p>Déšť bubnuje do širokých listů. U kamenného milníku čeká kurýr Nala.
+          Její brašna je označena stejnou pečetí jako Rixův balík.
+          Z džungle zaznívá vzdálený buben; tady není dobré zůstávat přes noc.</p>
+      - condition: "package_delivered"
+        description: "<p>Nala zásilku bezpečně převzala. Vrať se k Rixovi pro mapu a odměnu.</p>"
+    connections:
+      - direction: "Zpět do Booty Bay"
+        target: "booty_bay"
+
+  - id: "nathrezim_temple"
+    name: "Chrám Nathrezimu"
+    descriptions:
+      - default: |
+          <h2>Chrám Nathrezimu</h2>
+          <p>Pod zemí není slyšet vítr ani kroky hlídky. Na oltáři se vznáší
+          černý střep sevřený čtyřmi stříbrnými kruhy. Jeho stín se pohybuje proti světlu.</p>
+          <p>Zar'thalis promlouvá z prázdna mezi kruhy. Oslov ho, až budeš připraven rozhodnout o artefaktu.</p>
+    connections:
+      - direction: "Zpět do Tirisfalského háje"
+        target: "tirisfal_grove"
 
 items:
+  - id: "travel_journal"
+    name: "Cestovní deník"
+    name_accusative: "cestovní deník"
+    owner: "player"
+    movable: false
+    descriptions:
+      - default: "<p>Vlhký zápisník. Použij ho, když potřebuješ připomenout další krok.</p>"
+    onUse:
+      - condition: "player:location = nathrezim_temple"
+        description: "<p>Artefakt čeká. Promluv se Zar'thalisem. Můžeš jej zničit, svěřit Thrallovi, nebo přijmout jeho moc. Volba ukončí příběh.</p>"
+      - condition: "temple_open && patrol_passage && map_to_temple:owner = player"
+        description: "<p>Cesta do chrámu je volná. Vrať se do Tirisfalského háje a projdi branou.</p>"
+      - condition: "reward_received"
+        description: "<p>Vezmi si mapu a amulet, pokud jsi je někde položil. V háji ukaž amulet hlídce. Duchovi odpověz podle nápisu na runové bráně.</p>"
+      - condition: "package_delivered"
+        description: "<p>Zásilka je doručená. V Booty Bay požádej Rixe o odměnu.</p>"
+      - condition: "package_received"
+        description: "<p>Doruč balík kurýrovi ve Stranglethornu. Pokud jsi ho položil, nejdřív jej znovu vezmi.</p>"
+      - description: "<p>Thrall tě odkázal na goblina Rixe v Booty Bay. Oslov ho a nabídni se jako posel.</p>"
+
   - id: "map_to_temple"
     name: "Mapa k chrámu"
-    description: "Mapa, která ukazuje cestu do chrámu Nathrezimu."
-    location: "booty_bay"
+    name_accusative: "mapu k chrámu"
+    owner: "goblin_desk"
+    descriptions:
+      - default: "<p>Podzemní chodby tvoří bludiště. Mapa vyznačuje jedinou bezpečnou cestu k oltáři; musíš ji mít u sebe při vstupu.</p>"
 
-quests:
-  - id: "deliver_package"
-    name: "Doruč balík"
-    description: "Doruč balík z Booty Bay do Stranglethornu."
-    steps:
-      - step: 1
-        description: "Převzít balík od goblina."
-        condition: "item_obtained:package"
-      - step: 2
-        description: "Doručit balík do Stranglethornu."
-        condition: "location_visited:stranglethorn_vale"
-    reward:
-      item: "gold_coins"
-      amount: 50
+  - id: "goblin_desk"
+    name: "Rixův stůl"
+    owner: "booty_bay"
+    movable: false
+    descriptions:
+      - default: "<p>Mapa i amulet patří Rixovi. Nabízí je jako odměnu za doručení zásilky, ne za sílu tvých pěstí.</p>"
+
+  - id: "package"
+    name: "Zapečetěný balík"
+    name_accusative: "zapečetěný balík"
+    owner: "goblin_desk"
+    descriptions:
+      - default: "<p>Uvnitř tiše cinkají lahvičky. Na obalu stojí: Nala, milník ve Stranglethornu. Pečeť je neporušená.</p>"
+
+  - id: "courier_satchel"
+    name: "Kurýrní brašna"
+    owner: "stranglethorn_vale"
+    movable: false
+    descriptions:
+      - default: "<p>Brašna pro doručené zásilky. Nala si její obsah pečlivě hlídá.</p>"
+
+  - id: "amulet_of_peace"
+    name: "Amulet příměří"
+    name_accusative: "amulet příměří"
+    owner: "goblin_desk"
+    descriptions:
+      - default: "<p>Stříbrná pečeť uznávaná nemrtvou hlídkou. Chceš-li projít, oslov hlídku a ukaž jí amulet.</p>"
+
+  - id: "unlock_temple"
+    name: "Runová brána"
+    name_accusative: "runovou bránu"
+    owner: "tirisfal_grove"
+    movable: false
+    descriptions:
+      - default: "<p>Ve dveřích jsou čtyři kruhy. Nápis zní: <em>Když voda hasí plameny a vítr žene zem.</em> Duch písaře čeká na pořadí živlů.</p>"
+      - condition: "temple_open"
+        description: "<p>Všechny čtyři kruhy svítí. Hádanku už není třeba opakovat.</p>"
 
 characters:
+  - id: "player"
+    name: "Posel"
+    location: "tirisfal_grove"
+
   - id: "thrall"
     name: "Thrall"
-    description: "Mentor hráče a vůdce Hordy."
-    faction: "Horda"
-    dialogue:
-      - text: "Musíme chránit chrám Nathrezimu před démony a Aliancí."
-        options:
-          - choice: "Pomohu ti, Thralli."
-            outcome: "start_quest:find_temple"
-          - choice: "Mám vlastní plány."
-            outcome: "relation_change:thrall:-10"
+    name_accusative: "Thralla"
+    location: "tirisfal_grove"
+    descriptions:
+      - default: "<p>Vůdce Hordy se opírá o kladivo. Je unavenější, než připouští jeho hlas.</p>"
+    onTalk:
+      - condition: "!reward_received"
+        description: "<p>„Rix v Booty Bay má mapu a pečeť příměří. Pomoz mu a nebudeš muset prolévat krev. Na runové bráně čti každé slovo. Pokud uvnitř najdeš artefakt, pamatuj: moc není totéž co bezpečí.“</p>"
+      - condition: "reward_received"
+        description: "<p>„Ukaž hlídce amulet a promluv s písařovým duchem. U oltáře bude poslední rozhodnutí tvoje. Můžeš mi artefakt svěřit, ale nemohu slíbit, že po něm jiní nesáhnou.“</p>"
+
+  - id: "goblin"
+    name: "Rix"
+    name_accusative: "Rixe"
+    location: "booty_bay"
+    descriptions:
+      - default: "<p>Goblinův úsměv je obchodní nabídka, nikoli slib přátelství.</p>"
+    onTalk:
+      - id: "delivery_offer"
+        condition: "!package_received"
+        description: "<p>„Mapu neprodávám. Dones tenhle balík Nale ve Stranglethornu. Pak dostaneš mapu, amulet příměří a padesát mincí. Balík neotvírej; jsou v něm léky.“</p>"
+        responses:
+          - id: "accept_package"
+            text: "Převzít zásilku a slíbit doručení"
+            set: "package_received = true; package:owner = player"
+          - id: "leave"
+            text: "Zatím odmítnout"
+      - condition: "package_received && !package_delivered"
+        description: "<p>„Nala čeká u milníku ve Stranglethornu. Bez potvrzení není odměna.“</p>"
+      - id: "delivery_reward"
+        condition: "package_delivered && !reward_received"
+        description: "<p>„Léky dorazily včas. Držím slovo. Mapa, amulet a mince jsou tvoje.“</p>"
+        responses:
+          - id: "collect_reward"
+            text: "Převzít odměnu"
+            set: "reward_received = true; map_to_temple:owner = player; amulet_of_peace:owner = player; gold_coins = gold_coins + 50"
+      - condition: "reward_received"
+        description: "<p>„Jsme si kvit. Mapu neztrať. A jestli ti v chrámu někdo nabídne moc zadarmo, přečti si drobné písmo.“</p>"
+
+  - id: "courier"
+    name: "Nala"
+    name_accusative: "Nalu"
+    location: "stranglethorn_vale"
+    descriptions:
+      - default: "<p>Kurýrka drží pod pláštěm seznam léků pro raněné. Na seznamu nejsou žádné vlajky.</p>"
+    onTalk:
+      - id: "delivery_receive"
+        condition: "package:owner = player && !package_delivered"
+        description: "<p>„Rixův balík? Konečně. Ty léky potřebují ranění z obou stran. Někteří mi to neodpustí, ale horečka se na frakci neptá.“</p>"
+        responses:
+          - id: "deliver_package"
+            text: "Předat léky bez ohledu na frakci"
+            set: "package_delivered = true; package:owner = courier_satchel"
+          - id: "leave"
+            text: "Ještě si to rozmyslet"
+      - condition: "!package_delivered && package:owner != player"
+        description: "<p>„Čekám na zapečetěný balík od Rixe. Přines jej sem a promluv se mnou.“</p>"
+      - condition: "package_delivered"
+        description: "<p>„Děkuji. Potvrzení už letí do Booty Bay. Rix ti vydá odměnu.“</p>"
+
+  - id: "forsaken_patrol"
+    name: "Nemrtvá hlídka"
+    name_accusative: "nemrtvou hlídku"
+    location: "tirisfal_grove"
+    descriptions:
+      - default: "<p>Velitelka hlídky má starou jizvu přes hrdlo. Její kopí chrání chrám před živými i mrtvými.</p>"
+    onTalk:
+      - id: "patrol_offer"
+        condition: "amulet_of_peace:owner = player && !patrol_passage"
+        description: "<p>„Ta pečeť patřila poslům příměří. Pokud ji neseš v dobré víře, necháme tě projít. Bránu si ale musíš otevřít sám.“</p>"
+        responses:
+          - id: "show_amulet"
+            text: "Ukázat amulet a požádat o průchod"
+            set: "patrol_passage = true"
+          - id: "leave"
+            text: "Ustoupit od brány"
+      - condition: "!patrol_passage && amulet_of_peace:owner != player"
+        description: "<p>„Bez pečeti příměří dál nepůjdeš. Jeden amulet prý uchovává goblin Rix v Booty Bay.“</p>"
+      - condition: "patrol_passage"
+        description: "<p>„Slib platí. Ať už uvnitř uslyšíš cokoli, nevěř tomu jen proto, že to říká tvým hlasem.“</p>"
+
+  - id: "rune_keeper"
+    name: "Duch písaře"
+    name_accusative: "ducha písaře"
+    location: "tirisfal_grove"
+    descriptions:
+      - default: "<p>Průsvitné prsty opisují nápis na bráně. Každá chybná volba zhasne všechny kruhy; pokus můžeš opakovat.</p>"
+    onTalk:
+      - condition: "temple_open"
+        description: "<p>„Kruh je úplný. Teď už musíš odpovědět jen sám sobě.“</p>"
+      - id: "runes_water"
+        condition: "!temple_open && rune_step = 0"
+        description: "<p>„Když voda hasí plameny a vítr žene zem. Který živel přijde první?“</p>"
+        responses:
+          - {id: "water", text: "Voda", set: "rune_step = 1", next: "runes_fire"}
+          - {id: "fire", text: "Oheň", set: "rune_step = -1", next: "runes_wrong"}
+          - {id: "wind", text: "Vítr", set: "rune_step = -1", next: "runes_wrong"}
+          - {id: "earth", text: "Země", set: "rune_step = -1", next: "runes_wrong"}
+      - id: "runes_fire"
+        condition: "!temple_open && rune_step = 1"
+        description: "<p>První kruh se rozzářil modře. „Co voda hasí?“</p>"
+        responses:
+          - {id: "water", text: "Voda", set: "rune_step = -1", next: "runes_wrong"}
+          - {id: "fire", text: "Oheň", set: "rune_step = 2", next: "runes_wind"}
+          - {id: "wind", text: "Vítr", set: "rune_step = -1", next: "runes_wrong"}
+          - {id: "earth", text: "Země", set: "rune_step = -1", next: "runes_wrong"}
+      - id: "runes_wind"
+        condition: "!temple_open && rune_step = 2"
+        description: "<p>Druhý kruh plane rudě. „Kdo žene zem?“</p>"
+        responses:
+          - {id: "water", text: "Voda", set: "rune_step = -1", next: "runes_wrong"}
+          - {id: "fire", text: "Oheň", set: "rune_step = -1", next: "runes_wrong"}
+          - {id: "wind", text: "Vítr", set: "rune_step = 3", next: "runes_earth"}
+          - {id: "earth", text: "Země", set: "rune_step = -1", next: "runes_wrong"}
+      - id: "runes_earth"
+        condition: "!temple_open && rune_step = 3"
+        description: "<p>Třetí kruh se chvěje ve větru. „Co zbývá na konci verše?“</p>"
+        responses:
+          - {id: "water", text: "Voda", set: "rune_step = -1", next: "runes_wrong"}
+          - {id: "fire", text: "Oheň", set: "rune_step = -1", next: "runes_wrong"}
+          - {id: "wind", text: "Vítr", set: "rune_step = -1", next: "runes_wrong"}
+          - {id: "earth", text: "Země", set: "rune_step = 4; temple_open = true", next: "runes_open"}
+      - id: "runes_wrong"
+        condition: "rune_step = -1"
+        description: "<p>Kruhy zhasly. „Živly mají své pořadí. Přečti nápis a oslov mě znovu; nic jsi neztratil.“</p>"
+        set: "rune_step = 0"
+      - id: "runes_open"
+        condition: "temple_open && rune_step = 4"
+        description: "<p>Poslední kruh zazáří zlatě. Kamenné dveře se rozestoupí. „Brána je otevřená.“</p>"
+        set: "rune_step = 5"
+
+  - id: "zar_thalis"
+    name: "Zar'thalisův hlas"
+    location: "nathrezim_temple"
+    descriptions:
+      - default: "<p>Hlas přichází z artefaktu. Nabízí konec všech válek, ale neříká, kdo po nich zůstane naživu.</p>"
+    onTalk:
+      - id: "artifact_choice"
+        condition: "!game_end"
+        description: |
+          <p>„Rozbij střep a ztratíš sílu, která může chránit tvé lidi. Dej ho Thrallovi
+          a válka o něj začne znovu. Přijmi mě a žádný vládce už nebude silnější než ty.“</p>
+          <p>Čtyři kruhy drží démona v zajetí. Můžeš artefakt zničit, odnést pod jejich ochranou,
+          nebo kruhy přerušit. <strong>Tato volba je konečná.</strong></p>
+        responses:
+          - id: "destroy"
+            text: "Zničit artefakt, aby jej nikdo nezneužil"
+            set: "game_end = true; game_end_id = ending_destroy"
+          - id: "entrust"
+            text: "Svěřit zapečetěný artefakt Thrallovi"
+            set: "game_end = true; game_end_id = ending_entrust"
+          - id: "claim"
+            text: "Přerušit kruhy a přijmout démonovu moc"
+            set: "game_end = true; game_end_id = ending_claim"
+          - id: "leave"
+            text: "Zatím odejít a poradit se s Thrallem"
+
+variables:
+  - {id: "package_received", value: false}
+  - {id: "package_delivered", value: false}
+  - {id: "reward_received", value: false}
+  - {id: "gold_coins", value: 0}
+  - {id: "patrol_passage", value: false}
+  - {id: "temple_open", value: false}
+  - {id: "rune_step", value: 0}
+  - {id: "game_end", value: false}
+  - {id: "game-log-title-show", value: true}
+
+endings:
+  - id: "ending_destroy"
+    descriptions:
+      - default: |
+          <h2>Úsvit bez pánů</h2>
+          <p>Udeříš kamenem do střepu. Zar'thalisův hlas se rozpadne na tisíc cizích výkřiků
+          a potom nastane ticho. Mlha nad hájem se poprvé rozestoupí.</p>
+          <p>Thrall přijme zprávu beze slova. Azeroth nepřišel o své války, ale nikdo je dnes
+          nerozhodne démonickou silou. Zůstáváš poslem, který odmítl být něčím nástrojem.</p>
+          <p><em>Konec · Artefakt je zničen.</em></p>
+        set: &ending_visibility "game-commands-show = false; game-characters-show = false; game-items-show = false; game-use-show = false; game-take-show = false; game-drop-show = false; game-go-show = false"
+  - id: "ending_entrust"
+    descriptions:
+      - default: |
+          <h2>Břemeno důvěry</h2>
+          <p>Necháš kruhy neporušené a odnášíš střep z chrámu. Thrall jej uzavře do kamenné schrány
+          a slíbí, že se nikdy nestane zbraní Hordy.</p>
+          <p>Démon zůstává spoutaný. Večer však dorazí první vyslanec Aliance a žádá vydání schrány.
+          Zachránil jsi dnešek; zítřek bude potřebovat stejně odvážné posly.</p>
+          <p><em>Konec · Artefakt je v Thrallově péči.</em></p>
+        set: *ending_visibility
+  - id: "ending_claim"
+    descriptions:
+      - default: |
+          <h2>Hlas za tvým hlasem</h2>
+          <p>Přerušíš stříbrné kruhy. Střep se rozpustí v tvé dlani a bolest vystřídá opojná síla.
+          Na okamžik vidíš celé pobřeží Azerothu a všechny armády, které by před tebou mohly pokleknout.</p>
+          <p>Pak pohneš rukou, aniž ses rozhodl. Zar'thalis se směje tvými ústy.
+          Chtěl jsi být svým vlastním pánem. Otevřel jsi dveře někomu jinému.</p>
+          <p><em>Konec · Démon získal nového nositele.</em></p>
+        set: *ending_visibility
+
+# English presentation only; all IDs, conditions and assignments remain in the base game.
+translations:
+  en:
+    /metadata/title: "Shadows of Azeroth"
+    /metadata/author: "Development team"
+    /metadata/description: "A misty grove, a forgotten temple, and a choice no faction can make for you."
+    /intro/0/page: |
+      <p>The Third War left wounds in Azeroth that no truce could heal.
+      In the mists of Tirisfal, the name Zar'thalis is whispered once more.
+      The demon has no body, but someone is already seeking the artifact that could restore it.</p>
+      <p>Thrall sent you to discover what lies beneath the old temple.
+      You are neither a soldier nor a chosen hero. You are a messenger who can still choose whom to trust.</p>
+      <p><em>Talk to Thrall. Examine your surroundings, speak to people, and use your travel journal to check your next objective.</em></p>
+    /locations/0/name: "Tirisfal Grove"
+    /locations/0/descriptions/0/default: |
+      <h2>Tirisfal Grove</h2>
+      <p>Mist hangs between blackened tree trunks. Beyond a broken stone arch stands a Forsaken patrol;
+      a long-dead scribe flickers beside the rune gate. Thrall waits by a cold campfire.
+      A ship bound for Booty Bay departs from the landing below the hill.</p>
+    /locations/0/descriptions/1/description: "<p>The runes glow and the patrol has stepped aside. Your map reveals a safe path into the temple.</p>"
+    /locations/0/descriptions/2/description: "<p>The stone gate is open. You still need the map and the patrol's permission to proceed.</p>"
+    /locations/0/connections/0/direction: "Sail to Booty Bay"
+    /locations/0/connections/1/direction: "Enter the Nathrezim Temple"
+    /locations/1/name: "Booty Bay"
+    /locations/1/descriptions/0/default: |
+      <h2>Booty Bay</h2>
+      <p>Salt water slaps against the pier's supports. Rix the goblin counts coins beneath a lantern,
+      keeping an eye on a waterproof parcel. A map bearing the mark of the Nathrezim temple lies on his desk.</p>
+    /locations/1/descriptions/1/description: "<p>Rix's debt is settled. The ship to Tirisfal waits for the tide.</p>"
+    /locations/1/descriptions/2/description: "<p>The courier has sent confirmation. Rix owes you the promised reward.</p>"
+    /locations/1/descriptions/3/description: "<p>A trail leads from the port to the courier in Stranglethorn.</p>"
+    /locations/1/connections/0/direction: "Sail to Tirisfal Grove"
+    /locations/1/connections/1/direction: "Follow the trail to Stranglethorn"
+    /locations/2/name: "Stranglethorn Vale"
+    /locations/2/descriptions/0/default: |
+      <h2>Stranglethorn Vale</h2>
+      <p>Rain drums against broad leaves. Nala the courier waits beside a stone milestone.
+      Her satchel bears the same seal as Rix's parcel. A distant drum sounds from the jungle;
+      this is no place to spend the night.</p>
+    /locations/2/descriptions/1/description: "<p>Nala has safely received the parcel. Return to Rix for the map and your reward.</p>"
+    /locations/2/connections/0/direction: "Return to Booty Bay"
+    /locations/3/name: "Nathrezim Temple"
+    /locations/3/descriptions/0/default: |
+      <h2>Nathrezim Temple</h2>
+      <p>Underground, neither the wind nor the patrol's footsteps can be heard.
+      A black shard hovers above an altar, enclosed by four silver rings. Its shadow moves against the light.</p>
+      <p>Zar'thalis speaks from the space between the rings. Talk to him when you are ready to decide the artifact's fate.</p>
+    /locations/3/connections/0/direction: "Return to Tirisfal Grove"
+    /items/0/name: "Travel journal"
+    /items/0/name_accusative: "travel journal"
+    /items/0/descriptions/0/default: "<p>A damp notebook. Use it when you need a reminder of your next step.</p>"
+    /items/0/onUse/0/description: "<p>The artifact awaits. Talk to Zar'thalis. You can destroy it, entrust it to Thrall, or accept its power. Your choice will end the story.</p>"
+    /items/0/onUse/1/description: "<p>The path to the temple is clear. Return to Tirisfal Grove and pass through the gate.</p>"
+    /items/0/onUse/2/description: "<p>Pick up the map and amulet if you dropped them. In the grove, show the amulet to the patrol. Answer the spirit using the inscription on the rune gate.</p>"
+    /items/0/onUse/3/description: "<p>The parcel has been delivered. Ask Rix for your reward in Booty Bay.</p>"
+    /items/0/onUse/4/description: "<p>Deliver the parcel to the courier in Stranglethorn. If you put it down, pick it up again first.</p>"
+    /items/0/onUse/5/description: "<p>Thrall directed you to Rix the goblin in Booty Bay. Talk to him and offer to act as his messenger.</p>"
+    /items/1/name: "Map to the temple"
+    /items/1/name_accusative: "map to the temple"
+    /items/1/descriptions/0/default: "<p>The underground passages form a maze. This map marks the only safe route to the altar; carry it when entering the temple.</p>"
+    /items/2/name: "Rix's desk"
+    /items/2/descriptions/0/default: "<p>The map and amulet belong to Rix. He offers them in exchange for a delivery, not a show of force.</p>"
+    /items/3/name: "Sealed parcel"
+    /items/3/name_accusative: "sealed parcel"
+    /items/3/descriptions/0/default: "<p>Small bottles clink softly inside. The label reads: Nala, milestone in Stranglethorn. The seal is intact.</p>"
+    /items/4/name: "Courier's satchel"
+    /items/4/descriptions/0/default: "<p>A satchel for delivered parcels. Nala keeps a close eye on its contents.</p>"
+    /items/5/name: "Amulet of peace"
+    /items/5/name_accusative: "amulet of peace"
+    /items/5/descriptions/0/default: "<p>A silver seal recognized by the Forsaken patrol. To pass, talk to the patrol and show them the amulet.</p>"
+    /items/6/name: "Rune gate"
+    /items/6/name_accusative: "rune gate"
+    /items/6/descriptions/0/default: "<p>Four rings are set into the door. The inscription reads: <em>When water quenches fire and wind drives earth.</em> The scribe's spirit awaits the order of the elements.</p>"
+    /items/6/descriptions/1/description: "<p>All four rings glow. There is no need to solve the puzzle again.</p>"
+    /characters/0/name: "Messenger"
+    /characters/1/name: "Thrall"
+    /characters/1/name_accusative: "Thrall"
+    /characters/1/descriptions/0/default: "<p>The Horde's leader leans on his hammer. He is more tired than his voice admits.</p>"
+    /characters/1/onTalk/0/description: "<p>“Rix in Booty Bay has a map and a seal of truce. Help him and you need not spill blood. Read every word on the rune gate. If you find an artifact inside, remember: power is not the same as safety.”</p>"
+    /characters/1/onTalk/1/description: "<p>“Show the patrol your amulet and speak to the scribe's spirit. At the altar, the final decision will be yours. You may entrust the artifact to me, but I cannot promise that others will not reach for it.”</p>"
+    /characters/2/name: "Rix"
+    /characters/2/name_accusative: "Rix"
+    /characters/2/descriptions/0/default: "<p>The goblin's smile is a business offer, not a promise of friendship.</p>"
+    /characters/2/onTalk/0/description: "<p>“The map isn't for sale. Take this parcel to Nala in Stranglethorn. Then you'll get the map, the amulet of peace, and fifty coins. Don't open the parcel; there's medicine inside.”</p>"
+    /characters/2/onTalk/0/responses/0/text: "Accept the parcel and promise to deliver it"
+    /characters/2/onTalk/0/responses/1/text: "Decline for now"
+    /characters/2/onTalk/1/description: "<p>“Nala is waiting by the milestone in Stranglethorn. No confirmation, no reward.”</p>"
+    /characters/2/onTalk/2/description: "<p>“The medicine arrived in time. I keep my word. The map, the amulet, and the coins are yours.”</p>"
+    /characters/2/onTalk/2/responses/0/text: "Collect your reward"
+    /characters/2/onTalk/3/description: "<p>“We're even. Don't lose the map. And if anyone in that temple offers you power for nothing, read the fine print.”</p>"
+    /characters/3/name: "Nala"
+    /characters/3/name_accusative: "Nala"
+    /characters/3/descriptions/0/default: "<p>The courier shelters a list of medicines for the wounded beneath her cloak. There are no faction banners on the list.</p>"
+    /characters/3/onTalk/0/description: "<p>“Rix's parcel? At last. The wounded on both sides need these medicines. Some people won't forgive me, but fever doesn't ask which faction you serve.”</p>"
+    /characters/3/onTalk/0/responses/0/text: "Hand over the medicine regardless of faction"
+    /characters/3/onTalk/0/responses/1/text: "Think it over a little longer"
+    /characters/3/onTalk/1/description: "<p>“I'm waiting for a sealed parcel from Rix. Bring it here and speak to me.”</p>"
+    /characters/3/onTalk/2/description: "<p>“Thank you. Confirmation is already on its way to Booty Bay. Rix will give you your reward.”</p>"
+    /characters/4/name: "Forsaken patrol"
+    /characters/4/name_accusative: "Forsaken patrol"
+    /characters/4/descriptions/0/default: "<p>The patrol captain has an old scar across her throat. Her spear guards the temple against the living and the dead alike.</p>"
+    /characters/4/onTalk/0/description: "<p>“That seal belonged to messengers of the truce. If you carry it in good faith, we will let you pass. You must open the gate yourself.”</p>"
+    /characters/4/onTalk/0/responses/0/text: "Show the amulet and request passage"
+    /characters/4/onTalk/0/responses/1/text: "Step away from the gate"
+    /characters/4/onTalk/1/description: "<p>“You will go no farther without a seal of truce. Rix the goblin is said to keep an amulet in Booty Bay.”</p>"
+    /characters/4/onTalk/2/description: "<p>“Our promise stands. Whatever you hear inside, don't believe it just because it speaks with your voice.”</p>"
+    /characters/5/name: "Scribe's spirit"
+    /characters/5/name_accusative: "scribe's spirit"
+    /characters/5/descriptions/0/default: "<p>Translucent fingers trace the gate's inscription. Every wrong answer extinguishes all the rings; you can try again.</p>"
+    /characters/5/onTalk/0/description: "<p>“The circle is complete. Now you must answer only to yourself.”</p>"
+    /characters/5/onTalk/1/description: "<p>“When water quenches fire and wind drives earth. Which element comes first?”</p>"
+    /characters/5/onTalk/1/responses/0/text: "Water"
+    /characters/5/onTalk/1/responses/1/text: "Fire"
+    /characters/5/onTalk/1/responses/2/text: "Wind"
+    /characters/5/onTalk/1/responses/3/text: "Earth"
+    /characters/5/onTalk/2/description: "<p>The first ring glows blue. “What does water quench?”</p>"
+    /characters/5/onTalk/2/responses/0/text: "Water"
+    /characters/5/onTalk/2/responses/1/text: "Fire"
+    /characters/5/onTalk/2/responses/2/text: "Wind"
+    /characters/5/onTalk/2/responses/3/text: "Earth"
+    /characters/5/onTalk/3/description: "<p>The second ring burns red. “What drives earth?”</p>"
+    /characters/5/onTalk/3/responses/0/text: "Water"
+    /characters/5/onTalk/3/responses/1/text: "Fire"
+    /characters/5/onTalk/3/responses/2/text: "Wind"
+    /characters/5/onTalk/3/responses/3/text: "Earth"
+    /characters/5/onTalk/4/description: "<p>The third ring trembles in the wind. “What remains at the end of the verse?”</p>"
+    /characters/5/onTalk/4/responses/0/text: "Water"
+    /characters/5/onTalk/4/responses/1/text: "Fire"
+    /characters/5/onTalk/4/responses/2/text: "Wind"
+    /characters/5/onTalk/4/responses/3/text: "Earth"
+    /characters/5/onTalk/5/description: "<p>The rings go dark. “The elements have their order. Read the inscription and speak to me again; you have lost nothing.”</p>"
+    /characters/5/onTalk/6/description: "<p>The final ring shines gold. The stone doors part. “The gate is open.”</p>"
+    /characters/6/name: "Zar'thalis's voice"
+    /characters/6/descriptions/0/default: "<p>The voice comes from the artifact. It offers an end to every war, but does not say who will survive them.</p>"
+    /characters/6/onTalk/0/description: |
+      <p>“Shatter the shard and lose the strength that could protect your people. Give it to Thrall
+      and the war over it will begin again. Accept me, and no ruler will be stronger than you.”</p>
+      <p>The four rings hold the demon captive. You can destroy the artifact, carry it away under their protection,
+      or break the rings. <strong>This choice is final.</strong></p>
+    /characters/6/onTalk/0/responses/0/text: "Destroy the artifact so no one can abuse it"
+    /characters/6/onTalk/0/responses/1/text: "Entrust the sealed artifact to Thrall"
+    /characters/6/onTalk/0/responses/2/text: "Break the rings and accept the demon's power"
+    /characters/6/onTalk/0/responses/3/text: "Leave for now and seek Thrall's advice"
+    /endings/0/descriptions/0/default: |
+      <h2>A Dawn Without Masters</h2>
+      <p>You strike the shard with a stone. Zar'thalis's voice breaks into a thousand unfamiliar screams,
+      and then there is silence. For the first time, the mist above the grove parts.</p>
+      <p>Thrall receives your report without a word. Azeroth has not lost its wars, but no one will decide them
+      with demonic power today. You remain a messenger who refused to become someone else's instrument.</p>
+      <p><em>The end · The artifact is destroyed.</em></p>
+    /endings/1/descriptions/0/default: |
+      <h2>The Burden of Trust</h2>
+      <p>You leave the rings intact and carry the shard out of the temple. Thrall seals it in a stone casket,
+      promising that it will never become a weapon of the Horde.</p>
+      <p>The demon remains bound. That evening, however, the first Alliance envoy arrives to demand the casket.
+      You saved today; tomorrow will need messengers just as brave.</p>
+      <p><em>The end · The artifact is in Thrall's care.</em></p>
+    /endings/2/descriptions/0/default: |
+      <h2>The Voice Behind Your Voice</h2>
+      <p>You break the silver rings. The shard dissolves in your palm, and pain gives way to intoxicating power.
+      For an instant, you see all of Azeroth's coastline and every army that might kneel before you.</p>
+      <p>Then you move your hand without choosing to. Zar'thalis laughs through your mouth.
+      You wanted to be your own master. You opened the door to someone else.</p>
+      <p><em>The end · The demon has found a new host.</em></p>
+    /layout/texts/eyebrow: "A messenger's chronicle"
+    /layout/texts/subtitle: "No oath can spare you the final choice."
+    /layout/texts/story: "Story and current location"
+    /layout/texts/log: "Event journal"
+    /layout/texts/logLabel: "Actions and conversations"
+    /layout/texts/actions: "Game actions"
+    /layout/texts/look: "Look around"
+    /layout/texts/characters: "People and voices"
+    /layout/texts/items: "Surroundings and equipment"
+    /layout/texts/use: "Use"
+    /layout/texts/take: "Take"
+    /layout/texts/drop: "Drop"
+    /layout/texts/go: "Travel onward"
+    /layout/texts/emptyLog: "Your actions and conversations appear here. Start by talking to Thrall."
+    /layout/texts/footer: "Shadows of Azeroth · A short adventure in the world of Warcraft · Use the travel journal to check your objective."

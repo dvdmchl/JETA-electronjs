@@ -77,7 +77,7 @@ describe('game-definition contract', () => {
     });
 
     test('template, resource indexes, and functional samples form a valid corpus', () => {
-        const files = ['resources/game_definition_template.yaml', 'resources/index_en.yaml', 'resources/index_cs.yaml', 'samples/test/Test.yaml', 'samples/Tux/Tux.yaml'];
+        const files = ['resources/game_definition_template.yaml', 'resources/index_en.yaml', 'resources/index_cs.yaml', 'samples/test/Test.yaml', 'samples/Tux/Tux.yaml', 'samples/stiny_azerothu/stiny_azerothu.yaml'];
         files.forEach(relativePath => {
             const {inputData} = parseGameFile(path.resolve(relativePath));
             expect(() => new GameData(prepareGameDefinition(inputData))).not.toThrow();

@@ -70,6 +70,8 @@ function createLanguageMenu(currentLanguage, store, win) {
 
 function createMenu(currentLanguage, store, win) {
     const encryptionActive = !!(win && win.webContents.encryption);
+    const game = win.webContents.gameInstance;
+    const gameLanguages = (game?.data.availableLanguages?.length || 0) > 1 ? game.data.availableLanguages : [];
     return Menu.buildFromTemplate([
         {
             label: i18next.t('menu.file'),
@@ -102,6 +104,20 @@ function createMenu(currentLanguage, store, win) {
                     }
                 },
                 {type: 'separator'},
+                {
+                    label: i18next.t('menu.gameLanguage'),
+                    id: 'gameLanguage',
+                    enabled: gameLanguages.length > 1,
+                    submenu: gameLanguages.map(language => ({
+                        label: new Intl.DisplayNames([currentLanguage], {type: 'language'}).of(language),
+                        type: 'radio',
+                        checked: game.data.language === language,
+                        click: () => {
+                            win.webContents.gameInstance.setLanguage(language);
+                            updateMenu(currentLanguage, store, win);
+                        }
+                    }))
+                },
                 {
                     label: i18next.t('menu.loadGameState'),
                     accelerator: 'Ctrl+L'

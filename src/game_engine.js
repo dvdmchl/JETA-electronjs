@@ -1,6 +1,7 @@
 const {ipcMain} = require('electron');
 const {sendDebugState} = require("./debug_window");
 const { LAYOUT_SECTIONS } = require('./layout_sections');
+const i18next = require('./i18n');
 
 ipcMain.on('game-action', (event, {action, param}) => {
     console.log(`Action received: ${action}, Parameter: ${param}`);
@@ -64,10 +65,46 @@ class GameEngine {
         this.win = win;
         this.endGame = false;
         this.activeDialogues = new Map();
+        this.introVisible = false;
+    }
+
+    t(key, values = {}) {
+        const language = this.data.language?.split('-')[0] === 'en' ? 'en' : 'cs';
+        return i18next.getFixedT(language)(`game.${key}`, values);
+    }
+
+    setLanguage(language) {
+        this.data.setLanguage(language);
+        const ended = this.data.getValue('game_end', false);
+        if (this.introVisible && !ended) {
+            this.start();
+        } else {
+            this.win.webContents.send('game-language', this.data.language, this.data.layoutTexts);
+            this.sendUpdate(this.data.title, 'game-title');
+        }
+        if (ended) {
+            this.sendUpdate(this.data.getEndDescription(), 'game-location');
+        } else {
+            if (!this.introVisible) this.look();
+            this.listCommands();
+            for (const [characterId, entryId] of this.activeDialogues) {
+                const character = this.data.getCharacterById(characterId);
+                const entry = this.data.getDialogueEntry(characterId, entryId);
+                if (!character?.visible || character.location !== this.data.player.location || !entry ||
+                    (entry.condition && !this.data.parseCondition(entry.condition))) continue;
+                const options = this.data.getDialogueOptions(characterId, entryId);
+                if (options.length) {
+                    this.sendUpdate(entry.description);
+                    this.sendUpdate(this.renderDialogueOptions(characterId, entryId, options));
+                }
+            }
+        }
     }
 
 
     start() {
+        this.introVisible = true;
+        this.win.webContents.send('game-language', this.data.language, this.data.layoutTexts);
         console.log("Starting game...");
         this.sendUpdate(`${this.data.title}`, 'game-title');
         const intro = (this.data.intro || []).map(page => page.page).filter(Boolean);
@@ -79,6 +116,7 @@ class GameEngine {
 
     // Vypíše popis aktuální lokace + viditelné věci a postavy
     look() {
+        this.introVisible = false;
         let data = this.getLookText();
         this.sendUpdate(data, 'game-location');
     }
@@ -86,12 +124,12 @@ class GameEngine {
     getLookText() {
         console.log("Looking around...");
         if (this.data.player === null) {
-            this.sendUpdate("There is no player character defined.");
+            this.sendUpdate(this.t('noPlayer'));
             return "";
         }
         const loc = this.data.getPlayerLocation();
         if (!loc) {
-            this.sendUpdate("Neznámá lokace.");
+            this.sendUpdate(this.t('unknownLocation'));
             return "";
         }
 
@@ -108,24 +146,24 @@ class GameEngine {
             foundItem = Object.values(this.data.characters).find(c => c.id === itemId);
         }
         if (!foundItem) {
-            this.sendUpdate("Takový předmět tu není.");
+            this.sendUpdate(this.t('missingItem'));
             return;
         }
 
         // Musí být viditelný
         if (foundItem.visible === false) {
-            this.sendUpdate("To nevidíš.");
+            this.sendUpdate(this.t('notVisible'));
             return;
         }
 
         // Musí být v aktuální lokaci nebo u hráče
         if (foundItem.owner !== this.data.player.location && foundItem.owner !== "player" && foundItem.location !== this.data.player.location) {
-            this.sendUpdate("Tady nic takového není.");
+            this.sendUpdate(this.t('notHere'));
             return;
         }
 
         const displayName = getAccusativeName(foundItem);
-        this.sendUpdate("Prozkoumáváš " + displayName + ".");
+        this.sendUpdate(this.t('examining', {name: displayName}));
 
         let descr = this.data.getDescription(foundItem);
         this.sendUpdate(descr,);
@@ -144,17 +182,17 @@ class GameEngine {
         const loc = this.data.getPlayerLocation();
 
         if (!loc) {
-            this.sendUpdate("Neznámá lokace.");
+            this.sendUpdate(this.t('unknownLocation'));
             return;
         }
         const conn = this.getAvailableConnections(loc)
             .find(c => c.direction.toLowerCase() === where.toLowerCase() || c.target.toLowerCase() === where.toLowerCase());
         if (!conn) {
-            this.sendUpdate("Tam se jít nedá.");
+            this.sendUpdate(this.t('cannotGo'));
             return;
         }
         // Změníme location
-        this.sendUpdate("Přesouváš se do " + conn.direction + ".");
+        this.sendUpdate(this.t('moving', {direction: conn.direction}));
         this.data.player.location = conn.target;
         this.look();
     }
@@ -163,24 +201,24 @@ class GameEngine {
         // Najdi item podle jména nebo id
         let found = Object.values(this.data.items).find(i => i.id.toLowerCase() === itemName.toLowerCase() || i.name.toLowerCase() === itemName.toLowerCase());
         if (!found) {
-            this.sendUpdate("Takový předmět tu není.");
+            this.sendUpdate(this.t('missingItem'));
             return;
         }
         // Musí být v aktuální lokaci
         if (found.owner !== this.data.player.location) {
-            this.sendUpdate("Tady nic takového neleží.");
+            this.sendUpdate(this.t('nothingToTake'));
             return;
         }
         const action = this.selectAction(found.onTake);
         // Immovable scenery may define an onTake response without changing ownership.
         if (!found.movable) {
             if (!this.executeAction(found.onTake, action)) {
-                this.sendUpdate("To vzít nejde.");
+                this.sendUpdate(this.t('cannotTake'));
             }
             return;
         }
         found.owner = "player";
-        this.sendUpdate("Vzal jsi to.");
+        this.sendUpdate(this.t('taken'));
         this.executeAction(found.onTake, action);
     }
 
@@ -190,13 +228,13 @@ class GameEngine {
             i => (i.id.toLowerCase() === itemName.toLowerCase() || i.name.toLowerCase() === itemName.toLowerCase()) && i.owner === "player"
         );
         if (!found) {
-            this.sendUpdate("Takový předmět u sebe nemáš.");
+            this.sendUpdate(this.t('notCarrying'));
             return;
         }
         const action = this.selectAction(found.onDrop);
         found.owner = this.data.player.location;
         if (!this.executeAction(found.onDrop, action)) {
-            this.sendUpdate("Položil jsi to.");
+            this.sendUpdate(this.t('dropped'));
         }
     }
 
@@ -204,16 +242,16 @@ class GameEngine {
         // Najdi item, ať už je kdekoliv, hlavně existenci
         let found = Object.values(this.data.items).find(i => i.id.toLowerCase() === itemId.toLowerCase());
         if (!found) {
-            this.sendUpdate("Takový předmět neznám.");
+            this.sendUpdate(this.t('unknownItem'));
             return;
         }
         // Koukni, jestli je definovaný onUse
         if (!found.onUse) {
-            this.sendUpdate("Nenapadá mě, jak to použít.");
+            this.sendUpdate(this.t('cannotUse'));
             return;
         }
         if (!this.executeAction(found.onUse)) {
-            this.sendUpdate("Nic se nestalo.");
+            this.sendUpdate(this.t('nothingHappened'));
         }
     }
 
@@ -238,12 +276,12 @@ class GameEngine {
     talk(characterIdentifier) {
         const ch = this.findCharacter(characterIdentifier);
         if (!ch) {
-            this.sendUpdate("Takovou postavu tu nevidím.");
+            this.sendUpdate(this.t('missingCharacter'));
             return;
         }
 
         if (!ch.onTalk || !ch.onTalk.length) {
-            this.sendUpdate("Tahle postava nemá co říct.");
+            this.sendUpdate(this.t('nothingToSay'));
             return;
         }
 
@@ -277,44 +315,44 @@ class GameEngine {
         }
 
         if (!spoke) {
-            this.sendUpdate("Nepodařilo se navázat rozhovor.");
+            this.sendUpdate(this.t('cannotTalk'));
         }
     }
 
     handleDialogChoice(payload) {
         if (!payload || typeof payload !== 'object') {
-            this.sendUpdate("Tahle odpověď není dostupná.");
+            this.sendUpdate(this.t('unavailableChoice'));
             return;
         }
 
         const {characterId, choiceId, entryId} = payload;
         const character = this.data.getCharacterById(characterId) || this.findCharacter(characterId);
         if (!character) {
-            this.sendUpdate("Takovou postavu tu nevidím.");
+            this.sendUpdate(this.t('missingCharacter'));
             return;
         }
 
         const currentEntryId = entryId || this.activeDialogues.get(character.id);
         if (!currentEntryId) {
-            this.sendUpdate("Žádný rozhovor není aktivní.");
+            this.sendUpdate(this.t('noDialogue'));
             return;
         }
 
         const entry = this.data.getDialogueEntry(character.id, currentEntryId);
         if (!entry || !entry.responses) {
             this.activeDialogues.delete(character.id);
-            this.sendUpdate("Tahle replika není dostupná.");
+            this.sendUpdate(this.t('unavailableEntry'));
             return;
         }
 
         const response = entry.responses.find(r => r.id === choiceId);
         if (!response) {
-            this.sendUpdate("Takovou odpověď nemáš.");
+            this.sendUpdate(this.t('unknownChoice'));
             return;
         }
 
         if (response.condition && !this.data.parseCondition(response.condition)) {
-            this.sendUpdate("Tahle odpověď není dostupná.");
+            this.sendUpdate(this.t('unavailableChoice'));
             return;
         }
 
@@ -335,7 +373,7 @@ class GameEngine {
                 }
                 return;
             }
-            this.sendUpdate("Chybí navazující replika v rozhovoru.");
+            this.sendUpdate(this.t('missingNext'));
         }
 
         this.activeDialogues.delete(character.id);
@@ -414,42 +452,43 @@ class GameEngine {
     }
 
     listCommands() {
+        const t = this.t.bind(this);
         // add possible commands
 
         const loc = this.data.getPlayerLocation();
 
         // look
-        let lookHref = '<a href="#" class="game-action" data-action="look">rozhlédnout se</a>';
+        let lookHref = `<a href="#" class="game-action" data-action="look">${t('look')}</a>`;
 
         // talk to
         let charactersInLoc = Object.values(this.data.characters)
             .filter(c => c.id !== 'player' && c.location === loc.id && c.visible);
-        let talkHrefRow = createTalkHrefRow(charactersInLoc);
+        let talkHrefRow = createTalkHrefRow(charactersInLoc, t);
 
         // see
         let itemsInLoc = Object.values(this.data.items)
             .filter(i => i.owner === loc.id && i.visible);
         let itemsInInventory = Object.values(this.data.items)
             .filter(i => i.owner === "player" && i.visible);
-        let itemsHrefRow = createItemsHrefRow(itemsInLoc, itemsInInventory);
+        let itemsHrefRow = createItemsHrefRow(itemsInLoc, itemsInInventory, t);
 
         // take
         let itemsInLocAndTakeable = itemsInLoc.filter(i => i.movable || this.selectAction(i.onTake));
-        let takeHrefRow = createTakeHrefRow(itemsInLocAndTakeable);
+        let takeHrefRow = createTakeHrefRow(itemsInLocAndTakeable, t);
 
         // use
         let itemsForLocAndInventory = Object.values(this.data.items)
             .filter(i => (i.owner === loc.id || i.owner === "player") && i.visible);
-        let useHrefRow = createUseHrefRow(itemsForLocAndInventory);
+        let useHrefRow = createUseHrefRow(itemsForLocAndInventory, t);
 
         // drop
         let itemsInInventoryAndDropable = Object.values(this.data.items)
             .filter(i => (i.owner === "player") && i.movable && i.visible);
-        let dropHrefRow = createDropHrefRow(itemsInInventoryAndDropable);
+        let dropHrefRow = createDropHrefRow(itemsInInventoryAndDropable, t);
 
         // go
         let connectionsForLoc = this.getAvailableConnections(loc);
-        let goHrefRow = createDirectionsHrefRow(connectionsForLoc, this.data.locations);
+        let goHrefRow = createDirectionsHrefRow(connectionsForLoc, this.data.locations, t);
 
         this.sendUpdate(lookHref, 'game-commands');
         this.sendUpdate(talkHrefRow, 'game-characters');
@@ -519,7 +558,7 @@ function escapeHtml(value) {
         .replace(/'/g, '&#39;');
 }
 
-function createTalkHrefRow(charactersInLoc) {
+function createTalkHrefRow(charactersInLoc, t) {
     if (!charactersInLoc || charactersInLoc.length === 0) return "";
     let seeHrefRow = "";
     let talkHrefRow = "";
@@ -530,10 +569,10 @@ function createTalkHrefRow(charactersInLoc) {
         if (talkHrefRow !== "") talkHrefRow += " | ";
         talkHrefRow += `<a href="#" class="game-action" data-action="talk" data-param="${encodeDataAttribute(character.id)}">${escapeHtml(displayName)}</a>`;
     });
-    return '<span>Prozkoumat:</span>' + seeHrefRow + '<br><span>Oslovit: </span>' + talkHrefRow;
+    return `<span>${t('examine')} </span>` + seeHrefRow + `<br><span>${t('talk')} </span>` + talkHrefRow;
 }
 
-function createItemsHrefRow(items, itemsInInventory) {
+function createItemsHrefRow(items, itemsInInventory, t) {
     if ((!items || items.length === 0) && (!itemsInInventory || itemsInInventory.length === 0)) return "";
     let itemsHrefRow = "";
     items.forEach(item => {
@@ -541,16 +580,16 @@ function createItemsHrefRow(items, itemsInInventory) {
         const displayName = getAccusativeName(item);
         itemsHrefRow += `<a href="#" class="game-action" data-action="see" data-param="${encodeDataAttribute(item.id)}">${escapeHtml(displayName)}</a>`;
     });
-    itemsHrefRow += " Inventář: ";
+    itemsHrefRow += ` ${t('inventory')} `;
     itemsInInventory.forEach(item => {
         if (itemsHrefRow !== "") itemsHrefRow += " | ";
         const displayName = getAccusativeName(item);
         itemsHrefRow += `<a href="#" class="game-action" data-action="see" data-param="${encodeDataAttribute(item.id)}">${escapeHtml(displayName)}</a>`;
     });
-    return '<span>Prozkoumat: </span>' + itemsHrefRow;
+    return `<span>${t('examine')} </span>` + itemsHrefRow;
 }
 
-function createUseHrefRow(itemsForLocAndInventory) {
+function createUseHrefRow(itemsForLocAndInventory, t) {
     if (!itemsForLocAndInventory || itemsForLocAndInventory.length === 0) return "";
     let useHrefRow = "";
     itemsForLocAndInventory.forEach(item => {
@@ -558,10 +597,10 @@ function createUseHrefRow(itemsForLocAndInventory) {
         const displayName = getAccusativeName(item);
         useHrefRow += `<a href="#" class="game-action" data-action="use" data-param="${encodeDataAttribute(item.id)}">${escapeHtml(displayName)}</a>`;
     });
-    return '<span>Použít: </span>' + useHrefRow;
+    return `<span>${t('use')} </span>` + useHrefRow;
 }
 
-function createTakeHrefRow(items) {
+function createTakeHrefRow(items, t) {
     if (!items || items.length === 0) return "";
     let takeHrefRow = "";
     items.forEach(item => {
@@ -569,10 +608,10 @@ function createTakeHrefRow(items) {
         const displayName = getAccusativeName(item);
         takeHrefRow += `<a href="#" class="game-action" data-action="take" data-param="${encodeDataAttribute(item.id)}">${escapeHtml(displayName)}</a>`;
     });
-    return '<span>Vzít: </span>' + takeHrefRow;
+    return `<span>${t('take')} </span>` + takeHrefRow;
 }
 
-function createDropHrefRow(items) {
+function createDropHrefRow(items, t) {
     if (!items || items.length === 0) return "";
     let dropHrefRow = "";
     items.forEach(item => {
@@ -580,10 +619,10 @@ function createDropHrefRow(items) {
         const displayName = getAccusativeName(item);
         dropHrefRow += `<a href="#" class="game-action" data-action="drop" data-param="${encodeDataAttribute(item.id)}">${escapeHtml(displayName)}</a>`;
     });
-    return '<span>Položit: </span>' + dropHrefRow;
+    return `<span>${t('drop')} </span>` + dropHrefRow;
 }
 
-function createDirectionsHrefRow(directions, locations) {
+function createDirectionsHrefRow(directions, locations, t) {
     if (!directions || directions.length === 0) return "";
     let locationsHrefRow = "";
     directions.forEach(direction => {
@@ -591,7 +630,7 @@ function createDirectionsHrefRow(directions, locations) {
         if (locationsHrefRow !== "") locationsHrefRow += " | ";
         locationsHrefRow += `<a href="#" class="game-action" data-action="go" data-param="${encodeDataAttribute(locId)}">${escapeHtml(direction.direction)}</a>`;
     });
-    return '<span>Jít: </span>' + locationsHrefRow;
+    return `<span>${t('go')} </span>` + locationsHrefRow;
 }
 
 

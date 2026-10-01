@@ -1,0 +1,86 @@
+<div class="azeroth">
+    <style>
+        body:has(.azeroth) { background: #111b1a; height: auto; overflow: visible; }
+        body:has(.azeroth) #container > .row { margin-left: 0; margin-right: 0; }
+        body:has(.azeroth) #container > .text-center { color: #c1bcaf; }
+        .azeroth {
+            --ink: #eee8d9;
+            --muted: #c1bcaf;
+            --gold: #e3be79;
+            --edge: #4a4e47;
+            color: var(--ink);
+            background: radial-gradient(ellipse at 5% 0%, #263d37 0%, transparent 55%), #111b1a;
+            padding: clamp(16px, 3vw, 40px);
+            min-height: 100vh;
+            font: 16px/1.7 "Segoe UI", sans-serif;
+        }
+        .azeroth * { box-sizing: border-box; }
+        .azeroth .shell { max-width: 1320px; margin: 0 auto; }
+        .azeroth .masthead { border-bottom: 1px solid var(--edge); padding-bottom: 22px; margin-bottom: 28px; }
+        .azeroth .eyebrow { color: var(--gold); font-size: 12px; letter-spacing: .2em; text-transform: uppercase; margin: 0 0 8px; }
+        .azeroth #game-title { font-family: Georgia, serif; font-size: clamp(32px, 5vw, 52px); font-weight: 400; margin: 0; }
+        .azeroth .subtitle { color: var(--muted); margin: 8px 0 0; }
+        .azeroth .columns { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(280px, 1fr); gap: 24px; align-items: start; }
+        .azeroth .story, .azeroth .actions { min-width: 0; }
+        .azeroth .actions .card:has(> div:empty) { display: none; }
+        .azeroth .columns:has(#game-commands[aria-hidden="true"]) { grid-template-columns: 1fr; }
+        .azeroth .card { background: #182523; color: var(--ink); border: 1px solid var(--edge); border-radius: 6px; padding: 20px; margin-bottom: 16px; }
+        .azeroth .scene { padding: clamp(20px, 3vw, 36px); border-top: 2px solid var(--gold); }
+        .azeroth h2 { font: 400 29px/1.3 Georgia, serif; color: var(--gold); margin: 0 0 18px; }
+        .azeroth h3 { font: 400 22px/1.4 Georgia, serif; color: var(--gold); margin: 0 0 12px; }
+        .azeroth p { margin: 0 0 16px; }
+        .azeroth p:last-child { margin-bottom: 0; }
+        .azeroth hr { color: var(--edge); margin: 24px 0; opacity: 1; }
+        .azeroth a { color: #f4d295; text-underline-offset: 4px; overflow-wrap: anywhere; }
+        .azeroth a:hover { color: #fff5de; }
+        .azeroth a:focus-visible { outline: 2px solid #f4d295; outline-offset: 3px; border-radius: 2px; }
+        .azeroth .game-action { display: inline-block; padding: 5px 2px; }
+        .azeroth .dialog-option { display: block; background: #233833; border: 1px solid #667664; padding: 10px 14px; border-radius: 4px; margin: 8px 0; text-decoration: none; }
+        .azeroth .dialogue-options { font-size: 0; }
+        .azeroth .dialogue-options a { font-size: 16px; }
+        .azeroth .dialog-option:not(.game-action) { opacity: .6; cursor: default; }
+        .azeroth .dialogue-choice { color: var(--gold); border-left: 2px solid var(--gold); padding-left: 14px; }
+        .azeroth .hint { color: var(--muted); font-size: 14px; margin-top: 16px; }
+        .azeroth #game-output { max-height: 440px; overflow-y: auto; padding-right: 12px; scrollbar-color: #718478 #182523; }
+        .azeroth #game-output > div { padding: 8px 0; border-bottom: 1px solid #34433d; overflow-wrap: anywhere; }
+        .azeroth #game-output > div:last-child { border-bottom: 0; }
+        .azeroth #game-output:empty::before { content: attr(data-empty-text); color: var(--muted); }
+        .azeroth .footer { color: var(--muted); font-size: 13px; border-top: 1px solid var(--edge); padding-top: 16px; margin-top: 16px; }
+        @media (max-width: 850px) {
+            .azeroth .columns { grid-template-columns: 1fr; }
+            .azeroth .actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+            .azeroth .actions .card { margin-bottom: 0; }
+        }
+        @media (max-width: 520px) {
+            .azeroth .actions { grid-template-columns: 1fr; }
+            .azeroth .card { padding: 18px; }
+            .azeroth #game-output { max-height: 360px; }
+        }
+    </style>
+    <div class="shell">
+        <header class="masthead">
+            <p class="eyebrow" data-game-text="eyebrow"></p>
+            <h1 id="game-title"></h1>
+            <p class="subtitle" data-game-text="subtitle"></p>
+        </header>
+        <div class="columns">
+            <main class="story">
+                <section class="card scene" aria-label="Příběh a aktuální místo" data-game-label="story"><div id="game-location"></div></section>
+                <section class="card" aria-label="Deník událostí" data-game-label="log">
+                    <h3 id="game-log-title" data-game-text="log"></h3>
+                    <div id="game-output" role="log" aria-label="Činy a rozhovory" data-game-label="logLabel" data-game-empty="emptyLog" tabindex="0"></div>
+                </section>
+            </main>
+            <aside class="actions" aria-label="Herní akce" data-game-label="actions">
+                <section class="card"><h3 data-game-text="look"></h3><div id="game-commands"></div></section>
+                <section class="card"><h3 data-game-text="characters"></h3><div id="game-characters"></div></section>
+                <section class="card"><h3 data-game-text="items"></h3><div id="game-items"></div></section>
+                <section class="card"><h3 data-game-text="use"></h3><div id="game-use"></div></section>
+                <section class="card"><h3 data-game-text="take"></h3><div id="game-take"></div></section>
+                <section class="card"><h3 data-game-text="drop"></h3><div id="game-drop"></div></section>
+                <section class="card"><h3 data-game-text="go"></h3><div id="game-go"></div></section>
+            </aside>
+        </div>
+        <footer class="footer" data-game-text="footer"></footer>
+    </div>
+</div>

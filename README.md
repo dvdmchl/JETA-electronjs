@@ -42,6 +42,16 @@ guidance. Codex reads that file directly; Gemini CLI reads [`GEMINI.md`](GEMINI.
 which imports the same guidance so both tools follow one source of truth. In Gemini
 CLI, use `/memory show` after opening the repository to verify the loaded context.
 
+## Releases
+
+Use the project AI skill [`jeta-release`](.agents/skills/jeta-release/SKILL.md)
+by asking Codex to use `$jeta-release` to release a specified version. It covers
+version synchronization, tests, CI, tags, and GitHub publication.
+
+Releases currently provide source archives, with no bundled installers. Download
+and extract a release archive, install Node.js 20 LTS, then run `npm ci` and
+`npm start` from the extracted directory.
+
 ## Game Definition Files
 
 Games are described in YAML. Read the complete

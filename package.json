@@ -1,6 +1,6 @@
 {
   "name": "jeta_electronjs_app",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Javascript Engine for Text Adventures",
   "main": "main.js",
   "scripts": {

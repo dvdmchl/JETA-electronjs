@@ -10,6 +10,7 @@ $installedJeta = Get-ChildItem 'HKCU:\Software\Microsoft\Windows\CurrentVersion\
 if ($installedJeta) { throw 'Use a clean test account: JETA is already installed for this user.' }
 $testDirectory = Join-Path ([System.IO.Path]::GetTempPath()) ('jeta-install-' + [guid]::NewGuid())
 $application = $null
+$expectedWindowTitle = 'Jeta - index.yaml'
 
 try {
     $setup = Start-Process -FilePath $installer -ArgumentList @('/S', "/D=$testDirectory") -WindowStyle Hidden -Wait -PassThru
@@ -30,12 +31,12 @@ try {
         $application.Refresh()
         if ($application.HasExited) { throw "Installed application exited with $($application.ExitCode)." }
         # The title is updated only after the bundled index game loads successfully.
-        if ($application.MainWindowTitle -match '^Jeta - index_(en|cs)\.yaml$') {
+        if ($application.MainWindowTitle -eq $expectedWindowTitle) {
             Write-Output 'Installed JETA started and loaded its bundled index game.'
             break
         }
     } while ([DateTime]::UtcNow -lt $deadline)
-    if ($application.MainWindowTitle -notmatch '^Jeta - index_(en|cs)\.yaml$') {
+    if ($application.MainWindowTitle -ne $expectedWindowTitle) {
         throw 'Installed JETA did not load its index game within 30 seconds.'
     }
 } finally {

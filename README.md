@@ -2,104 +2,151 @@
 
 **Javascript Engine for Text Adventures**
 
-## Overview
+Play and create text adventures with clickable choices, illustrated locations,
+branching conversations, and custom layouts. JETA is an Electron desktop app;
+stories live in readable YAML or JSON files.
 
-JETA (Javascript Engine for Text Adventures) is a powerful and flexible engine for
-creating text-based adventure games using JavaScript. It provides a framework for
-building interactive fiction with ease.
+**[Download JETA 1.1.0 for Windows x64](https://github.com/dvdmchl/JETA-electronjs/releases/download/v1.1.0/JETA-1.1.0-Setup-x64.exe)**
+· [Release notes](https://github.com/dvdmchl/JETA-electronjs/releases/tag/v1.1.0)
+· [Game-authoring guide](docs/GAME_AUTHORING.md)
 
-## Features
+![JETA's English welcome screen with instructions for opening or creating a game and a playable button quest](docs/screenshots/welcome-en.png)
 
-On startup, JETA opens a small welcome adventure in the application's selected
-language (English or Czech). It explains how to open a game with **File > Open**
-(`Ctrl+O`) or create one with **Edit > New Game Definition** (`Ctrl+N`). You can
-also examine and press a suspicious button to try the engine before opening a game.
-The welcome screen uses one game definition, a Czech translation map, and a shared
-responsive layout in `resources/index.yaml` and `resources/layout_welcome.html`.
+*The welcome adventure introduces the engine and explains your next step. It starts
+in the application's selected language: English or Czech.*
 
-- Simple and intuitive API
-- Support for complex game logic
-- Easily extendable with custom modules
-- Cross-platform compatibility
+## Start playing
 
-## Installation
+### Windows
 
-To install and run JETA, use npm:
+1. Download and run the Windows x64 installer above.
+2. Launch JETA from the Start menu.
+3. Choose **File > Open** (`Ctrl+O`) and select a game definition.
 
-```sh
-npm install
-npm run start
-```
+Electron and runtime dependencies are included; you do not need Node.js. Sample
+games are in the installation's `samples` folder. Copy a sample's entire folder
+to a writable location before editing it, keeping its layout and images beside
+the definition.
 
-## Development
+The installer is unsigned, so Windows may display an unknown-publisher or
+SmartScreen prompt. Releases include a SHA-256 checksum and build provenance JSON.
+Uninstall through Windows Settings. Automatic application updates are not configured.
 
-Use Node.js 20 LTS (see `.nvmrc`). Electron 33's installer is not compatible with
-Node.js 24 in this project. Install the locked dependencies and run the source test
-suite:
+### From source
+
+Clone this repository or extract a [source archive from a release](https://github.com/dvdmchl/JETA-electronjs/releases).
+Install **Node.js 20 LTS** (see [.nvmrc](.nvmrc)), then run:
 
 ```sh
 npm ci
-npm test
+npm start
 ```
 
-Use `npm run test:ci` for the deterministic test command used by GitHub Actions.
+Use the locked dependencies with `npm ci`. This project's Electron installation
+is not compatible with Node.js 24. Windows x64 is the packaged and installer-tested
+platform; Linux and macOS currently have no packaged installers.
 
-AI-assisted contributions use [`AGENTS.md`](AGENTS.md) as the canonical repository
-guidance. Codex reads that file directly; Gemini CLI reads [`GEMINI.md`](GEMINI.md),
-which imports the same guidance so both tools follow one source of truth. In Gemini
-CLI, use `/memory show` after opening the repository to verify the loaded context.
+## What you can build
 
-## Releases
+- Locations connected by routes, including paths unlocked by story conditions.
+- Objects to examine, take, use, and drop, with an inventory and contextual actions.
+- Characters with branching conversations and clickable responses.
+- Variables, conditions, assignments, and multiple endings.
+- Local images and custom HTML/CSS layouts with configurable section visibility.
+- Optional game translations that switch text while preserving progress.
+- Serializable game state and optional encrypted game files.
 
-Use the project AI skill [`jeta-release`](.agents/skills/jeta-release/SKILL.md)
-by asking Codex to use `$jeta-release` to release a specified version. It covers
-version synchronization, tests, CI, tags, and GitHub publication.
+The engine validates game definitions and checks IDs and references before play.
+The [authoring guide](docs/GAME_AUTHORING.md) describes supported mechanics,
+narrative markup, game-folder assets, translation maps, and validation checks.
 
-Windows x64 users can download `JETA-<version>-Setup-x64.exe` from the
-[GitHub releases](https://github.com/dvdmchl/JETA-electronjs/releases). The installer
-bundles Electron and all runtime dependencies, installs for the current user,
-and adds a Start menu shortcut. Node.js is not required. Sample games are in the
-installation's `samples` folder; copy a sample to a writable folder before editing.
-Uninstall JETA through Windows Settings. Installers are currently unsigned, so
-Windows may show an unknown-publisher or SmartScreen prompt. Automatic application
-updates are not configured.
+## Try the included adventures
 
-Source archives remain available for other platforms and development. Extract
-an archive, install Node.js 20 LTS, then run `npm ci` and `npm start`.
+Open these definitions with **File > Open** (`Ctrl+O`):
 
-To build the Windows installer locally on Windows with Node.js 20, run `npm ci`
-and `npm run dist:win`. Output is written to `out/release/`. Verify installation,
-startup, and uninstallation with:
+| Adventure | Language | What to expect |
+| --- | --- | --- |
+| [Tux](samples/Tux/Tux.yaml) | Czech | A penguin's nighttime zoo adventure, puzzles, and illustrated backgrounds for eleven locations. |
+| [Shadows of Azeroth / Stíny Azerothu](samples/stiny_azerothu/stiny_azerothu.yaml) | Czech and English | A delivery quest, branching dialogue, an elemental rune puzzle, and three endings. |
+| [Test](samples/test/Test.yaml) | Czech | A small demonstration of objects, actions, dialogue, conditions, images, and a custom layout. |
+
+![Tux in the moonlit Winter Kingdom with a local illustrated background, readable story panel, action cards, and a conversation in the journal](docs/screenshots/tux-cs.png)
+
+*Tux's custom layout keeps the story readable over its nighttime zoo illustrations.
+See the [Tux sample guide](samples/Tux/README.md) for its layout and assets.*
+
+![Shadows of Azeroth in English, showing Booty Bay, a conversation with Rix, two response choices, inventory actions, and travel routes](docs/screenshots/shadows-of-azeroth-en.png)
+
+*Shadows of Azeroth demonstrates branching dialogue and a shared Czech/English
+story. Its [sample guide](samples/stiny_azerothu/README.md) includes a walkthrough.*
+
+### Application language and game language
+
+**Edit > Language** selects the application language. The welcome adventure uses
+that setting when JETA starts. Each opened game starts in the language declared
+by its definition.
+
+For games with translations, **File > Game language** switches the current story
+without restarting it. Location, inventory, decisions, and active dialogue are
+preserved. Existing journal entries keep the language in which they were written.
+Game text and application menus are independent.
+
+## Create your own adventure
+
+Choose **Edit > New Game Definition** (`Ctrl+N`) or copy the
+[game definition template](resources/game_definition_template.yaml) into a new
+folder. Keep any images and custom layout in that folder, open the definition in
+JETA, and play through every route as you edit. Saving an opened definition reloads
+it as a fresh game.
+
+Read the [game-authoring guide](docs/GAME_AUTHORING.md) before creating or generating
+a game. It includes an AI authoring workflow and a play-test checklist. The
+[JSON schema](resources/game_definition_schema.json) defines the supported shape;
+the loader also checks unique IDs and references. Schema validation and play-testing
+are both necessary.
+
+## Development
+
+Use Node.js 20 and install from the lockfile:
+
+```sh
+npm ci
+npm run test:ci
+npm start
+```
+
+`npm test` runs Jest; `npm run test:ci` runs the same suite sequentially for CI.
+Tests live in `src/test/`; `out/` is generated output.
+
+[AGENTS.md](AGENTS.md) is the canonical development guidance for coding agents.
+[GEMINI.md](GEMINI.md) imports it so Codex and Gemini follow the same rules.
+The [dependency review](docs/DEPENDENCY_REVIEW.md) records the 1.1.0 dependency
+refresh and remaining security findings; updating within existing version ranges
+does not resolve every advisory or replace the planned runtime/toolchain migration.
+
+## Building and publishing releases
+
+On Windows with Node.js 20, build the x64 NSIS installer with:
+
+```sh
+npm ci
+npm run dist:win
+```
+
+Output is written to `out/release/`. In a clean test account, verify installation,
+startup, and uninstallation using the version from `package.json`:
 
 ```powershell
-./src/test/windows-installer-smoke.ps1 -InstallerPath ./out/release/JETA-1.0.0-Setup-x64.exe
+$version = (Get-Content package.json -Raw | ConvertFrom-Json).version
+./src/test/windows-installer-smoke.ps1 -InstallerPath "./out/release/JETA-$version-Setup-x64.exe"
 ```
 
 The **Windows installer** GitHub Actions workflow builds and tests newly published
-releases, then attaches the installer, SHA-256 checksum, and build provenance JSON.
-For an existing release, run the workflow manually on the desired build commit
-with `release_tag` set to its tag. The package version must match; existing assets
-are never overwritten. When supplementing an older tag with packaging changes,
-document the build commit in the release notes as well as the provenance JSON.
+releases, then attaches the installer, checksum, and provenance. For an existing
+release, it can be dispatched with `release_tag`; the package version must match,
+and existing assets are never overwritten. Supplemental packaging builds must
+identify their exact build commit in the release notes and provenance.
 
-## Game Definition Files
-
-Games are described in YAML. Read the complete
-[game-authoring guide](docs/GAME_AUTHORING.md) before creating or generating one.
-It documents the runtime contract, conditions, assignments, actions, branching
-dialogue, endings, assets, custom layouts, validation, and a dedicated AI workflow.
-
-Start from `resources/game_definition_template.yaml`. The most complete working
-example is `samples/test/Test.yaml`; its neighboring assets and `test_layout.html`
-show how a game can be packaged in one folder. The JSON schema at
-`resources/game_definition_schema.json` describes every supported runtime field.
-Loading also checks unique IDs and references; validation and play-testing are both
-part of authoring.
-
-For a complete Czech/English adventure with a dark fantasy layout, open
-`samples/stiny_azerothu/stiny_azerothu.yaml`. It includes a delivery quest, branching
-dialogue, an elemental rune puzzle, and three endings. See the
-[sample guide](samples/stiny_azerothu/README.md) for scope and a spoiler walkthrough.
-Use **File > Game language** to switch game text while keeping your progress.
-Game translations are optional and independent of **Edit > Language**, which
-selects the application language. See the authoring guide for text-only translations.
+Use the project [jeta-release skill](.agents/skills/jeta-release/SKILL.md) for version
+synchronization, tests, installer verification, CI, annotated tags, and publication.
+Ask Codex to use `$jeta-release` to release a version.

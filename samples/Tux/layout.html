@@ -1,0 +1,115 @@
+<div class="tux">
+    <style>
+        body:has(.tux) { background: #101e2b; }
+        body:has(.tux) #container { margin: 0 !important; }
+        body:has(.tux) #container > .row { display: none; }
+        body:has(.tux) #container > .text-center { color: #b6c4cd; font-size: 11px; }
+        .tux {
+            --ink: #f2f0e8;
+            --muted: #bfccd3;
+            --amber: #f4cd89;
+            --edge: #839da536;
+            isolation: isolate;
+            position: relative;
+            min-height: 100vh;
+            padding: clamp(20px, 4vw, 56px);
+            color: var(--ink);
+            font: 16px/1.75 "Segoe UI", sans-serif;
+        }
+        .tux * { box-sizing: border-box; }
+        .tux .scene-backdrop { position: fixed; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; z-index: -2; }
+        .tux::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: linear-gradient(90deg, #0b1a29d9, #101e2b99), linear-gradient(0deg, #0b1a29db, transparent 75%); }
+        .tux .shell { max-width: 1360px; margin: auto; }
+        .tux .masthead { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding-bottom: 25px; margin-bottom: 30px; border-bottom: 1px solid var(--edge); }
+        .tux .eyebrow, .tux .section-label { color: var(--amber); font-size: 11px; letter-spacing: .2em; text-transform: uppercase; margin: 0 0 8px; }
+        .tux #game-title { font: 700 clamp(40px, 6vw, 66px)/1.1 Georgia, serif; letter-spacing: .04em; margin: 0; }
+        .tux .subtitle { color: var(--muted); margin: 10px 0 0; font-size: 14px; }
+        .tux .mission { max-width: 250px; padding-left: 20px; border-left: 2px solid var(--amber); color: var(--muted); font-size: 14px; }
+        .tux .mission strong { display: block; color: var(--ink); font-weight: 600; }
+        .tux .columns { display: grid; grid-template-columns: minmax(0, 1fr) 350px; gap: 26px; align-items: start; }
+        .tux .story, .tux .actions { min-width: 0; }
+        .tux .card { background: #101f30ed; border: 1px solid var(--edge); border-radius: 16px; color: var(--ink); padding: 22px; margin-bottom: 16px; box-shadow: 0 8px 30px #07111b24; }
+        .tux .scene { padding: clamp(24px, 4vw, 46px); background: #102132e8; border-top: 2px solid var(--amber); }
+        .tux #game-location { font: 18px/1.85 Georgia, "Times New Roman", serif; overflow-wrap: anywhere; }
+        .tux #game-location h2 { color: var(--ink); font: 400 clamp(27px, 3vw, 37px)/1.25 Georgia, serif; margin: 0 0 26px; }
+        .tux h3 { font: 600 16px/1.4 "Segoe UI", sans-serif; margin: 0 0 14px; }
+        .tux p { margin: 0 0 18px; }
+        .tux p:last-child { margin-bottom: 0; }
+        .tux hr { color: var(--edge); opacity: 1; margin: 30px 0; }
+        .tux #game-location img:not(.scene-backdrop) { display: block; max-width: 100%; max-height: 180px; object-fit: contain; margin: 0 auto 26px; border-radius: 10px; }
+        .tux a { color: var(--amber); text-decoration: none; overflow-wrap: anywhere; }
+        .tux .game-action { display: inline-block; padding: 7px 9px; border: 1px solid #94b4c333; border-radius: 7px; background: #26405580; margin: 3px 0; font-size: 14px; line-height: 1.5; }
+        .tux a:hover { color: #fff2d4; background: #35556b; border-color: #f4cd8980; }
+        .tux a:focus-visible { outline: 2px solid var(--amber); outline-offset: 4px; }
+        .tux .actions { font-size: 12px; color: var(--muted); }
+        .tux .actions span { display: block; color: var(--muted); font-size: 12px; margin-top: 8px; }
+        .tux .actions .card:has(> div:empty) { display: none; }
+        .tux .travel { border-color: #f4cd8959; }
+        .tux #game-go { font-size: 0; }
+        .tux #game-go a { display: block; padding: 10px 12px; }
+        .tux .log-header { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+        .tux .log-header h3 { color: var(--amber); }
+        .tux .log-note { color: var(--muted); font-size: 12px; }
+        .tux #game-output { max-height: 420px; overflow-y: auto; padding-right: 10px; scrollbar-color: #617d8b #102132; overflow-wrap: anywhere; }
+        .tux #game-output > div { padding: 16px 0; border-bottom: 1px solid var(--edge); }
+        .tux #game-output > div:last-child { border: 0; }
+        .tux #game-output:empty::before { content: attr(data-empty-text); color: var(--muted); font-size: 14px; }
+        .tux .dialog-option { display: block; padding: 12px 16px; margin-top: 8px; }
+        .tux .game-action-disabled { color: var(--muted); opacity: .65; cursor: default; }
+        .tux .dialogue-choice { color: var(--amber); border-left: 2px solid var(--amber); padding-left: 16px; }
+        .tux .footer { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--edge); color: var(--muted); font-size: 12px; }
+        .tux .columns:has(#game-commands[aria-hidden="true"]) { grid-template-columns: 1fr; }
+        .tux:has(#game-commands[aria-hidden="true"]) .mission,
+        .tux:has(#game-commands[aria-hidden="true"]) .scene > .section-label { display: none; }
+        @media (max-width: 1000px) {
+            .tux .columns { grid-template-columns: minmax(0, 1fr) 290px; gap: 18px; }
+            .tux .card { padding: 20px; }
+        }
+        @media (max-width: 780px) {
+            .tux .columns { grid-template-columns: 1fr; }
+            .tux .actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+            .tux .actions .card { margin: 0; }
+            .tux .travel { grid-column: 1 / -1; }
+            .tux .mission { max-width: 190px; }
+        }
+        @media (max-width: 480px) {
+            .tux .masthead { display: block; }
+            .tux .mission { margin-top: 20px; max-width: none; }
+            .tux .actions { grid-template-columns: 1fr; }
+            .tux #game-location { font-size: 17px; }
+            .tux .log-note { display: none; }
+        }
+    </style>
+    <div class="shell">
+        <header class="masthead">
+            <div>
+                <p class="eyebrow" data-game-text="eyebrow"></p>
+                <h1 id="game-title"></h1>
+                <p class="subtitle" data-game-text="subtitle"></p>
+            </div>
+            <div class="mission"><strong data-game-text="missionTitle"></strong><span data-game-text="mission"></span></div>
+        </header>
+        <div class="columns">
+            <main class="story">
+                <section class="card scene" data-game-label="story">
+                    <p class="section-label" data-game-text="scene"></p>
+                    <div id="game-location"></div>
+                </section>
+                <section class="card" data-game-label="log">
+                    <div class="log-header"><h3 id="game-log-title" data-game-text="log"></h3><span class="log-note" data-game-text="logNote"></span></div>
+                    <div id="game-output" role="log" tabindex="0" data-game-label="log" data-game-empty="emptyLog"></div>
+                </section>
+            </main>
+            <aside class="actions" data-game-label="actions">
+                <section class="card travel"><h3 data-game-text="go"></h3><div id="game-go"></div></section>
+                <section class="card"><h3 data-game-text="look"></h3><div id="game-commands"></div></section>
+                <section class="card"><h3 data-game-text="characters"></h3><div id="game-characters"></div></section>
+                <section class="card"><h3 data-game-text="items"></h3><div id="game-items"></div></section>
+                <section class="card"><h3 data-game-text="use"></h3><div id="game-use"></div></section>
+                <section class="card"><h3 data-game-text="take"></h3><div id="game-take"></div></section>
+                <section class="card"><h3 data-game-text="drop"></h3><div id="game-drop"></div></section>
+            </aside>
+        </div>
+        <footer class="footer" data-game-text="footer"></footer>
+    </div>
+</div>

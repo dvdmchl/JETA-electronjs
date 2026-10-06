@@ -5,6 +5,28 @@ metadata:
   description: "A migration of the original 2005 Tux adventure to the current JETA engine."
   language: "cs"
 
+layout:
+  path: "layout.html"
+  texts:
+    eyebrow: "Noční dobrodružství v zoo"
+    subtitle: "Malý tučňák. Velká odvaha."
+    missionTitle: "Po stopách Tuxie"
+    mission: "Najdi dokumenty v ředitelově kanceláři."
+    story: "Příběh a aktuální místo"
+    scene: "Právě se nacházíš…"
+    log: "Tuxův zápisník"
+    logNote: "Činy, stopy a rozhovory"
+    emptyLog: "První stopa na sebe teprve čeká. Prozkoumej okolí a vydej se za Tuxie."
+    actions: "Herní akce"
+    go: "Kam dál?"
+    look: "Rozhlédnout se"
+    characters: "Koho tu potkáš"
+    items: "Okolí a kapsy"
+    use: "Použít"
+    take: "Vzít s sebou"
+    drop: "Odložit"
+    footer: "TUX · Petr KaiN · Dobrodružství začíná, když zoo usne."
+
 intro:
   - page: |
       <img src='game://local/TUX.jpg' alt='Tux'>
@@ -43,6 +65,7 @@ endings:
   - id: "tuxie_search"
     descriptions:
       - default: |
+          <img class='scene-backdrop' src='game://local/images/UPapoucha.webp' alt=''>
           <h2>Mám to! Tuxie, jdu si pro tebe!</h2>
           <p>CO BYLO V DOKUMENTECH?</p>
           <p>SHLEDAL SE TUX ZNOVA S TUXIE?</p>
@@ -52,6 +75,8 @@ endings:
         set: "game-characters-show = false; game-items-show = false; game-commands-show = false; game-take-show = false; game-use-show = false; game-drop-show = false; game-go-show = false"
 
 variables:
+  - id: "game-log-title-show"
+    value: true
   - id: "papousek_vzhuru"
     value: false
   - id: "skluzavka_pouzita"
@@ -76,6 +101,8 @@ locations:
     name: "Kancelář ředitele ZOO"
     descriptions:
       - default: |
+          <img class='scene-backdrop' src='game://local/images/UPapoucha.webp' alt=''>
+          <h2>Kancelář ředitele ZOO</h2>
           <p>Tučňák Tux se ocitl v kanceláři ředitele ZOO. V rohu stojí těžký
           ocelový sejf. Uprostřed místnosti je mohutný pracovní stůl z dubového
           dřeva. U stropu visí klícka a na zemi pod ní leží pár skořápek od
@@ -92,6 +119,8 @@ locations:
     name: "Zimní království"
     descriptions:
       - default: |
+          <img class='scene-backdrop' src='game://local/images/ZimniKralovstvi.webp' alt=''>
+          <h2>Zimní království</h2>
           <p>Tučňák Tux je zpět v Zimním království – jediném místě, které až do
           dnešního dne poznal. Ve vodní nádrži se dalo tak skvěle řádit. Akorát ti
           lachtani stále otravovali.</p>
@@ -111,6 +140,8 @@ locations:
     name: "Hřiště"
     descriptions:
       - default: |
+          <img class='scene-backdrop' src='game://local/images/Hriste.webp' alt=''>
+          <h2>Hřiště</h2>
           <p>Poblíž občerstvení nechal ředitel ZOO vystavět malé dětské hřiště.
           Je tu přehnaně strmá skluzavka, vratký kolotoč a ohrádka s
           pestrobarevnými dřevěnými kostkami.</p>
@@ -128,6 +159,8 @@ locations:
     name: "Hlavní rozcestí"
     descriptions:
       - default: |
+          <img class='scene-backdrop' src='game://local/images/Automat.webp' alt=''>
+          <h2>Hlavní rozcestí</h2>
           <p>Tux dorazil na hlavní rozcestí ZOO. Kdysi tu prý bývala socha
           zakladatele zahrady. Teď tu místo ní stojí obrovský automat na kávu.</p>
       - condition: "kostky:owner = Automat"
@@ -147,7 +180,10 @@ locations:
   - id: "Zirafy"
     name: "Žirafy"
     descriptions:
-      - default: "<p>Tux se ocitl u prostorného výběhu s dlouhokrkými žirafami.</p>"
+      - default: |
+          <img class='scene-backdrop' src='game://local/images/Zirafy.webp' alt=''>
+          <h2>Žirafy</h2>
+          <p>Tux se ocitl u prostorného výběhu s dlouhokrkými žirafami.</p>
       - condition: "!zirafa_spi"
         description: |
           <p>Mezi nimi je i neuvěřitelná hypochondrička Žiletka. Kolem krku nosí
@@ -165,6 +201,8 @@ locations:
     name: "Opice"
     descriptions:
       - default: |
+          <img class='scene-backdrop' src='game://local/images/Opice.webp' alt=''>
+          <h2>Opice</h2>
           <p>Tučňák Tux se ocitl mezi klecemi s opicemi. Většina primátů dovádí ve
           větvích. V jedné kleci pobývá nechvalně známý opičák Šimpi, jenž s oblibou
           okrádá neopatrné návštěvníky ZOO.</p>
@@ -180,6 +218,8 @@ locations:
     name: "Občerstvení"
     descriptions:
       - default: |
+          <img class='scene-backdrop' src='game://local/images/Obcerstveni.webp' alt=''>
+          <h2>Občerstvení</h2>
           <p>Tuxe přivítal těžký zápach přepáleného tuku. Přestože je primitivní
           stánek zavřený, zápach tu v dokonalém bezvětří visí jako starý kabát v
           šatníku. Vedle stánku stojí plechová káď po okraj naplněná nahnědlým olejem.</p>
@@ -193,6 +233,8 @@ locations:
     name: "Voliéry s ptáky"
     descriptions:
       - default: |
+          <img class='scene-backdrop' src='game://local/images/Klokan.webp' alt=''>
+          <h2>Voliéry s ptáky</h2>
           <p>Tux spočinul mezi prostornými voliérami. Je možno tu posedět na
           lavičkách a pozorovat obrovské sovy, dravé ptáky nebo brazilské papoušky.</p>
       - condition: "!klokan_havaroval"
@@ -209,6 +251,8 @@ locations:
     name: "Před kanceláří"
     descriptions:
       - default: |
+          <img class='scene-backdrop' src='game://local/images/PredKancelari.webp' alt=''>
+          <h2>Před kanceláří</h2>
           <p>Tux stanul před kanceláří ředitele ZOO, jak hlásá zdobený lesklý štít
           na dveřích. Před kanceláří leží rohožka a nalevo od veřejí stojí
           květináč s fíkusem.</p>
@@ -227,6 +271,8 @@ locations:
     name: "Před Zimním královstvím"
     descriptions:
       - default: |
+          <img class='scene-backdrop' src='game://local/images/PredKralovstvim.webp' alt=''>
+          <h2>Před Zimním královstvím</h2>
           <p>Tux se ocitl před vchodem do expozice, jejíž součástí až do dnešního
           výjimečného dne byl. Dokud nezíská potřebné dokumenty, nemá smysl
           rozptylovat se myšlenkami na opuštění zahrady. Podstatná je nedaleká
@@ -245,6 +291,8 @@ locations:
     name: "Strom u antilop"
     descriptions:
       - default: |
+          <img class='scene-backdrop' src='game://local/images/Strom.webp' alt=''>
+          <h2>Strom u antilop</h2>
           <p>Tux se ocitl u rozlehlého výběhu s antilopami. Prastarý rozložitý
           platan tu za slunečných dní skýtá příjemný stín.</p>
       - condition: "klokan_havaroval"

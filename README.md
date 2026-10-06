@@ -10,6 +10,9 @@ stories live in readable YAML or JSON files.
 · [Release notes](https://github.com/dvdmchl/JETA-electronjs/releases/tag/v1.1.0)
 · [Game-authoring guide](docs/GAME_AUTHORING.md)
 
+Join the [JETA Discord community](https://discord.gg/48ubknQpn) to discuss the
+engine, share your adventures, and give feedback.
+
 ![JETA's English welcome screen with instructions for opening or creating a game and a playable button quest](docs/screenshots/welcome-en.png)
 
 *The welcome adventure introduces the engine and explains your next step. It starts

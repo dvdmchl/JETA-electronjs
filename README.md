@@ -10,6 +10,13 @@ building interactive fiction with ease.
 
 ## Features
 
+On startup, JETA opens a small welcome adventure in the application's selected
+language (English or Czech). It explains how to open a game with **File > Open**
+(`Ctrl+O`) or create one with **Edit > New Game Definition** (`Ctrl+N`). You can
+also examine and press a suspicious button to try the engine before opening a game.
+The welcome screen uses one game definition, a Czech translation map, and a shared
+responsive layout in `resources/index.yaml` and `resources/layout_welcome.html`.
+
 - Simple and intuitive API
 - Support for complex game logic
 - Easily extendable with custom modules

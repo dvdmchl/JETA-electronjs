@@ -1,0 +1,100 @@
+metadata:
+  title: "Every adventure starts with a click."
+  author: "JETA"
+  version: "1.0.0"
+  description: "A tiny welcome adventure for JETA."
+  language: "en"
+
+layout:
+  path: "layout_welcome.html"
+  texts:
+    brand: "JETA / TEXT ADVENTURES"
+    badge: "NO QUEST TOO SMALL"
+    about: "A pocket-sized engine for big stories. Explore places, collect curious objects and make choices that matter — with words, pictures and your imagination."
+    start: "Your next adventure"
+    open: "Open a game"
+    openHint: "Choose File → Open or press Ctrl+O. Select a YAML, JSON or encrypted game file."
+    sample: "No game yet? Try a definition from the samples folder included with JETA."
+    create: "Write your own"
+    createHint: "Choose Edit → New Game Definition (Ctrl+N). A starter story is ready for your ideas."
+    scene: "A 30-second side quest"
+    controls: "Make your move"
+    hint: "Try examining the button, then using it. No typing, no dice, no dragon insurance."
+    journal: "What just happened"
+    empty: "Your first click will go down in history. Well, in this journal."
+    footer: "Words build worlds. You bring the curiosity."
+
+locations:
+  - id: "index"
+    name: "The adventure waiting room"
+    descriptions:
+      - default: "<h3>The adventure waiting room</h3><p>You arrive in a quiet waiting room between stories. On the desk sits a large button labelled <strong>DO NOT PRESS</strong>. The dragon at reception is on a coffee break.</p>"
+      - condition: "button_pressed"
+        description: "<p>The button now reads <strong>EXCELLENT CURIOSITY</strong>. Your training is complete. Open a game whenever you are ready; the dragon can handle the paperwork.</p>"
+      - condition: "!button_pressed"
+        description: "<p>Your quest: find out what the button does. Surely a responsible adventurer would never press it. Surely.</p>"
+    connections: []
+
+items:
+  - id: "welcome_button"
+    name: "Suspicious button"
+    name_accusative: "suspicious button"
+    owner: "index"
+    movable: false
+    descriptions:
+      - default: "<p>A very pressable button. Small print: <em>May cause adventure. No batteries required.</em></p>"
+    onUse:
+      - condition: "!button_pressed"
+        description: "<p><strong>Click.</strong> A fanfare plays in your imagination. You gain +1 curiosity and exactly zero useful treasure. Congratulations: you already know how to play a text adventure.</p>"
+        set: "button_pressed = true"
+      - description: "<p>The button politely requests a holiday. For a bigger quest, choose <strong>File → Open</strong> (<strong>Ctrl+O</strong>) and load a game.</p>"
+
+characters:
+  - id: "player"
+    name: "Adventurer"
+    location: "index"
+
+variables:
+  - id: "button_pressed"
+    value: false
+  - id: "game-log-title-show"
+    value: true
+  - id: "game-characters-show"
+    value: false
+  - id: "game-take-show"
+    value: false
+  - id: "game-drop-show"
+    value: false
+  - id: "game-go-show"
+    value: false
+
+translations:
+  cs:
+    /metadata/title: "Každé dobrodružství začíná kliknutím."
+    /metadata/author: "JETA"
+    /metadata/description: "Malé uvítací dobrodružství v JETA."
+    /layout/texts/brand: "JETA / TEXTOVÉ ADVENTURY"
+    /layout/texts/badge: "ŽÁDNÝ ÚKOL NENÍ MOC MALÝ"
+    /layout/texts/about: "Malý engine pro velké příběhy. Prozkoumávej místa, sbírej podivuhodné předměty a rozhoduj o tom, co bude dál — pomocí slov, obrázků a vlastní představivosti."
+    /layout/texts/start: "Tvoje další dobrodružství"
+    /layout/texts/open: "Otevři hru"
+    /layout/texts/openHint: "Vyber Soubor → Otevřít nebo stiskni Ctrl+O. Zvol herní soubor ve formátu YAML, JSON nebo zašifrovanou hru."
+    /layout/texts/sample: "Ještě nemáš hru? Vyzkoušej některou definici ze složky samples, která je součástí JETA."
+    /layout/texts/create: "Napiš vlastní příběh"
+    /layout/texts/createHint: "Vyber Upravit → Vytvořit novou hru (Ctrl+N). Základ příběhu už čeká na tvoje nápady."
+    /layout/texts/scene: "Vedlejší úkol na 30 sekund"
+    /layout/texts/controls: "Jsi na tahu"
+    /layout/texts/hint: "Zkus tlačítko prozkoumat a pak použít. Bez psaní příkazů, házení kostkou i pojištění proti drakům."
+    /layout/texts/journal: "Co se právě stalo"
+    /layout/texts/empty: "Tvoje první kliknutí se zapíše do dějin. Tedy alespoň do tohoto deníku."
+    /layout/texts/footer: "Ze slov vznikají světy. Zvědavost dodáš ty."
+    /locations/0/name: "Čekárna dobrodružství"
+    /locations/0/descriptions/0/default: "<h3>Čekárna dobrodružství</h3><p>Vstupuješ do tiché čekárny mezi příběhy. Na stole leží velké tlačítko s nápisem <strong>NEMAČKAT</strong>. Drak na recepci si odskočil na kávu.</p>"
+    /locations/0/descriptions/1/description: "<p>Na tlačítku teď svítí <strong>VÝBORNÁ ZVĚDAVOST</strong>. Výcvik máš za sebou. Až budeš chtít, otevři si hru; papírování nech na drakovi.</p>"
+    /locations/0/descriptions/2/description: "<p>Tvůj úkol: zjisti, co tlačítko dělá. Zodpovědný dobrodruh by ho přece nikdy nezmáčkl. Že ne?</p>"
+    /items/0/name: "Podezřelé tlačítko"
+    /items/0/name_accusative: "podezřelé tlačítko"
+    /items/0/descriptions/0/default: "<p>Tlačítko přímo vybízí ke stisknutí. Drobným písmem: <em>Může způsobit dobrodružství. Baterie nejsou potřeba.</em></p>"
+    /items/0/onUse/0/description: "<p><strong>Klik.</strong> V představách zazní fanfára. Získáváš +1 ke zvědavosti a přesně nula užitečných pokladů. Gratulujeme: právě ses naučil hrát textovou adventuru.</p>"
+    /items/0/onUse/1/description: "<p>Tlačítko zdvořile žádá o dovolenou. Pro větší dobrodružství vyber <strong>Soubor → Otevřít</strong> (<strong>Ctrl+O</strong>) a načti hru.</p>"
+    /characters/0/name: "Dobrodruh"

@@ -10,9 +10,10 @@ const { createDebugWindow } = require("./debug_window");
 let currentGameFilePath = null;
 let watchedGameFilePath = null;
 
-async function loadAndPlayGame(filePath, win, onLoaded) {
+async function loadAndPlayGame(filePath, win, onLoaded, language) {
     const gameData = await loadGameFile(filePath, win);
     if (!gameData) return false;
+    if (language && gameData.availableLanguages.includes(language)) gameData.setLanguage(language);
     win.webContents.send('clear-output');
     play(gameData, win);
     currentGameFilePath = filePath;

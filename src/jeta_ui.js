@@ -39,10 +39,9 @@ const createWindow = async () => {
             menu = createMenu(currentLanguage, store, win);
             Menu.setApplicationMenu(menu);
 
-            const indexName = `index_${currentLanguage}.yaml`;
-            const indexGameFilePath = path.join(__dirname, '../resources', indexName);
+            const indexGameFilePath = path.join(__dirname, '../resources/index.yaml');
             console.log('Loading game data from:', indexGameFilePath);
-            if (!await loadAndPlayGame(indexGameFilePath, win)) {
+            if (!await loadAndPlayGame(indexGameFilePath, win, undefined, currentLanguage)) {
                 console.error('Failed to load game data.');
             }
         });

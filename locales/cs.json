@@ -2,7 +2,7 @@
   "index": {
     "title": "JETA",
     "header": "JETA",
-    "description": "Javascript Engine pro Textové Adventury."
+    "description": "Malý engine pro velké příběhy."
   },
   "menu": {
     "file": "Soubor",

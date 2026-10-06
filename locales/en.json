@@ -2,7 +2,7 @@
   "index": {
     "title": "JETA",
     "header": "JETA",
-    "description": "Javascript Engine for Text Adventures."
+    "description": "A pocket-sized engine for big stories."
   },
   "menu": {
     "file": "File",

@@ -73,6 +73,10 @@ Open these definitions with **File > Open** (`Ctrl+O`):
 | [Shadows of Azeroth / Stíny Azerothu](samples/stiny_azerothu/stiny_azerothu.yaml) | Czech and English | A delivery quest, branching dialogue, an elemental rune puzzle, and three endings. |
 | [Test](samples/test/Test.yaml) | Czech | A small demonstration of objects, actions, dialogue, conditions, images, and a custom layout. |
 
+Tux also offers a [newest-first layout](samples/Tux/Tux-top.yaml): new journal
+messages appear at the top, with the location above the journal and actions beside it.
+Keep the entire `samples/Tux` folder together when copying either variant.
+
 ![Tux in the moonlit Winter Kingdom with a local illustrated background, readable story panel, action cards, and a conversation in the journal](docs/screenshots/tux-cs.png)
 
 *Tux's custom layout keeps the story readable over its nighttime zoo illustrations.

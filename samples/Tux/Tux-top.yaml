@@ -1,0 +1,784 @@
+metadata:
+  title: "Tux"
+  author: "Petr KaiN"
+  version: "1.01"
+  description: "A migration of the original 2005 Tux adventure to the current JETA engine."
+  language: "cs"
+
+layout:
+  path: "layout-top.html"
+  texts:
+    eyebrow: "Noční dobrodružství v zoo"
+    subtitle: "Malý tučňák. Velká odvaha."
+    missionTitle: "Po stopách Tuxie"
+    mission: "Najdi dokumenty v ředitelově kanceláři."
+    story: "Příběh a aktuální místo"
+    scene: "Právě se nacházíš…"
+    log: "Tuxův zápisník"
+    logNote: "Nejnovější zprávy nahoře"
+    emptyLog: "První stopa na sebe teprve čeká. Prozkoumej okolí a vydej se za Tuxie."
+    actions: "Herní akce"
+    go: "Kam dál?"
+    look: "Rozhlédnout se"
+    characters: "Koho tu potkáš"
+    items: "Okolí a kapsy"
+    use: "Použít"
+    take: "Vzít s sebou"
+    drop: "Odložit"
+    footer: "TUX · Petr KaiN · Dobrodružství začíná, když zoo usne."
+
+intro:
+  - page: |
+      <img src='game://local/TUX.jpg' alt='Tux'>
+      <p>Tučňák Tux nikdy nepoznal svobodu. Narodil se v ZOO v jednom menším městě.
+      Celý svůj dosavadní život prožil na jediném místě – v Zimním království,
+      jak se jedna z tamních expozic nazývá, při bezstarostných hrách s mladší
+      sestřičkou Tuxie.</p>
+      <p>Jenže ty šťastné dny jsou minulostí! Tuxie zmizela! Jednou ráno ji zřízenci
+      strčili do pytle a odnesli ji neznámo kam. Někteří říkali, že si ji vybrala
+      nějaká firma, aby vystupovala v reklamách na cosi, co se snad jmenuje
+      „operační systém“. Lachtani zase na Tuxe pokřikovali, že jeho sestřička
+      skončila v konzervě jako žrádlo pro psy.</p>
+  - page: |
+      <p>Tux dospěl k tomu, že jediná možnost, jak zjistit skutečný osud Tuxie, je
+      dostat se do kanceláře ředitele ZOO. Tam přece musí být nějaké dokumenty!
+      Tux rozjel akci. Nejprve ukradl jednomu děcku žvýkačku a ucpal zámek, takže
+      zřízenec nemohl večer pavilon uzamknout. Tux počkal, až v ZOO zůstane jen
+      hlídač, neškodný ochmelka, a vyrazil ven.</p>
+      <p>Tux už už otevřel nezamčené dveře, když tu se náhle ozval drsný hlas:
+      „Pracky nahoru a žádný vylomeniny, frajere!“ Současně Tux ucítil na zádech
+      hlaveň pistole. Jeho ploutve doslova vystřelily vzhůru.</p>
+  - page: |
+      <p>Ale počkat, počkat, tady něco nehraje. Ten hlas, to je přece… Béďa!</p>
+      <p>„Jasně, kámo. Méďa Béďa s.r.o. Kdo jsi myslel, že to je? Policie? Heh!“</p>
+      <p>Tux se otočil a spatřil ledního medvěda, kterému všichni tučňáci mají
+      dovoleno říkat Bedřich a jediní Tux a Tuxie dokonce Béďa. Lachtani ho musejí
+      oslovovat „pane“ a stát při tom v pozoru. Béďa má v ruce černou plastikovou
+      pistoli, kterou zřejmě uzmul nějakému dětskému návštěvníku.</p>
+      <p>Tux svěřil Béďovi svůj záměr, vloupat se do ředitelovy kanceláře, najít
+      dokumenty svědčící o dalším osudu Tuxie a vydat se jí hledat. Béďa v úspěch
+      tučňákovy mise nevěřil ani v nejmenším, ale nechal si svou skepsi pro sebe.
+      „Tak hodně štěstí, Tuxi.“ – „Díky.“ Když Tux procházel dveřmi, Béďa už zase
+      naháněl lachtany.</p>
+
+endings:
+  - id: "tuxie_search"
+    descriptions:
+      - default: |
+          <img class='scene-backdrop' src='game://local/images/UPapoucha.webp' alt=''>
+          <h2>Mám to! Tuxie, jdu si pro tebe!</h2>
+          <p>CO BYLO V DOKUMENTECH?</p>
+          <p>SHLEDAL SE TUX ZNOVA S TUXIE?</p>
+          <p>CO VŠECHNO PŘITOM JEŠTĚ ZAŽIL?</p>
+          <p>Napadá Vás něco? Pokud ano, neváhejte a napište pokračování!</p>
+          <p>Petr KaiN</p>
+        set: "game-characters-show = false; game-items-show = false; game-commands-show = false; game-take-show = false; game-use-show = false; game-drop-show = false; game-go-show = false"
+
+variables:
+  - id: "game-log-title-show"
+    value: true
+  - id: "papousek_vzhuru"
+    value: false
+  - id: "skluzavka_pouzita"
+    value: false
+  - id: "kolotoc_rozbity"
+    value: false
+  - id: "zirafa_spi"
+    value: false
+  - id: "klokan_havaroval"
+    value: false
+  - id: "kancelar_otevrena"
+    value: false
+  - id: "dotaz_na_pistoli"
+    value: false
+  - id: "penezenka_ukradena"
+    value: false
+  - id: "sipka_nalezena"
+    value: false
+
+locations:
+  - id: "UPapoucha"
+    name: "Kancelář ředitele ZOO"
+    descriptions:
+      - default: |
+          <img class='scene-backdrop' src='game://local/images/UPapoucha.webp' alt=''>
+          <h2>Kancelář ředitele ZOO</h2>
+          <p>Tučňák Tux se ocitl v kanceláři ředitele ZOO. V rohu stojí těžký
+          ocelový sejf. Uprostřed místnosti je mohutný pracovní stůl z dubového
+          dřeva. U stropu visí klícka a na zemi pod ní leží pár skořápek od
+          burských oříšků.</p>
+      - condition: "!papousek_vzhuru"
+        description: "<p>V kleci spí starý pestrobarevný papoušek.</p>"
+      - condition: "papousek_vzhuru"
+        description: "<p>V kleci vztekle poskakuje papoušek a plive na Tuxe vodu z pitítka.</p>"
+    connections:
+      - direction: "Ven z kanceláře"
+        target: "PredKancelari"
+
+  - id: "ZimniKralovstvi"
+    name: "Zimní království"
+    descriptions:
+      - default: |
+          <img class='scene-backdrop' src='game://local/images/ZimniKralovstvi.webp' alt=''>
+          <h2>Zimní království</h2>
+          <p>Tučňák Tux je zpět v Zimním království – jediném místě, které až do
+          dnešního dne poznal. Ve vodní nádrži se dalo tak skvěle řádit. Akorát ti
+          lachtani stále otravovali.</p>
+      - condition: "!klokan_havaroval"
+        description: |
+          <p>Lední medvěd Béďa si našel novou zábavu. Pohrozil méně chápavým
+          lachtanům falešnou pistolkou a donutil je předvádět různé naučené kousky.</p>
+      - condition: "klokan_havaroval"
+        description: |
+          <p>Medvěd Béďa sedí ve svém oblíbeném červeném ušáku, zatímco vyčerpaní
+          lachtani polehávají na břehu a nabírají nové síly.</p>
+    connections:
+      - direction: "Před Zimní království"
+        target: "PredKralovstvim"
+
+  - id: "Hriste"
+    name: "Hřiště"
+    descriptions:
+      - default: |
+          <img class='scene-backdrop' src='game://local/images/Hriste.webp' alt=''>
+          <h2>Hřiště</h2>
+          <p>Poblíž občerstvení nechal ředitel ZOO vystavět malé dětské hřiště.
+          Je tu přehnaně strmá skluzavka, vratký kolotoč a ohrádka s
+          pestrobarevnými dřevěnými kostkami.</p>
+      - condition: "kolotoc_rozbity && trubka:owner = Hriste"
+        description: |
+          <p>Poté, co se Tux projel na kolotoči, bude třeba ho rekonstruovat.
+          Kolotoč, nikoliv Tuxe. Na zemi se povaluje zahnutá ulomená trubka.</p>
+    connections:
+      - direction: "K občerstvení"
+        target: "Obcerstveni"
+      - direction: "K antilopám"
+        target: "Strom"
+
+  - id: "Automat"
+    name: "Hlavní rozcestí"
+    descriptions:
+      - default: |
+          <img class='scene-backdrop' src='game://local/images/Automat.webp' alt=''>
+          <h2>Hlavní rozcestí</h2>
+          <p>Tux dorazil na hlavní rozcestí ZOO. Kdysi tu prý bývala socha
+          zakladatele zahrady. Teď tu místo ní stojí obrovský automat na kávu.</p>
+      - condition: "kostky:owner = Automat"
+        description: |
+          <p>Těsně u automatu se vrší provizorní schůdky z kostek. Jejich vrchol
+          dosahuje až ke slotu na mince.</p>
+    connections:
+      - direction: "K opicím"
+        target: "Opice"
+      - direction: "K voliérám s ptáky"
+        target: "Klokan"
+      - direction: "K žirafám"
+        target: "Zirafy"
+      - direction: "K antilopám"
+        target: "Strom"
+
+  - id: "Zirafy"
+    name: "Žirafy"
+    descriptions:
+      - default: |
+          <img class='scene-backdrop' src='game://local/images/Zirafy.webp' alt=''>
+          <h2>Žirafy</h2>
+          <p>Tux se ocitl u prostorného výběhu s dlouhokrkými žirafami.</p>
+      - condition: "!zirafa_spi"
+        description: |
+          <p>Mezi nimi je i neuvěřitelná hypochondrička Žiletka. Kolem krku nosí
+          stetoskop a právě poskakuje po výběhu jako smyslů zbavená.</p>
+      - condition: "zirafa_spi"
+        description: |
+          <p>Na zemi leží žirafa Žiletka a neobyčejně tvrdě spí. Tux v tom má prsty.</p>
+    connections:
+      - direction: "K občerstvení"
+        target: "Obcerstveni"
+      - direction: "Na hlavní rozcestí"
+        target: "Automat"
+
+  - id: "Opice"
+    name: "Opice"
+    descriptions:
+      - default: |
+          <img class='scene-backdrop' src='game://local/images/Opice.webp' alt=''>
+          <h2>Opice</h2>
+          <p>Tučňák Tux se ocitl mezi klecemi s opicemi. Většina primátů dovádí ve
+          větvích. V jedné kleci pobývá nechvalně známý opičák Šimpi, jenž s oblibou
+          okrádá neopatrné návštěvníky ZOO.</p>
+      - condition: "penezenka:owner = Opice"
+        description: "<p>Těsně za mříží leží aktuálně uloupená peněženka.</p>"
+    connections:
+      - direction: "Na hlavní rozcestí"
+        target: "Automat"
+      - direction: "Před Zimní království"
+        target: "PredKralovstvim"
+
+  - id: "Obcerstveni"
+    name: "Občerstvení"
+    descriptions:
+      - default: |
+          <img class='scene-backdrop' src='game://local/images/Obcerstveni.webp' alt=''>
+          <h2>Občerstvení</h2>
+          <p>Tuxe přivítal těžký zápach přepáleného tuku. Přestože je primitivní
+          stánek zavřený, zápach tu v dokonalém bezvětří visí jako starý kabát v
+          šatníku. Vedle stánku stojí plechová káď po okraj naplněná nahnědlým olejem.</p>
+    connections:
+      - direction: "Na hřiště"
+        target: "Hriste"
+      - direction: "K žirafám"
+        target: "Zirafy"
+
+  - id: "Klokan"
+    name: "Voliéry s ptáky"
+    descriptions:
+      - default: |
+          <img class='scene-backdrop' src='game://local/images/Klokan.webp' alt=''>
+          <h2>Voliéry s ptáky</h2>
+          <p>Tux spočinul mezi prostornými voliérami. Je možno tu posedět na
+          lavičkách a pozorovat obrovské sovy, dravé ptáky nebo brazilské papoušky.</p>
+      - condition: "!klokan_havaroval"
+        description: |
+          <p>O lavičku je opřeno nepojízdné motorové kolo klokana Tondy. Vačnatec
+          pečlivě zkoumá mrtvý mechanismus a hledá, kde je zakopán pověstný pes.</p>
+    connections:
+      - direction: "Na hlavní rozcestí"
+        target: "Automat"
+      - direction: "Před Zimní království"
+        target: "PredKralovstvim"
+
+  - id: "PredKancelari"
+    name: "Před kanceláří"
+    descriptions:
+      - default: |
+          <img class='scene-backdrop' src='game://local/images/PredKancelari.webp' alt=''>
+          <h2>Před kanceláří</h2>
+          <p>Tux stanul před kanceláří ředitele ZOO, jak hlásá zdobený lesklý štít
+          na dveřích. Před kanceláří leží rohožka a nalevo od veřejí stojí
+          květináč s fíkusem.</p>
+      - condition: "!kancelar_otevrena"
+        description: "<p>Dveře jsou uzamčeny.</p>"
+      - condition: "kancelar_otevrena"
+        description: "<p>Dveře jsou vypáčeny a je tedy možno vstoupit dovnitř.</p>"
+    connections:
+      - direction: "Do kanceláře"
+        target: "UPapoucha"
+        condition: "kancelar_otevrena"
+      - direction: "Před Zimní království"
+        target: "PredKralovstvim"
+
+  - id: "PredKralovstvim"
+    name: "Před Zimním královstvím"
+    descriptions:
+      - default: |
+          <img class='scene-backdrop' src='game://local/images/PredKralovstvim.webp' alt=''>
+          <h2>Před Zimním královstvím</h2>
+          <p>Tux se ocitl před vchodem do expozice, jejíž součástí až do dnešního
+          výjimečného dne byl. Dokud nezíská potřebné dokumenty, nemá smysl
+          rozptylovat se myšlenkami na opuštění zahrady. Podstatná je nedaleká
+          hlavní budova, kde se nalézá kancelář ředitele ZOO.</p>
+    connections:
+      - direction: "Do Zimního království"
+        target: "ZimniKralovstvi"
+      - direction: "Ke kanceláři ředitele ZOO"
+        target: "PredKancelari"
+      - direction: "K opicím"
+        target: "Opice"
+      - direction: "K voliérám s ptáky"
+        target: "Klokan"
+
+  - id: "Strom"
+    name: "Strom u antilop"
+    descriptions:
+      - default: |
+          <img class='scene-backdrop' src='game://local/images/Strom.webp' alt=''>
+          <h2>Strom u antilop</h2>
+          <p>Tux se ocitl u rozlehlého výběhu s antilopami. Prastarý rozložitý
+          platan tu za slunečných dní skýtá příjemný stín.</p>
+      - condition: "klokan_havaroval"
+        description: |
+          <p>Na větvi visí za pruhované triko klokan Tonda a hrozí Tuxovi pěstičkou.
+          Pod platanem leží kouřící zbytky zničeného motorového kola.</p>
+    connections:
+      - direction: "Na hlavní rozcestí"
+        target: "Automat"
+      - direction: "Na hřiště"
+        target: "Hriste"
+
+items:
+  - id: "stul"
+    name: "Pracovní stůl"
+    name_accusative: "pracovní stůl"
+    owner: "UPapoucha"
+    movable: false
+    descriptions:
+      - default: "<p>Mohutný pracovní stůl z dubového dřeva.</p>"
+    onSee:
+      - condition: "!sipka_nalezena"
+        description: |
+          <p>Tux vyskočil na židli a prozkoumal stůl. Hledané dokumenty nenašel,
+          ale v jednom šuplíku objevil uspávací šipku a ihned si ji přisvojil.</p>
+        set: "sipka_nalezena = true; sipka:owner = player; sipka:visible = true"
+      - description: "<p>V zásuvkách už není nic užitečného.</p>"
+
+  - id: "sejf"
+    name: "Sejf"
+    name_accusative: "sejf"
+    owner: "UPapoucha"
+    movable: false
+    descriptions:
+      - default: "<p>Těžký ocelový sejf opatřený otočným číselníkem. To neotevřu, ani kdybych se na hlavu postavil!</p>"
+    onTake:
+      - description: "<p>Jsem sice drsný Tux, ale tohle fakt neunesu!</p>"
+
+  - id: "skorapky"
+    name: "Skořápky"
+    name_accusative: "skořápky"
+    owner: "UPapoucha"
+    movable: false
+    descriptions:
+      - default: "<p>Tux špičkou nohy rozhrnul skořápky. Ten mizera papoušek si zase dával pěkně do zobáku!</p>"
+    onTake:
+      - description: "<p>FUJ! Uklízet bordel na podlaze není práce hodná tučňáka Tuxe!</p>"
+
+  - id: "skluzavka"
+    name: "Skluzavka"
+    name_accusative: "skluzavku"
+    owner: "Hriste"
+    movable: false
+    descriptions:
+      - default: "<p>Ta je pekelně strmá. To zase někdo nepřemýšlel!</p>"
+    onUse:
+      - condition: "!skluzavka_pouzita"
+        description: |
+          <p>Tux vyskákal po železném žebříku na vrchol skluzavky a vrhl se dolů.
+          Na ledově kluzké ploše nabral takovou rychlost, že si při dopadu natloukl.
+          Málem se zabil. Na to už nevleze!</p>
+        set: "skluzavka_pouzita = true"
+      - description: "<p>Jednou to úplně stačilo.</p>"
+
+  - id: "kolotoc"
+    name: "Kolotoč"
+    name_accusative: "kolotoč"
+    owner: "Hriste"
+    movable: false
+    descriptions:
+      - default: "<p>Vypadá velmi nedůvěryhodně, až nebezpečně.</p>"
+      - condition: "kolotoc_rozbity"
+        description: "<p>Tak na tom se dlouho nikdo nesveze!</p>"
+    onUse:
+      - condition: "!kolotoc_rozbity"
+        description: |
+          <p>Tux roztočil kolotoč a naskočil. Rotující železná konstrukce vydávala
+          příšerné zvuky. Nakonec něco hlasitě zapraskalo, kolotoč se prudce zastavil
+          a Tux od něj odlétl. To se může stát jenom jemu!</p>
+        set: "kolotoc_rozbity = true; trubka:visible = true"
+      - description: "<p>Rozbitý kolotoč už použít nejde.</p>"
+
+  - id: "trubka"
+    name: "Zahnutá trubka"
+    name_accusative: "zahnutou trubku"
+    owner: "Hriste"
+    visible: false
+    movable: true
+    descriptions:
+      - default: "<p>Zahnutá trubka, která se odlomila z kolotoče. Možná by šla použít jako páčidlo!</p>"
+    onTake:
+      - description: "<p>Tux se sehnul a rozšířil svůj inventář o ulomenou trubku.</p>"
+    onUse:
+      - condition: "trubka:owner = player && player:location = PredKancelari && !kancelar_otevrena"
+        description: "<p>Tux pomocí zahnuté trubky vypáčil dveře kanceláře ředitele ZOO. Jsem fakt BOREC!</p>"
+        set: "kancelar_otevrena = true"
+      - condition: "trubka:owner = player && player:location = UPapoucha"
+        description: "<p>Bohužel, ani pomocí trubky ten trezor neotevřu.</p>"
+      - description: "<p>Nechápu, jak bych zrovna tady mohl trubku použít.</p>"
+
+  - id: "kostky"
+    name: "Dřevěné kostky"
+    name_accusative: "dřevěné kostky"
+    owner: "Hriste"
+    movable: true
+    descriptions:
+      - default: "<p>Obyčejné dřevěné kostky, jejichž stěny jsou nalakovány různými barvami.</p>"
+    onTake:
+      - description: "<p>Tux sesbíral poházené dřevěné kostky. Jeho inventář silně nabobtnal.</p>"
+    onUse:
+      - condition: "kostky:owner = player && player:location = Automat"
+        description: |
+          <p>Tux postavil vedle automatu schůdky z kostek až ke slotu pro mince.
+          Moc hezké. Asi by se měl vrhnout na studium architektury.</p>
+        set: "kostky:owner = Automat; kostky:movable = false; kostky:visible = false"
+      - condition: "kostky:owner = Hriste"
+        description: "<p>Nemám čas ani chuť si tu s kostkami hrát!</p>"
+      - description: "<p>Nechápu, jak bych zrovna tady mohl kostky použít.</p>"
+
+  - id: "automat_na_kavu"
+    name: "Automat na kávu"
+    name_accusative: "automat na kávu"
+    owner: "Automat"
+    movable: false
+    descriptions:
+      - default: "<p>Panejo, to je ale almara! Slot pro mince je pro Tuxe příliš vysoko.</p>"
+      - condition: "kostky:owner = Automat"
+        description: "<p>Díky schůdkům se teď Tux bez problému dostane ke slotu pro mince.</p>"
+    onUse:
+      - description: "<p>Do automatu je třeba vhodit minci, jinak nefunguje!</p>"
+
+  - id: "kelimek"
+    name: "Pomačkaný kelímek"
+    name_accusative: "pomačkaný kelímek"
+    owner: "Automat"
+    movable: true
+    descriptions:
+      - default: "<p>Použitý hnědý plastový kelímek z automatu na kávu.</p>"
+    onTake:
+      - description: "<p>Tux se sehnul a zařadil do inventáře pomačkaný kelímek.</p>"
+    onUse:
+      - condition: "kelimek:owner = player && player:location = Obcerstveni"
+        description: "<p>Tux přistoupil ke kádi a naplnil kelímek olejem. Fuj, úplně se mu z té břečky dělá nedobře.</p>"
+        set: "kelimek:owner = kad_s_olejem; kelimek:visible = false; kelimek_s_olejem:owner = player; kelimek_s_olejem:visible = true"
+      - description: "<p>Nechápu, jak bych zrovna tady mohl kelímek použít.</p>"
+
+  - id: "kad_s_olejem"
+    name: "Káď s olejem"
+    name_accusative: "káď s olejem"
+    owner: "Obcerstveni"
+    movable: false
+    descriptions:
+      - default: "<p>Plechová káď po okraj naplněná hustou čpící kapalinou. Fuj! Už nikdy nesním jedinou smaženou hranolku!</p>"
+    onTake:
+      - description: "<p>Jsem sice drsný Tux, ale tohle fakt neunesu!</p>"
+    onUse:
+      - description: "<p>To se v tom mám vykoupat, nebo co?!</p>"
+
+  - id: "stanek"
+    name: "Stánek"
+    name_accusative: "stánek"
+    owner: "Obcerstveni"
+    movable: false
+    descriptions:
+      - default: "<p>Stánek na laciné, hygienicky problematické jídlo.</p>"
+
+  - id: "kelimek_s_olejem"
+    name: "Kelímek s olejem"
+    name_accusative: "kelímek s olejem"
+    owner: null
+    visible: false
+    movable: true
+    descriptions:
+      - default: "<p>Plastový kelímek naplněný přepáleným olejem.</p>"
+    onUse:
+      - condition: "kelimek_s_olejem:owner = player && player:location = Klokan && !klokan_havaroval"
+        description: |
+          <p>Tux odstrčil Tondu a nalil obsah kelímku do nádrže jeho motokola.
+          Tonda nastartoval. Motor silně hučel, z výfuku se valil hustý kouř a
+          klokan nadšeně zmizel v oblaku. Brzy se ozvala mohutná exploze.</p>
+          <p>Ponaučení: nelejte do nádrže kdejaký laciný sajrajt!</p>
+        set: "klokan_havaroval = true; kelimek_s_olejem:owner = kad_s_olejem; kelimek_s_olejem:visible = false; tonda:location = Strom; motorove_kolo:visible = false; klakson:visible = true; vrak_motokola:visible = true"
+      - description: "<p>Nechápu, jak bych zrovna tady mohl olej použít.</p>"
+
+  - id: "penezenka"
+    name: "Peněženka"
+    name_accusative: "peněženku"
+    owner: "Opice"
+    movable: false
+    descriptions:
+      - default: "<p>Uloupená peněženka leží těsně za mříží.</p>"
+    onTake:
+      - condition: "!penezenka_ukradena"
+        description: |
+          <p>Dříve než se Tux peněženky dotkl, Šimpi se prudce zhoupl dolů a
+          zmocnil se jí. „Chceš peněženku, pikolíku? Dones buráky, bude tvoje!“</p>
+        set: "penezenka_ukradena = true; penezenka:owner = simpi_cache; penezenka:visible = false"
+
+  - id: "simpi_cache"
+    name: "Šimpiho skrýš"
+    owner: "Opice"
+    visible: false
+    movable: false
+    descriptions:
+      - default: ""
+
+  - id: "used_items"
+    name: "Použité předměty"
+    owner: null
+    visible: false
+    movable: false
+    descriptions:
+      - default: ""
+
+  - id: "buraky"
+    name: "Buráky"
+    name_accusative: "buráky"
+    owner: null
+    visible: false
+    movable: true
+    descriptions:
+      - default: "<p>Burské oříšky, kterými po Tuxovi házel probuzený papoušek.</p>"
+    onUse:
+      - condition: "buraky:owner = player && player:location = Opice && penezenka_ukradena"
+        description: |
+          <p>Mezi Tuxem a Šimpim proběhla výměna jako mezi gangstery. Šimpi získal
+          buráky a Tux prázdnou peněženku. Když ji vztekle obrátil naruby, vypadla
+          z ní ušmudlaná mince. Co chtěl, to má!</p>
+        set: "buraky:owner = simpi_cache; buraky:visible = false; mince:owner = player; mince:visible = true"
+      - description: "<p>Tučňáci buráky nežerou. Tux není výjimkou.</p>"
+
+  - id: "mince"
+    name: "Ušmudlaná mince"
+    name_accusative: "ušmudlanou minci"
+    owner: null
+    visible: false
+    movable: true
+    descriptions:
+      - default: "<p>Její hodnota i měna je nerozluštitelná.</p>"
+    onUse:
+      - condition: "mince:owner = player && player:location = Automat && kostky:owner = Automat"
+        description: |
+          <p>Tux vyskákal po kostkách, vhodil minci do slotu a stiskl knoflík
+          „černá káva s cukrem“. Automat zapískal a Tux přemístil horký nápoj do inventáře.</p>
+        set: "mince:owner = automat_na_kavu; mince:visible = false; kafe:owner = player; kafe:visible = true"
+      - condition: "mince:owner = player && player:location = Automat"
+        description: "<p>Slot na mince je příliš vysoko!</p>"
+      - description: "<p>Nechápu, jak bych zrovna tady mohl minci použít.</p>"
+
+  - id: "kafe"
+    name: "Káva"
+    name_accusative: "kávu"
+    owner: null
+    visible: false
+    movable: true
+    descriptions:
+      - default: "<p>Káva z automatu – to je jako pivo z prášku.</p>"
+    onUse:
+      - condition: "kafe:owner = player && player:location = ZimniKralovstvi && dotaz_na_pistoli && pistole:owner != player"
+        description: |
+          <p>Tux podal Béďovi kelímek s kávou. Medvěd si podezíravě přičichl.
+          „Dal bych přednost poctivýmu turku, ale co už. Půjč si ten kvér.“
+          Tux zařadil plastikovou pistolku do inventáře.</p>
+        set: "kafe:owner = used_items; kafe:visible = false; pistole:owner = player; pistole:visible = true"
+      - description: "<p>Kafe nepiju! Je to JED!</p>"
+
+  - id: "motorove_kolo"
+    name: "Motorové kolo"
+    name_accusative: "motorové kolo"
+    owner: "Klokan"
+    movable: false
+    descriptions:
+      - default: "<p>Nepojízdné motokolo klokana Tondy. Tonda Tuxe prudce odstrčil: „Nerozumíš tomu, ještě to pokazíš víc!“</p>"
+    onTake:
+      - description: "<p>Motorové kolo samozřejmě neunesu. Navíc by nebylo rozumné krást ho před majitelem!</p>"
+    onUse:
+      - description: "<p>Motorové kolo je nepojízdné a Tonda by ho Tuxovi stejně nepůjčil.</p>"
+
+  - id: "vrak_motokola"
+    name: "Vrak motorového kola"
+    name_accusative: "vrak motorového kola"
+    owner: "Strom"
+    visible: false
+    movable: false
+    descriptions:
+      - default: "<p>Kouřící zbytky zničeného motorového kola.</p>"
+
+  - id: "klakson"
+    name: "Klakson"
+    name_accusative: "klakson"
+    owner: "Strom"
+    visible: false
+    movable: true
+    descriptions:
+      - default: "<p>Klakson, který měl klokan Tonda na motorovém kole.</p>"
+    onTake:
+      - description: |
+          <p>Tux se zmocnil klaksonu. Ze stromu se ozvalo: „Ty zloději! Ten klakson
+          patří mně!“ – „Co se jen tak povaluje na zemi, nepatří nikomu!“</p>
+    onUse:
+      - condition: "klakson:owner = player && player:location = UPapoucha && !papousek_vzhuru"
+        description: |
+          <p>Tux hlasitě zatroubil. Vyděšený papoušek spadl z bidýlka, zmateně
+          tloukl křídly do klece a seslal na Tuxe spršku nadávek. Nakonec po něm
+          hodil několik nevyloupaných buráků, které Tux sesbíral.</p>
+        set: "papousek_vzhuru = true; buraky:owner = player; buraky:visible = true"
+      - condition: "klakson:owner = player && player:location = UPapoucha"
+        description: "<p>Papoušek už je vzhůru a další troubení by ničemu nepomohlo.</p>"
+      - description: "<p>Tux hlasitě zatroubil na klakson.</p>"
+
+  - id: "rohozka"
+    name: "Rohožka"
+    name_accusative: "rohožku"
+    owner: "PredKancelari"
+    movable: false
+    descriptions:
+      - default: "<p>Pod rohožkou se žádný klíč nenachází.</p>"
+      - condition: "kancelar_otevrena"
+        description: "<p>Zkoumáním rohožky se Tux sotva dozví něco o osudu Tuxie.</p>"
+    onTake:
+      - description: "<p>Rohožku nechám tam, kde je. Jistě mi k ničemu nebude.</p>"
+    onUse:
+      - description: "<p>Tux si očistil nohy o rohožku. To je ovšem velmi ubohá pomsta.</p>"
+
+  - id: "kvetinac"
+    name: "Květináč s fíkusem"
+    name_accusative: "květináč s fíkusem"
+    owner: "PredKancelari"
+    movable: false
+    descriptions:
+      - default: "<p>Není na něm nic pozoruhodného. Klíč se v něm nenachází.</p>"
+    onTake:
+      - description: "<p>Květináč bych snad s vypětím všech sil unesl, ale proč bych to dělal?</p>"
+
+  - id: "sipka"
+    name: "Uspávací šipka"
+    name_accusative: "uspávací šipku"
+    owner: null
+    visible: false
+    movable: true
+    descriptions:
+      - default: "<p>Dlouhý hluboký spánek se zárukou.</p>"
+    onUse:
+      - condition: "sipka:owner = player && pistole:owner = player"
+        description: "<p>Tux natáhl pružinu dětské pistolky a do hlavně zasunul šipku. Tux – ozbrojen a nebezpečný.</p>"
+        set: "sipka:owner = pistole_se_sipkou; sipka:visible = false; pistole:owner = pistole_se_sipkou; pistole:visible = false; pistole_se_sipkou:owner = player; pistole_se_sipkou:visible = true"
+      - description: "<p>Šipku je nutno vložit do šípostřelu nebo něčeho takového.</p>"
+
+  - id: "pistole"
+    name: "Plastiková pistolka"
+    name_accusative: "plastikovou pistolku"
+    owner: null
+    visible: false
+    movable: true
+    descriptions:
+      - default: "<p>Čínský plastikový krám na přísavkové náboje.</p>"
+    onUse:
+      - description: "<p>S nenabitou pistolkou žádná velká legrace nebude.</p>"
+
+  - id: "pistole_se_sipkou"
+    name: "Pistole se šipkou"
+    name_accusative: "pistoli se šipkou"
+    owner: null
+    visible: false
+    movable: true
+    descriptions:
+      - default: "<p>Plastiková pistole nabitá uspávací šipkou. Moc nevěřím, že to bude fungovat. Ale zázraky se dějí.</p>"
+    onUse:
+      - condition: "pistole_se_sipkou:owner = player && player:location = Zirafy && !zirafa_spi"
+        description: |
+          <p>Tux vyčkal, až Žiletka přiskáká do těsné blízkosti, zamířil a stiskl
+          spoušť. Šipka se zabodla žirafě do boku. Žiletka strnula a zhroutila se
+          na zem. Doufám, že vím, proč to dělám…</p>
+        set: "zirafa_spi = true; pistole_se_sipkou:owner = used_items; pistole_se_sipkou:visible = false; pistole:owner = player; pistole:visible = true; stetoskop:visible = true"
+      - description: "<p>Nechápu, proč bych zrovna tady používal pistoli se šipkou.</p>"
+
+  - id: "stetoskop"
+    name: "Stetoskop"
+    name_accusative: "stetoskop"
+    owner: "Zirafy"
+    visible: false
+    movable: true
+    descriptions:
+      - default: "<p>Na stetoskopu žirafy Žiletky není nic zvláštního.</p>"
+    onTake:
+      - description: "<p>Tux přistoupil k Žiletce a opatrně jí sundal stetoskop z krku.</p>"
+    onUse:
+      - condition: "stetoskop:owner = player && player:location = UPapoucha"
+        description: |
+          <p>Tux si nasadil stetoskop na uši a postupně nastavil správnou číselnou
+          kombinaci. Papoušek zuřivě narážel do klece, zatímco tučňák prohledával
+          listiny ukryté v trezoru. Konečně našel dokumenty, jež hledal!</p>
+        set: "game_end = true; game_end_id = tuxie_search"
+      - description: "<p>Nechápu, proč bych zrovna tady používal stetoskop.</p>"
+
+characters:
+  - id: "player"
+    name: "Tux"
+    location: "PredKralovstvim"
+
+  - id: "papousek"
+    name: "Papoušek"
+    name_accusative: "papouška"
+    location: "UPapoucha"
+    descriptions:
+      - default: "<p>Starý pestrobarevný papoušek, kterého Tux dobře zná z vyprávění.</p>"
+      - condition: "!papousek_vzhuru"
+        description: "<p>Spí v noci i ve dne. Probouzí se, jen aby se nažral nebo…</p>"
+      - condition: "papousek_vzhuru"
+        description: "<p>Je pěkně vzteklý. Naštěstí na Tuxe nemůže.</p>"
+    onTalk:
+      - condition: "!papousek_vzhuru"
+        description: "<p>„Hej, vstávej! Slyšíš? VSTÁVEJ!“ Kdepak, volání papouška sotva probudí.</p>"
+      - condition: "papousek_vzhuru"
+        description: "<p>„Sorrry, kámo. Už se nerrrozčiluj!“ – „Dělej si srrrandu z někoho jiného, ty… rrr…!“</p>"
+
+  - id: "beda"
+    name: "Medvěd Béďa"
+    name_accusative: "medvěda Béďu"
+    location: "ZimniKralovstvi"
+    descriptions:
+      - default: |
+          <p>Medvěda Béďu zná Tux velmi dobře. Je bílý, lehce zavalitý a velmi
+          inteligentní. „Co je, Tuxi, co tak koukáš? Že bys zase dospěl k hlášce
+          TOTAL FAILURE?“ – „Ale kuš! Vše probíhá podle plánu!“</p>
+    onTalk:
+      - condition: "sipka:owner != player && pistole_se_sipkou:owner != player"
+        description: "<p>„Nazdar, Béďo. Tak co? Pohoda?“ – „Jasně, Tuxi. Pohoda.“ – „Tak to je v pohodě, kámo.“</p>"
+      - condition: "sipka:owner = player && pistole:owner != player && !dotaz_na_pistoli"
+        description: |
+          <p>„Hele, Béďo, mohl bys na chvíli postrádat tu pistolku?“ – „Možná jo.
+          Co za to?“ Nakonec se dohodli na hrnku horké kávy.</p>
+        set: "dotaz_na_pistoli = true"
+      - condition: "dotaz_na_pistoli && pistole:owner != player && pistole_se_sipkou:owner != player"
+        description: "<p>Béďa čeká na slíbenou horkou kávu.</p>"
+      - condition: "pistole:owner = player || pistole_se_sipkou:owner = player"
+        description: "<p>„Tak co, Tuxi?“ – „Vše probíhá podle plánu!“</p>"
+
+  - id: "lachtani"
+    name: "Lachtani"
+    name_accusative: "lachtany"
+    location: "ZimniKralovstvi"
+    descriptions:
+      - default: "<p>Tux pohlédl se zalíbením na nenáviděné lachtany. Radost pohledět, jak tu ti zbabělci šaškují.</p>"
+    onTalk:
+      - description: "<p>Tlachat s lachtany není hodno tučňáka Tuxe!</p>"
+
+  - id: "ziletka"
+    name: "Žirafa Žiletka"
+    name_accusative: "žirafu Žiletku"
+    location: "Zirafy"
+    descriptions:
+      - default: "<p>Vypadá jako obyčejná žirafa. Ve skutečnosti je ale naprosto šílená.</p>"
+      - condition: "zirafa_spi"
+        description: "<p>Teď ovšem tvrdě spí.</p>"
+    onTalk:
+      - condition: "!zirafa_spi"
+        description: "<p>„Žiletko! Přestaň hloupnout!“ – „Befeleme peseveze. Hychykyrydytyny.“ Ta je úplně mimo.</p>"
+      - condition: "zirafa_spi"
+        description: "<p>Žiletka spí tak tvrdě, že ji Tux nemůže probudit.</p>"
+
+  - id: "simpi"
+    name: "Opičák Šimpi"
+    name_accusative: "opičáka Šimpiho"
+    location: "Opice"
+    descriptions:
+      - default: |
+          <p>Drzý zlodějský opičák má na očích frajerské sluneční brýle a na hlavě
+          obrácenou kšiltovku. „Co tak čučíš, ty zakrslá jeptiško?“</p>
+    onTalk:
+      - description: |
+          <p>„Hej, Šimpi, potřebuju s tebou mluvit.“ – „Tak to máš smůlu, pingle,
+          protože já s tebou mluvit nepotřebuju!“</p>
+
+  - id: "tonda"
+    name: "Klokan Tonda"
+    name_accusative: "klokana Tondu"
+    location: "Klokan"
+    descriptions:
+      - default: |
+          <p>Klokan Tonda má zelenobílé pruhované triko, ušpiněné od čokolád a
+          zmrzlin, které tento protekční vačnatec dostává od ředitele ZOO.</p>
+      - condition: "klokan_havaroval"
+        description: "<p>Teď visí za pruhované triko na stromě jako opice.</p>"
+    onTalk:
+      - condition: "!klokan_havaroval"
+        description: "<p>„Copak, copak? Nejede to?“ – „Nestarej se! Všechno je v pohodě!“</p>"
+      - condition: "klokan_havaroval"
+        description: "<p>„Copak je, Tondo? Kolečko se polámalo?“ – „Počkej, až se dostanu dolů!“</p>"

@@ -24,6 +24,20 @@ describe('Tux location presentation', () => {
         return {data, engine, messages};
     }
 
+    test('newest-first variant validates and preserves the original adventure', () => {
+        const {inputData: original} = parseGameFile(file);
+        const {inputData: alternative} = parseGameFile(path.join(directory, 'Tux-top.yaml'));
+        expect(() => prepareGameDefinition(JSON.parse(JSON.stringify(alternative)))).not.toThrow();
+        expect(alternative.layout.path).toBe('layout-top.html');
+        expect(fs.existsSync(path.join(directory, alternative.layout.path))).toBe(true);
+        alternative.layout = original.layout;
+        expect(alternative).toEqual(original);
+        const layout = fs.readFileSync(path.join(directory, 'layout-top.html'), 'utf8');
+        for (const {id} of LAYOUT_SECTIONS) {
+            expect(layout.match(new RegExp(`id="${id}"`, 'g'))).toHaveLength(1);
+        }
+    });
+
     test('every location renders its own local decorative image through the production sanitizer', () => {
         const {data, engine, messages} = createGame();
         const assets = new Set();

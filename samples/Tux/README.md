@@ -3,6 +3,24 @@
 Open `Tux.yaml` in JETA. Keep `layout.html`, `TUX.jpg`, and the `images/`
 directory beside the definition when copying the game.
 
+## Newest-first variant
+
+Open `Tux-top.yaml` for an alternative presentation, compatible with JETA 1.1.0.
+Keep the entire Tux folder together, including `layout-top.html`.
+The location stays above the journal and actions stay in their original column.
+The newest complete journal message appears at the top and
+older messages below. Paragraphs within each message retain their reading order.
+The journal scrolls independently, with the same height limit as the original.
+The action column uses a compact panel with smaller gaps and inline travel
+buttons. On desktop it stays in view while scrolling the story. Long action
+lists scroll inside the panel; no action is removed or collapsed behind a tab.
+
+New messages remain visible when playing from the top of the journal, without
+scrolling to its bottom. If you scroll into the history, scroll back to the top
+to resume reading new messages. The story, object IDs and rules are identical to
+`Tux.yaml`; only the layout path and journal hint differ. Keep both definitions
+in sync when editing the adventure.
+
 Presentation work is tracked in [issue #24](https://github.com/dvdmchl/JETA-electronjs/issues/24).
 
 The custom layout uses a moonlit zoo palette, amber action links, a wide reading
